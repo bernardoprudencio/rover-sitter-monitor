@@ -15,23 +15,8 @@ GMAIL_SENDER = os.environ["GMAIL_SENDER"]   # your Gmail address
 GMAIL_PASS   = os.environ["GMAIL_APP_PASS"] # Gmail App Password (not your real password)
 RECIPIENT    = os.environ["GMAIL_SENDER"]   # sending to yourself
 
-# Keywords for scoring / tagging
-CATEGORIES = {
-    "🚨 Churn Signal":      ["leaving rover", "switching to wag", "quitting rover", "deleted my account",
-                              "cancelling", "uninstalling", "done with rover", "last straw", "fed up"],
-    "⚠️ Pain Point":        ["frustrated", "annoying", "broken", "bug", "glitch", "unfair", "scam",
-                              "ripped off", "terrible", "awful", "worst", "ridiculous", "no support",
-                              "ignored", "no response", "deactivated", "banned", "suspended"],
-    "💡 Feature Request":   ["wish rover", "rover should", "would be nice", "feature request",
-                              "please add", "why can't rover", "rover needs", "suggestion"],
-    "🏆 Praise":            ["love rover", "rover is great", "amazing platform", "best app",
-                              "rover saved", "highly recommend", "great experience", "so grateful"],
-    "🤝 Competitor Mention":["wag", "trusted housesitters", "care.com", "pet sitter", "pet sitting app",
-                              "rover vs", "vs rover"],
-}
-
-HOURS_BACK = 24  # look at last 24 hours
-MAX_POSTS   = 30 # max posts to fetch per subreddit
+HOURS_BACK = 48  # look at last 48 hours
+MAX_POSTS   = 50 # max posts to fetch per subreddit
 # ─────────────────────────────────────────────────────────────────────────────
 
 
@@ -52,47 +37,22 @@ def fetch_posts(subreddit: str) -> list[dict]:
 
 
 def score_and_tag(post: dict) -> dict | None:
-    """
-    Filter posts from last 24h, score them by keyword relevance,
-    return enriched dict or None if not relevant enough.
-    """
+    """Return all posts from the last HOURS_BACK hours, no filtering."""
     cutoff = time.time() - (HOURS_BACK * 3600)
     if post.get("created_utc", 0) < cutoff:
         return None
-
-    text = f"{post.get('title', '')} {post.get('selftext', '')}".lower()
-
-    tags   = []
-    score  = 0
-
-    for category, keywords in CATEGORIES.items():
-        for kw in keywords:
-            if kw in text:
-                if category not in tags:
-                    tags.append(category)
-                score += 1
-
-    # Always include posts with high engagement even if no keyword match
-    upvotes  = post.get("score", 0)
-    comments = post.get("num_comments", 0)
-    engagement_bonus = (upvotes // 10) + (comments // 5)
-    score += engagement_bonus
-
-    if score == 0:
-        return None  # not relevant enough
 
     created = datetime.fromtimestamp(post["created_utc"], tz=timezone.utc)
 
     return {
         "title":    post.get("title", "(no title)"),
         "url":      f"https://reddit.com{post.get('permalink', '')}",
-        "upvotes":  upvotes,
-        "comments": comments,
-        "tags":     tags if tags else ["📌 High Engagement"],
-        "score":    score,
+        "upvotes":  post.get("score", 0),
+        "comments": post.get("num_comments", 0),
         "preview":  post.get("selftext", "")[:300].strip() or "(no text — link post)",
         "created":  created.strftime("%b %d, %H:%M UTC"),
         "author":   post.get("author", "unknown"),
+        "score":    post.get("created_utc", 0),  # sort by newest
     }
 
 
@@ -113,18 +73,12 @@ def build_html(posts_by_sub: dict) -> str:
           </td>
         </tr>"""
         for p in posts:
-            tag_html = " ".join(
-                f'<span style="background:#fff3e0;border:1px solid #ffb74d;border-radius:12px;'
-                f'padding:2px 8px;font-size:12px;margin-right:4px;">{t}</span>'
-                for t in p["tags"]
-            )
             rows += f"""
         <tr>
           <td style="padding:16px 0;border-bottom:1px solid #eee;vertical-align:top;">
             <div style="font-size:15px;font-weight:600;margin-bottom:6px;">
               <a href="{p['url']}" style="color:#1a1a1a;text-decoration:none;">{p['title']}</a>
             </div>
-            <div style="margin-bottom:8px;">{tag_html}</div>
             <div style="color:#555;font-size:13px;line-height:1.5;margin-bottom:8px;">
               {p['preview']}{'...' if len(p['preview']) == 300 else ''}
             </div>
