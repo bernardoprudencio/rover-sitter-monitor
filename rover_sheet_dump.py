@@ -291,7 +291,7 @@ def _fetch_pullpush(subreddit: str, after_ts: float):
 def _fetch_arctic_shift(subreddit: str, after_ts: float):
     """Fetch from Arctic Shift — reliable Reddit archive."""
     # Arctic Shift paginates with after= timestamp, fetch in batches
-    after_param = int(after_ts) if after_ts > 0 else 1714521600  # May 1 2024 default
+    after_param = int(after_ts)
     url = f"https://arctic-shift.photon-reddit.com/api/posts/search?subreddit={subreddit}&after={after_param}&limit=100&sort=asc"
     headers = {"User-Agent": "Mozilla/5.0 (compatible; rover-monitor/1.0)", "Accept": "application/json"}
     try:
