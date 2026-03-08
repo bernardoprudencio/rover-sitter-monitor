@@ -291,7 +291,7 @@ def _fetch_pullpush(subreddit: str, after_ts: float):
 def _fetch_arctic_shift(subreddit: str, after_ts: float):
     """Fetch from Arctic Shift — reliable Reddit archive."""
     # Arctic Shift paginates with after= timestamp, fetch in batches
-    after_param = int(after_ts) if after_ts > 1000000000 else 1714521600  # default: Jan 1 2025
+    after_param = int(after_ts)  # caller always provides a valid timestamp
     # Arctic Shift expects ISO date strings, not timestamps
     after_date = datetime.fromtimestamp(after_param, tz=timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     url = f"https://arctic-shift.photon-reddit.com/api/posts/search?subreddit={subreddit}&after={after_date}&limit=100&sort_type=created_utc&sort=asc"
@@ -451,20 +451,41 @@ def main():
     ws = get_sheet()
 
     if HISTORICAL_MODE:
-        print("📚 HISTORICAL MODE — fetching all available posts")
-        after_ts = 0.0
+        print("📚 HISTORICAL MODE — paginating from Jan 1 2025 to today")
+        for sub in SUBREDDITS:
+            print(f"\nFetching r/{sub}...")
+            cursor    = 1735689600  # Jan 1 2025 00:00 UTC
+            end_ts    = time.time()
+            batch_num = 0
+            total     = 0
+            while cursor < end_ts:
+                batch_num += 1
+                batch_date = datetime.fromtimestamp(cursor, tz=timezone.utc).strftime("%Y-%m-%d")
+                print(f"  Batch {batch_num} — from {batch_date}")
+                batch = _fetch_arctic_shift(sub, cursor)
+                if not batch:
+                    print("  No more posts found, stopping.")
+                    break
+                append_posts(ws, batch, sub)
+                total  += len(batch)
+                cursor  = batch[-1]["ts"] + 1
+                print(f"  → {len(batch)} posts appended (total: {total})")
+                time.sleep(1)
+                if len(batch) < 2:
+                    print("  Reached end of available data.")
+                    break
+            print(f"  Done — {total} posts written across {batch_num} batches")
     else:
         after_ts = get_latest_timestamp(ws)
         if after_ts:
             print(f"📅 DAILY MODE — fetching posts newer than {datetime.fromtimestamp(after_ts, tz=timezone.utc).strftime('%Y-%m-%d %H:%M UTC')}")
         else:
             print("📅 DAILY MODE — sheet is empty, fetching all available posts")
-
-    for sub in SUBREDDITS:
-        print(f"\nFetching r/{sub}...")
-        posts = fetch_posts(sub, after_ts=after_ts)
-        print(f"  {len(posts)} new posts found")
-        append_posts(ws, posts, sub)
+        for sub in SUBREDDITS:
+            print(f"\nFetching r/{sub}...")
+            posts = fetch_posts(sub, after_ts=after_ts)
+            print(f"  {len(posts)} new posts found")
+            append_posts(ws, posts, sub)
 
     print("\nDone!")
 
