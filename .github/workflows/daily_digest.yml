@@ -5,7 +5,7 @@ on:
     # 9:00 AM CET = 8:00 AM UTC (adjust to 7:00 UTC when CET switches to CEST in summer)
     - cron: '0 8 * * *'
   workflow_dispatch:  # allows you to run it manually from GitHub UI
-# trigger
+
 jobs:
   send-digest:
     runs-on: ubuntu-latest
@@ -19,8 +19,18 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Run monitor script
+      - name: Install dependencies
+        run: pip install gspread google-auth
+
+      - name: Run email digest
         env:
           GMAIL_SENDER:   ${{ secrets.GMAIL_SENDER }}
           GMAIL_APP_PASS: ${{ secrets.GMAIL_APP_PASS }}
-        run: python rover_monitor.py
+        run: python3 rover_monitor.py
+
+      - name: Append new posts to Google Sheet
+        env:
+          SHEET_ID:           ${{ secrets.SHEET_ID }}
+          GOOGLE_CREDS_JSON:  ${{ secrets.GOOGLE_CREDS_JSON }}
+          HISTORICAL_MODE:    false
+        run: python3 rover_sheet_dump.py
