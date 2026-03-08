@@ -250,42 +250,91 @@ def strip_html(text: str) -> str:
     return clean.strip()
 
 
-def fetch_rss(subreddit: str, after_ts: float = 0) -> list[dict]:
+def fetch_posts(subreddit: str, after_ts: float = 0):
+    """
+    Fetch posts via pullpush.io — a free Reddit archive, no bot blocking.
+    Falls back to Reddit RSS if pullpush fails.
+    """
+    import gzip
+    results = _fetch_pullpush(subreddit, after_ts)
+    if results is not None:
+        return results
+    print("  Falling back to Reddit RSS...")
+    return _fetch_rss(subreddit, after_ts)
+
+
+def _fetch_pullpush(subreddit: str, after_ts: float):
+    params = f"subreddit={subreddit}&size={MAX_POSTS}&sort=desc&sort_type=created_utc"
+    if after_ts > 0:
+        params += f"&after={int(after_ts)}"
+    url = f"https://api.pullpush.io/reddit/search/submission/?{params}"
+    headers = {"User-Agent": "Mozilla/5.0 (compatible; rover-monitor/1.0)", "Accept": "application/json"}
+    try:
+        req = urllib.request.Request(url, headers=headers)
+        with urllib.request.urlopen(req, timeout=20) as resp:
+            raw = resp.read()
+        data = json.loads(raw)
+        entries = data.get("data", [])
+        print(f"  pullpush.io: {len(entries)} posts")
+        posts = []
+        for e in entries:
+            created_utc = e.get("created_utc", 0)
+            content = e.get("selftext", "").strip()
+            if content in ("[removed]", "[deleted]"): content = ""
+            title = e.get("title", "(no title)")
+            themes, problems = tag_post(title, content)
+            posts.append({
+                "date":     datetime.fromtimestamp(created_utc, tz=timezone.utc).strftime("%Y-%m-%d %H:%M UTC"),
+                "title":    title,
+                "url":      f"https://reddit.com{e.get('permalink', '')}",
+                "author":   e.get("author", "unknown"),
+                "preview":  content[:500],
+                "themes":   ", ".join(themes),
+                "problems": ", ".join(problems),
+                "ts":       created_utc,
+            })
+        posts.sort(key=lambda x: x["ts"])
+        return posts
+    except Exception as ex:
+        print(f"  pullpush.io failed: {ex}")
+        return None
+
+
+def _fetch_rss(subreddit: str, after_ts: float):
+    import gzip
     url = f"https://www.reddit.com/r/{subreddit}/new/.rss?limit={MAX_POSTS}"
     headers = {
-        "User-Agent": "Mozilla/5.0 (compatible; rover-sheet/1.0)",
-        "Accept":     "application/rss+xml, application/xml, text/xml",
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36",
+        "Accept": "application/rss+xml, application/xml, text/xml",
     }
-    req = urllib.request.Request(url, headers=headers)
-    NS  = {"atom": "http://www.w3.org/2005/Atom"}
-
+    NS = {"atom": "http://www.w3.org/2005/Atom"}
     try:
+        req = urllib.request.Request(url, headers=headers)
         with urllib.request.urlopen(req, timeout=15) as resp:
-            raw = resp.read().decode("utf-8", errors="replace")
-        root    = ET.fromstring(raw)
+            raw_bytes = resp.read()
+        try:
+            raw = gzip.decompress(raw_bytes).decode("utf-8", errors="replace")
+        except Exception:
+            raw = raw_bytes.decode("utf-8", errors="replace")
+        root = ET.fromstring(raw)
         entries = root.findall("atom:entry", NS)
-        print(f"  Found {len(entries)} entries in RSS feed")
-
+        print(f"  RSS: {len(entries)} entries")
         posts = []
         for entry in entries:
-            title   = entry.findtext("atom:title",   default="",        namespaces=NS)
+            title   = entry.findtext("atom:title", default="", namespaces=NS)
             link_el = entry.find("atom:link", NS)
             url_val = link_el.get("href", "") if link_el is not None else ""
             author  = entry.findtext("atom:author/atom:name", default="unknown", namespaces=NS)
-            updated = entry.findtext("atom:updated", default="",        namespaces=NS)
+            updated = entry.findtext("atom:updated", default="", namespaces=NS)
             content = strip_html(entry.findtext("atom:content", default="", namespaces=NS))
-
             try:
-                dt          = datetime.fromisoformat(updated.replace("Z", "+00:00"))
+                dt = datetime.fromisoformat(updated.replace("Z", "+00:00"))
                 created_utc = dt.timestamp()
             except Exception:
                 created_utc = time.time()
-
             if created_utc <= after_ts:
                 continue
-
             themes, problems = tag_post(title, content)
-
             posts.append({
                 "date":     datetime.fromtimestamp(created_utc, tz=timezone.utc).strftime("%Y-%m-%d %H:%M UTC"),
                 "title":    title,
@@ -296,12 +345,10 @@ def fetch_rss(subreddit: str, after_ts: float = 0) -> list[dict]:
                 "problems": ", ".join(problems),
                 "ts":       created_utc,
             })
-
         posts.sort(key=lambda x: x["ts"])
         return posts
-
     except Exception as e:
-        print(f"  Error fetching r/{subreddit}: {e}")
+        print(f"  RSS failed: {e}")
         return []
 
 
@@ -371,7 +418,7 @@ def main():
 
     for sub in SUBREDDITS:
         print(f"\nFetching r/{sub}...")
-        posts = fetch_rss(sub, after_ts=after_ts)
+        posts = fetch_posts(sub, after_ts=after_ts)
         print(f"  {len(posts)} new posts found")
         append_posts(ws, posts, sub)
 
