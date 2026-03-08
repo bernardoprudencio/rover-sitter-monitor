@@ -1,0 +1,26 @@
+name: Rover Sitter Daily Digest
+
+on:
+  schedule:
+    # 9:00 AM CET = 8:00 AM UTC (adjust to 7:00 UTC when CET switches to CEST in summer)
+    - cron: '0 8 * * *'
+  workflow_dispatch:  # allows you to run it manually from GitHub UI
+
+jobs:
+  send-digest:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Run monitor script
+        env:
+          GMAIL_SENDER:   ${{ secrets.GMAIL_SENDER }}
+          GMAIL_APP_PASS: ${{ secrets.GMAIL_APP_PASS }}
+        run: python rover_monitor.py
