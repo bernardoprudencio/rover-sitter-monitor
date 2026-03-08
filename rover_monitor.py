@@ -1,59 +1,98 @@
 import urllib.request
 import urllib.error
-import json
+import xml.etree.ElementTree as ET
 import smtplib
 import ssl
 import os
 import time
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-from datetime import datetime, timezone, timedelta
+from datetime import datetime, timezone
+from email.utils import parsedate_to_datetime
 
 # ── CONFIG ────────────────────────────────────────────────────────────────────
 SUBREDDITS   = ["RoverPetSitting"]
-GMAIL_SENDER = os.environ["GMAIL_SENDER"]   # your Gmail address
-GMAIL_PASS   = os.environ["GMAIL_APP_PASS"] # Gmail App Password (not your real password)
-RECIPIENT    = os.environ["GMAIL_SENDER"]   # sending to yourself
-
-HOURS_BACK = 48  # look at last 48 hours
-MAX_POSTS   = 50 # max posts to fetch per subreddit
+GMAIL_SENDER = os.environ["GMAIL_SENDER"]    # your Gmail address
+GMAIL_PASS   = os.environ["GMAIL_APP_PASS"]  # Gmail App Password
+RECIPIENT    = os.environ["GMAIL_SENDER"]    # sending to yourself
+MAX_POSTS    = 50                            # posts to fetch per subreddit
 # ─────────────────────────────────────────────────────────────────────────────
+
+# RSS namespaces used by Reddit
+NS = {
+    "atom":    "http://www.w3.org/2005/Atom",
+    "media":   "http://search.yahoo.com/mrss/",
+}
 
 
 def fetch_posts(subreddit: str) -> list[dict]:
-    """Fetch new posts from a subreddit using the public JSON API."""
-    url = f"https://www.reddit.com/r/{subreddit}/new.json?limit={MAX_POSTS}"
-    req = urllib.request.Request(url, headers={"User-Agent": "rover-monitor/1.0"})
+    """Fetch posts via Reddit's public RSS feed (much less likely to be blocked)."""
+    url = f"https://www.reddit.com/r/{subreddit}/new/.rss?limit={MAX_POSTS}"
+    headers = {
+        "User-Agent": "Mozilla/5.0 (compatible; rover-monitor/1.0)",
+        "Accept":     "application/rss+xml, application/xml, text/xml",
+    }
+    req = urllib.request.Request(url, headers=headers)
     try:
         with urllib.request.urlopen(req, timeout=15) as resp:
-            data = json.loads(resp.read().decode())
-        return [p["data"] for p in data["data"]["children"]]
+            raw = resp.read().decode("utf-8", errors="replace")
+        print(f"  RSS fetch OK — {len(raw)} bytes received")
+
+        root = ET.fromstring(raw)
+        entries = root.findall("atom:entry", NS)
+        print(f"  Found {len(entries)} entries in RSS feed")
+
+        posts = []
+        for entry in entries:
+            title   = entry.findtext("atom:title", default="(no title)", namespaces=NS)
+            link_el = entry.find("atom:link", NS)
+            url_val = link_el.get("href", "") if link_el is not None else ""
+            author  = entry.findtext("atom:author/atom:name", default="unknown", namespaces=NS)
+            updated = entry.findtext("atom:updated", default="", namespaces=NS)
+            content = entry.findtext("atom:content", default="", namespaces=NS)
+
+            # Parse timestamp
+            try:
+                dt = datetime.fromisoformat(updated.replace("Z", "+00:00"))
+                created_utc = dt.timestamp()
+            except Exception:
+                created_utc = time.time()
+
+            # Strip HTML tags from content crudely
+            import re
+            clean_content = re.sub(r"<[^>]+>", "", content).strip()
+            # Remove the "submitted by" footer Reddit adds
+            clean_content = re.sub(r"\[link\].*", "", clean_content).strip()
+
+            age_hours = (time.time() - created_utc) / 3600
+
+            posts.append({
+                "title":     title,
+                "url":       url_val,
+                "author":    author.replace("/u/", ""),
+                "created":   datetime.fromtimestamp(created_utc, tz=timezone.utc).strftime("%b %d, %H:%M UTC"),
+                "age_hours": age_hours,
+                "preview":   clean_content[:300],
+                "sort_key":  created_utc,
+                # RSS doesn't give upvotes/comments so we'll omit them
+                "upvotes":   None,
+                "comments":  None,
+            })
+
+        posts.sort(key=lambda x: x["sort_key"], reverse=True)
+        if posts:
+            print(f"  Most recent post: '{posts[0]['title'][:60]}' ({posts[0]['age_hours']:.1f}h ago)")
+        return posts
+
     except urllib.error.HTTPError as e:
-        print(f"HTTP error fetching r/{subreddit}: {e.code}")
+        print(f"  HTTP error fetching r/{subreddit}: {e.code} {e.reason}")
+        return []
+    except ET.ParseError as e:
+        print(f"  XML parse error: {e}")
         return []
     except Exception as e:
-        print(f"Error fetching r/{subreddit}: {e}")
+        print(f"  Unexpected error: {e}")
         return []
-
-
-def score_and_tag(post: dict) -> dict | None:
-    """Return all posts from the last HOURS_BACK hours, no filtering."""
-    cutoff = time.time() - (HOURS_BACK * 3600)
-    if post.get("created_utc", 0) < cutoff:
-        return None
-
-    created = datetime.fromtimestamp(post["created_utc"], tz=timezone.utc)
-
-    return {
-        "title":    post.get("title", "(no title)"),
-        "url":      f"https://reddit.com{post.get('permalink', '')}",
-        "upvotes":  post.get("score", 0),
-        "comments": post.get("num_comments", 0),
-        "preview":  post.get("selftext", "")[:300].strip() or "(no text — link post)",
-        "created":  created.strftime("%b %d, %H:%M UTC"),
-        "author":   post.get("author", "unknown"),
-        "score":    post.get("created_utc", 0),  # sort by newest
-    }
 
 
 def build_html(posts_by_sub: dict) -> str:
@@ -67,12 +106,14 @@ def build_html(posts_by_sub: dict) -> str:
             continue
         rows += f"""
         <tr>
-          <td colspan="2" style="padding:20px 0 8px;font-size:18px;font-weight:bold;
+          <td style="padding:20px 0 8px;font-size:18px;font-weight:bold;
               color:#FF5700;border-bottom:2px solid #FF5700;">
             r/{subreddit}
           </td>
         </tr>"""
         for p in posts:
+            age_str = f"{p['age_hours']:.0f}h ago" if p['age_hours'] < 48 else p['created']
+            meta = f"🕐 {age_str} &nbsp;·&nbsp; u/{p['author']}"
             rows += f"""
         <tr>
           <td style="padding:16px 0;border-bottom:1px solid #eee;vertical-align:top;">
@@ -82,18 +123,13 @@ def build_html(posts_by_sub: dict) -> str:
             <div style="color:#555;font-size:13px;line-height:1.5;margin-bottom:8px;">
               {p['preview']}{'...' if len(p['preview']) == 300 else ''}
             </div>
-            <div style="font-size:12px;color:#999;">
-              ▲ {p['upvotes']} upvotes &nbsp;·&nbsp; 
-              💬 {p['comments']} comments &nbsp;·&nbsp; 
-              🕐 {p['created']} &nbsp;·&nbsp;
-              u/{p['author']}
-            </div>
+            <div style="font-size:12px;color:#999;">{meta}</div>
           </td>
         </tr>"""
 
     if not rows:
         rows = """<tr><td style="padding:20px;color:#999;text-align:center;">
-            No relevant posts found in the last 24 hours.</td></tr>"""
+            No posts found.</td></tr>"""
 
     return f"""<!DOCTYPE html>
 <html>
@@ -103,16 +139,12 @@ def build_html(posts_by_sub: dict) -> str:
     <tr><td align="center">
       <table width="620" cellpadding="0" cellspacing="0"
              style="background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.08);">
-
-        <!-- Header -->
         <tr>
           <td style="background:#FF5700;padding:24px 32px;">
             <div style="font-size:22px;font-weight:700;color:#fff;">🐾 Rover Sitter Pulse</div>
-            <div style="color:#ffe0cc;font-size:14px;margin-top:4px;">{today} &nbsp;·&nbsp; {total} posts flagged</div>
+            <div style="color:#ffe0cc;font-size:14px;margin-top:4px;">{today} &nbsp;·&nbsp; {total} posts</div>
           </td>
         </tr>
-
-        <!-- Body -->
         <tr>
           <td style="padding:0 32px 24px;">
             <table width="100%" cellpadding="0" cellspacing="0">
@@ -120,15 +152,12 @@ def build_html(posts_by_sub: dict) -> str:
             </table>
           </td>
         </tr>
-
-        <!-- Footer -->
         <tr>
           <td style="background:#fafafa;padding:16px 32px;border-top:1px solid #eee;
               font-size:12px;color:#aaa;text-align:center;">
-            Rover Sitter Monitor · Posts from last 24h · r/RoverPetSitting
+            Rover Sitter Monitor · r/RoverPetSitting
           </td>
         </tr>
-
       </table>
     </td></tr>
   </table>
@@ -155,15 +184,14 @@ def send_email(html: str, total: int):
 def main():
     posts_by_sub = {}
     for sub in SUBREDDITS:
-        print(f"Fetching r/{sub}...")
-        raw = fetch_posts(sub)
-        enriched = [r for p in raw if (r := score_and_tag(p)) is not None]
-        enriched.sort(key=lambda x: x["score"], reverse=True)
-        posts_by_sub[sub] = enriched
-        print(f"  → {len(enriched)} relevant posts found")
+        print(f"\nFetching r/{sub} via RSS...")
+        posts = fetch_posts(sub)
+        posts_by_sub[sub] = posts
+        print(f"  → {len(posts)} posts will appear in email")
 
     total = sum(len(v) for v in posts_by_sub.values())
-    html  = build_html(posts_by_sub)
+    print(f"\nTotal posts: {total}")
+    html = build_html(posts_by_sub)
     send_email(html, total)
 
 
