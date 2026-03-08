@@ -15,7 +15,7 @@ SUBREDDITS   = ["RoverPetSitting"]
 GMAIL_SENDER = os.environ["GMAIL_SENDER"]    # your Gmail address
 GMAIL_PASS   = os.environ["GMAIL_APP_PASS"]  # Gmail App Password
 RECIPIENT    = os.environ["GMAIL_SENDER"]    # sending to yourself
-MAX_POSTS    = 50                            # posts to fetch per subreddit
+MAX_POSTS    = 50                            # posts to fetch (overridden to 100 on Mondays)
 # ─────────────────────────────────────────────────────────────────────────────
 
 # RSS namespaces used by Reddit
@@ -27,7 +27,9 @@ NS = {
 
 def fetch_posts(subreddit: str) -> list[dict]:
     """Fetch posts via Reddit's public RSS feed (much less likely to be blocked)."""
-    url = f"https://www.reddit.com/r/{subreddit}/new/.rss?limit={MAX_POSTS}"
+    is_monday = datetime.now(tz=timezone.utc).weekday() == 0
+    limit = 100 if is_monday else MAX_POSTS
+    url = f"https://www.reddit.com/r/{subreddit}/new/.rss?limit={limit}"
     headers = {
         "User-Agent": "Mozilla/5.0 (compatible; rover-monitor/1.0)",
         "Accept":     "application/rss+xml, application/xml, text/xml",
@@ -80,6 +82,10 @@ def fetch_posts(subreddit: str) -> list[dict]:
             })
 
         posts.sort(key=lambda x: x["sort_key"], reverse=True)
+        is_monday = datetime.now(tz=timezone.utc).weekday() == 0
+        hours_limit = 72 if is_monday else 24
+        posts = [p for p in posts if p["age_hours"] <= hours_limit]
+        print(f"  Time window: {hours_limit}h ({'Monday — weekend catchup' if is_monday else 'regular day'})")
         if posts:
             print(f"  Most recent post: '{posts[0]['title'][:60]}' ({posts[0]['age_hours']:.1f}h ago)")
         return posts
