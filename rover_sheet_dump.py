@@ -291,7 +291,7 @@ def _fetch_pullpush(subreddit: str, after_ts: float):
 def _fetch_arctic_shift(subreddit: str, after_ts: float):
     """Fetch from Arctic Shift — reliable Reddit archive."""
     # Arctic Shift paginates with after= timestamp, fetch in batches
-    after_param = int(after_ts)
+    after_param = int(after_ts) if after_ts > 1000000000 else 1714521600  # default: Jan 1 2025
     # Arctic Shift expects ISO date strings, not timestamps
     after_date = datetime.fromtimestamp(after_param, tz=timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     url = f"https://arctic-shift.photon-reddit.com/api/posts/search?subreddit={subreddit}&after={after_date}&limit=100&sort_type=created_utc&sort=asc"
@@ -313,12 +313,16 @@ def _fetch_arctic_shift(subreddit: str, after_ts: float):
 
 
 def _parse_pushshift_entries(entries):
+    now = time.time()
     posts = []
     for e in entries:
         created_utc = e.get("created_utc", 0)
         if isinstance(created_utc, str):
             try: created_utc = int(created_utc)
             except: created_utc = 0
+        # Skip posts with future or invalid timestamps
+        if created_utc <= 0 or created_utc > now:
+            continue
         content = e.get("selftext", "").strip()
         if content in ("[removed]", "[deleted]"): content = ""
         title = e.get("title", "(no title)")
