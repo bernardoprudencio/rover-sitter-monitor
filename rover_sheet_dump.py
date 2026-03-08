@@ -292,7 +292,7 @@ def _fetch_arctic_shift(subreddit: str, after_ts: float):
     """Fetch from Arctic Shift — reliable Reddit archive."""
     # Arctic Shift paginates with after= timestamp, fetch in batches
     after_param = int(after_ts)
-    url = f"https://arctic-shift.photon-reddit.com/api/posts/search?subreddit={subreddit}&after={after_param}&limit=100&sort=asc"
+    url = f"https://arctic-shift.photon-reddit.com/api/posts/search?subreddit={subreddit}&after={after_param}&limit=100&sort_type=created_utc&sort=asc"
     headers = {"User-Agent": "Mozilla/5.0 (compatible; rover-monitor/1.0)", "Accept": "application/json"}
     try:
         req = urllib.request.Request(url, headers=headers)
