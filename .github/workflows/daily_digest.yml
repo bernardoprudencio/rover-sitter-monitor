@@ -5,7 +5,7 @@ on:
     # 9:00 AM CET = 8:00 AM UTC (adjust to 7:00 UTC when CET switches to CEST in summer)
     - cron: '0 8 * * *'
   workflow_dispatch:  # allows you to run it manually from GitHub UI
-
+# trigger
 jobs:
   send-digest:
     runs-on: ubuntu-latest
