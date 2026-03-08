@@ -264,6 +264,12 @@ def fetch_posts(subreddit: str, after_ts: float = 0):
 
 
 def _fetch_pullpush(subreddit: str, after_ts: float):
+    """Try Arctic Shift first, then pullpush.io as backup."""
+    result = _fetch_arctic_shift(subreddit, after_ts)
+    if result is not None:
+        return result
+
+    # Fallback to pullpush.io
     params = f"subreddit={subreddit}&size={MAX_POSTS}&sort=desc&sort_type=created_utc"
     if after_ts > 0:
         params += f"&after={int(after_ts)}"
@@ -276,28 +282,59 @@ def _fetch_pullpush(subreddit: str, after_ts: float):
         data = json.loads(raw)
         entries = data.get("data", [])
         print(f"  pullpush.io: {len(entries)} posts")
-        posts = []
-        for e in entries:
-            created_utc = e.get("created_utc", 0)
-            content = e.get("selftext", "").strip()
-            if content in ("[removed]", "[deleted]"): content = ""
-            title = e.get("title", "(no title)")
-            themes, problems = tag_post(title, content)
-            posts.append({
-                "date":     datetime.fromtimestamp(created_utc, tz=timezone.utc).strftime("%Y-%m-%d %H:%M UTC"),
-                "title":    title,
-                "url":      f"https://reddit.com{e.get('permalink', '')}",
-                "author":   e.get("author", "unknown"),
-                "preview":  content[:500],
-                "themes":   ", ".join(themes),
-                "problems": ", ".join(problems),
-                "ts":       created_utc,
-            })
-        posts.sort(key=lambda x: x["ts"])
-        return posts
+        return _parse_pushshift_entries(entries)
     except Exception as ex:
         print(f"  pullpush.io failed: {ex}")
         return None
+
+
+def _fetch_arctic_shift(subreddit: str, after_ts: float):
+    """Fetch from Arctic Shift — reliable Reddit archive."""
+    # Arctic Shift paginates with after= timestamp, fetch in batches
+    after_param = int(after_ts) if after_ts > 0 else 1714521600  # May 1 2024 default
+    url = f"https://arctic-shift.photon-reddit.com/api/posts/search?subreddit={subreddit}&after={after_param}&limit=100&sort=asc"
+    headers = {"User-Agent": "Mozilla/5.0 (compatible; rover-monitor/1.0)", "Accept": "application/json"}
+    try:
+        req = urllib.request.Request(url, headers=headers)
+        with urllib.request.urlopen(req, timeout=20) as resp:
+            raw = resp.read().decode("utf-8", errors="replace")
+        data = json.loads(raw)
+        entries = data.get("data", [])
+        print(f"  Arctic Shift: {len(entries)} posts")
+        if not entries:
+            return None
+        return _parse_pushshift_entries(entries)
+    except Exception as ex:
+        print(f"  Arctic Shift failed: {ex}")
+        return None
+
+
+def _parse_pushshift_entries(entries):
+    posts = []
+    for e in entries:
+        created_utc = e.get("created_utc", 0)
+        if isinstance(created_utc, str):
+            try: created_utc = int(created_utc)
+            except: created_utc = 0
+        content = e.get("selftext", "").strip()
+        if content in ("[removed]", "[deleted]"): content = ""
+        title = e.get("title", "(no title)")
+        themes, problems = tag_post(title, content)
+        permalink = e.get("permalink", "")
+        if not permalink.startswith("http"):
+            permalink = f"https://reddit.com{permalink}"
+        posts.append({
+            "date":     datetime.fromtimestamp(created_utc, tz=timezone.utc).strftime("%Y-%m-%d %H:%M UTC"),
+            "title":    title,
+            "url":      permalink,
+            "author":   e.get("author", "unknown"),
+            "preview":  content[:500],
+            "themes":   ", ".join(themes),
+            "problems": ", ".join(problems),
+            "ts":       created_utc,
+        })
+    posts.sort(key=lambda x: x["ts"])
+    return posts
 
 
 def _fetch_rss(subreddit: str, after_ts: float):
