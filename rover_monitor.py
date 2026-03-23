@@ -24,7 +24,7 @@ SUBREDDITS   = ["RoverPetSitting"]
 GMAIL_SENDER = os.environ["GMAIL_SENDER"]    # your Gmail address
 GMAIL_PASS   = os.environ["GMAIL_APP_PASS"]  # Gmail App Password
 RECIPIENT    = os.environ["GMAIL_SENDER"]    # sending to yourself
-MAX_POSTS    = 50                            # posts to fetch (overridden to 100 on Mondays)
+MAX_POSTS    = 100                           # posts to fetch
 # ─────────────────────────────────────────────────────────────────────────────
 
 # RSS namespaces used by Reddit
@@ -36,8 +36,7 @@ NS = {
 
 def _parse_posts(raw_posts: list[dict], source: str) -> list[dict]:
     """Normalise a list of raw post dicts into the internal format and apply time filter."""
-    is_monday = datetime.now(tz=timezone.utc).weekday() == 0
-    hours_limit = 72 if is_monday else 24
+    hours_limit = 24
 
     posts = []
     for p in raw_posts:
@@ -75,7 +74,7 @@ def _parse_posts(raw_posts: list[dict], source: str) -> list[dict]:
         })
 
     posts.sort(key=lambda x: x["sort_key"], reverse=True)
-    print(f"  Time window: {hours_limit}h ({'Monday — weekend catchup' if is_monday else 'regular day'})")
+    print(f"  Time window: {hours_limit}h")
     if posts:
         print(f"  Most recent post [{source}]: '{posts[0]['title'][:60]}' ({posts[0]['age_hours']:.1f}h ago)")
     return posts
@@ -147,8 +146,7 @@ def _fetch_rss_fallback(subreddit: str, limit: int) -> list[dict]:
 
 def fetch_posts(subreddit: str) -> list[dict]:
     """Fetch posts — Arctic Shift API primary, Reddit RSS fallback."""
-    is_monday = datetime.now(tz=timezone.utc).weekday() == 0
-    limit = 100 if is_monday else MAX_POSTS
+    limit = MAX_POSTS
 
     # ── Primary: Arctic Shift ──────────────────────────────────────────────
     try:

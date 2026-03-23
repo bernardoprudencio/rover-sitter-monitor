@@ -41,8 +41,7 @@ A daily automated pipeline that monitors r/RoverPetSitting and:
 - Often returns 403 from cloud IPs (GitHub Actions) — use Arctic Shift first
 
 ## Email script logic (rover_monitor.py)
-- Fetches posts from last **24h** (weekdays) or **72h** (Mondays, to catch weekend)
-- Monday detection: `datetime.now(tz=timezone.utc).weekday() == 0`
+- Fetches posts from the last **24h**, always (no Monday special case)
 - Sends HTML email via `smtplib.SMTP_SSL("smtp.gmail.com", 465)`
 - Post dict keys: `title`, `url`, `author`, `created`, `age_hours`, `preview`, `sort_key`, `upvotes`, `comments`, `img`, `tags`
 - **Thumbnails**: `thumbnail` field from Arctic Shift — skip values `self`, `default`, `nsfw`, `spoiler`; render as 140×140 image above the post title when present
@@ -85,7 +84,7 @@ Untagged posts get `["Untagged"]`.
 
 ## Common iteration tasks
 **Add a new subreddit**: add to `SUBREDDITS` list in both scripts
-**Change time window**: edit `hours_limit` logic in `_parse_posts()` in rover_monitor.py
+**Change time window**: edit `hours_limit` in `_parse_posts()` in rover_monitor.py (currently 24h)
 **Add a keyword/theme**: add to `PROBLEMS` dict and `PROBLEM_TO_THEME` map in rover_sheet_dump.py
 **Change historical start date**: edit `cursor = 1735689600` in main() of rover_sheet_dump.py (Jan 1 2025)
 **Change email schedule**: edit cron in daily_digest.yml (`0 8 * * *` = 08:00 UTC = 09:00 CET)
