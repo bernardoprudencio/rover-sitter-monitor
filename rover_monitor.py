@@ -13,6 +13,12 @@ from email.mime.text import MIMEText
 from datetime import datetime, timezone
 from email.utils import parsedate_to_datetime
 
+try:
+    from rover_sheet_dump import tag_post
+except (ImportError, SystemExit):
+    def tag_post(title, text):
+        return [], []
+
 # ── CONFIG ────────────────────────────────────────────────────────────────────
 SUBREDDITS   = ["RoverPetSitting"]
 GMAIL_SENDER = os.environ["GMAIL_SENDER"]    # your Gmail address
@@ -49,8 +55,13 @@ def _parse_posts(raw_posts: list[dict], source: str) -> list[dict]:
         thumb = p.get("thumbnail", "") or ""
         img = thumb if thumb and thumb not in ("self", "default", "nsfw", "spoiler", "") else None
 
+        # Tags from taxonomy
+        title = p.get("title", "(no title)")
+        _, problems = tag_post(title, clean_content)
+        tags = [t for t in problems if t != "Untagged"]
+
         posts.append({
-            "title":    p.get("title", "(no title)"),
+            "title":    title,
             "url":      url_val,
             "author":   p.get("author", "unknown"),
             "created":  datetime.fromtimestamp(created_utc, tz=timezone.utc).strftime("%b %d, %H:%M UTC"),
@@ -60,6 +71,7 @@ def _parse_posts(raw_posts: list[dict], source: str) -> list[dict]:
             "upvotes":  p.get("score"),
             "comments": p.get("num_comments"),
             "img":      img,
+            "tags":     tags,
         })
 
     posts.sort(key=lambda x: x["sort_key"], reverse=True)
@@ -128,6 +140,7 @@ def _fetch_rss_fallback(subreddit: str, limit: int) -> list[dict]:
             "score":        None,
             "num_comments": None,
             "thumbnail":    None,
+            "tags":         [],
         })
     return posts
 
@@ -176,7 +189,12 @@ def build_html(posts_by_sub: dict) -> str:
         </tr>"""
         for p in posts:
             age_str = f"{p['age_hours']:.0f}h ago" if p['age_hours'] < 48 else p['created']
-            meta = f"🕐 {age_str} &nbsp;·&nbsp; u/{p['author']}"
+            tags_html = "".join(
+                f'<span style="display:inline-block;background:#f0f0f0;color:#555;'
+                f'font-size:11px;padding:2px 7px;border-radius:10px;margin-right:4px;">{t}</span>'
+                for t in p.get("tags", [])
+            )
+            meta = f"🕐 {age_str} &nbsp;·&nbsp; {tags_html}u/{p['author']}"
             img_html = (
                 f'<div style="margin-bottom:10px;">'
                 f'<a href="{p["url"]}"><img src="{p["img"]}" alt="" width="140" height="140" '
