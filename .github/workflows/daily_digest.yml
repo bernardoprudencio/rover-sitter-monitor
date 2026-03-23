@@ -10,6 +10,10 @@ on:
         description: 'Run historical sheet dump? (yes/no)'
         required: false
         default: 'no'
+      email_only:
+        description: 'Skip Google Sheet step? (yes/no)'
+        required: false
+        default: 'no'
 
 jobs:
   send-digest:
@@ -34,7 +38,7 @@ jobs:
         run: python3 rover_monitor.py
 
       - name: Append new posts to Google Sheet (daily)
-        if: github.event.inputs.historical != 'yes'
+        if: github.event.inputs.historical != 'yes' && github.event.inputs.email_only != 'yes'
         env:
           SHEET_ID:          ${{ secrets.SHEET_ID }}
           GOOGLE_CREDS_JSON: ${{ secrets.GOOGLE_CREDS_JSON }}
@@ -42,7 +46,7 @@ jobs:
         run: python3 rover_sheet_dump.py
 
       - name: Historical dump to Google Sheet (one-time)
-        if: github.event.inputs.historical == 'yes'
+        if: github.event.inputs.historical == 'yes' && github.event.inputs.email_only != 'yes'
         env:
           SHEET_ID:          ${{ secrets.SHEET_ID }}
           GOOGLE_CREDS_JSON: ${{ secrets.GOOGLE_CREDS_JSON }}

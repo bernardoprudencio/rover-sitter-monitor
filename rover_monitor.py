@@ -1,6 +1,9 @@
 import urllib.request
 import urllib.error
+import urllib.parse
 import xml.etree.ElementTree as ET
+import json
+import re
 import smtplib
 import ssl
 import os
@@ -25,80 +28,129 @@ NS = {
 }
 
 
-def fetch_posts(subreddit: str) -> list[dict]:
-    """Fetch posts via Reddit's public RSS feed (much less likely to be blocked)."""
+def _parse_posts(raw_posts: list[dict], source: str) -> list[dict]:
+    """Normalise a list of raw post dicts into the internal format and apply time filter."""
     is_monday = datetime.now(tz=timezone.utc).weekday() == 0
-    limit = 100 if is_monday else MAX_POSTS
+    hours_limit = 72 if is_monday else 24
+
+    posts = []
+    for p in raw_posts:
+        created_utc = float(p.get("created_utc", time.time()))
+        age_hours = (time.time() - created_utc) / 3600
+        if age_hours > hours_limit:
+            continue
+
+        permalink = p.get("permalink", "")
+        url_val = p.get("url") or (f"https://www.reddit.com{permalink}" if permalink else "")
+        selftext = p.get("selftext", "") or ""
+        clean_content = re.sub(r"<[^>]+>", "", selftext).strip()
+
+        posts.append({
+            "title":    p.get("title", "(no title)"),
+            "url":      url_val,
+            "author":   p.get("author", "unknown"),
+            "created":  datetime.fromtimestamp(created_utc, tz=timezone.utc).strftime("%b %d, %H:%M UTC"),
+            "age_hours": age_hours,
+            "preview":  clean_content[:300],
+            "sort_key": created_utc,
+            "upvotes":  p.get("score"),
+            "comments": p.get("num_comments"),
+        })
+
+    posts.sort(key=lambda x: x["sort_key"], reverse=True)
+    print(f"  Time window: {hours_limit}h ({'Monday — weekend catchup' if is_monday else 'regular day'})")
+    if posts:
+        print(f"  Most recent post [{source}]: '{posts[0]['title'][:60]}' ({posts[0]['age_hours']:.1f}h ago)")
+    return posts
+
+
+def _fetch_arctic_shift(subreddit: str, limit: int) -> list[dict]:
+    """Fetch posts from Arctic Shift API."""
+    params = urllib.parse.urlencode({
+        "subreddit": subreddit,
+        "limit":     limit,
+        "sort":      "created_utc",
+        "order":     "desc",
+    })
+    url = f"https://arctic-shift.photon-reddit.com/api/posts/search?{params}"
+    req = urllib.request.Request(url, headers={"User-Agent": "rover-monitor/1.0"})
+    with urllib.request.urlopen(req, timeout=20) as resp:
+        data = json.loads(resp.read().decode("utf-8"))
+    raw = data.get("data", [])
+    print(f"  Arctic Shift fetch OK — {len(raw)} posts received")
+    return raw
+
+
+def _fetch_rss_fallback(subreddit: str, limit: int) -> list[dict]:
+    """Fetch posts via Reddit RSS (fallback)."""
     url = f"https://www.reddit.com/r/{subreddit}/new/.rss?limit={limit}"
     headers = {
         "User-Agent": "Mozilla/5.0 (compatible; rover-monitor/1.0)",
         "Accept":     "application/rss+xml, application/xml, text/xml",
     }
     req = urllib.request.Request(url, headers=headers)
+    with urllib.request.urlopen(req, timeout=15) as resp:
+        raw_xml = resp.read().decode("utf-8", errors="replace")
+    print(f"  RSS fallback fetch OK — {len(raw_xml)} bytes received")
+
+    root = ET.fromstring(raw_xml)
+    entries = root.findall("atom:entry", NS)
+    print(f"  Found {len(entries)} entries in RSS feed")
+
+    posts = []
+    for entry in entries:
+        title   = entry.findtext("atom:title", default="(no title)", namespaces=NS)
+        link_el = entry.find("atom:link", NS)
+        url_val = link_el.get("href", "") if link_el is not None else ""
+        author  = entry.findtext("atom:author/atom:name", default="unknown", namespaces=NS)
+        updated = entry.findtext("atom:updated", default="", namespaces=NS)
+        content = entry.findtext("atom:content", default="", namespaces=NS)
+
+        try:
+            dt = datetime.fromisoformat(updated.replace("Z", "+00:00"))
+            created_utc = dt.timestamp()
+        except Exception:
+            created_utc = time.time()
+
+        clean_content = re.sub(r"<[^>]+>", "", content).strip()
+        clean_content = re.sub(r"\[link\].*", "", clean_content).strip()
+
+        posts.append({
+            "title":       title,
+            "url":         url_val,
+            "author":      author.replace("/u/", ""),
+            "created_utc": created_utc,
+            "selftext":    clean_content,
+            "score":       None,
+            "num_comments": None,
+        })
+    return posts
+
+
+def fetch_posts(subreddit: str) -> list[dict]:
+    """Fetch posts — Arctic Shift API primary, Reddit RSS fallback."""
+    is_monday = datetime.now(tz=timezone.utc).weekday() == 0
+    limit = 100 if is_monday else MAX_POSTS
+
+    # ── Primary: Arctic Shift ──────────────────────────────────────────────
     try:
-        with urllib.request.urlopen(req, timeout=15) as resp:
-            raw = resp.read().decode("utf-8", errors="replace")
-        print(f"  RSS fetch OK — {len(raw)} bytes received")
-
-        root = ET.fromstring(raw)
-        entries = root.findall("atom:entry", NS)
-        print(f"  Found {len(entries)} entries in RSS feed")
-
-        posts = []
-        for entry in entries:
-            title   = entry.findtext("atom:title", default="(no title)", namespaces=NS)
-            link_el = entry.find("atom:link", NS)
-            url_val = link_el.get("href", "") if link_el is not None else ""
-            author  = entry.findtext("atom:author/atom:name", default="unknown", namespaces=NS)
-            updated = entry.findtext("atom:updated", default="", namespaces=NS)
-            content = entry.findtext("atom:content", default="", namespaces=NS)
-
-            # Parse timestamp
-            try:
-                dt = datetime.fromisoformat(updated.replace("Z", "+00:00"))
-                created_utc = dt.timestamp()
-            except Exception:
-                created_utc = time.time()
-
-            # Strip HTML tags from content crudely
-            import re
-            clean_content = re.sub(r"<[^>]+>", "", content).strip()
-            # Remove the "submitted by" footer Reddit adds
-            clean_content = re.sub(r"\[link\].*", "", clean_content).strip()
-
-            age_hours = (time.time() - created_utc) / 3600
-
-            posts.append({
-                "title":     title,
-                "url":       url_val,
-                "author":    author.replace("/u/", ""),
-                "created":   datetime.fromtimestamp(created_utc, tz=timezone.utc).strftime("%b %d, %H:%M UTC"),
-                "age_hours": age_hours,
-                "preview":   clean_content[:300],
-                "sort_key":  created_utc,
-                # RSS doesn't give upvotes/comments so we'll omit them
-                "upvotes":   None,
-                "comments":  None,
-            })
-
-        posts.sort(key=lambda x: x["sort_key"], reverse=True)
-        is_monday = datetime.now(tz=timezone.utc).weekday() == 0
-        hours_limit = 72 if is_monday else 24
-        posts = [p for p in posts if p["age_hours"] <= hours_limit]
-        print(f"  Time window: {hours_limit}h ({'Monday — weekend catchup' if is_monday else 'regular day'})")
-        if posts:
-            print(f"  Most recent post: '{posts[0]['title'][:60]}' ({posts[0]['age_hours']:.1f}h ago)")
-        return posts
-
-    except urllib.error.HTTPError as e:
-        print(f"  HTTP error fetching r/{subreddit}: {e.code} {e.reason}")
-        return []
-    except ET.ParseError as e:
-        print(f"  XML parse error: {e}")
-        return []
+        raw = _fetch_arctic_shift(subreddit, limit)
+        return _parse_posts(raw, "Arctic Shift")
     except Exception as e:
-        print(f"  Unexpected error: {e}")
-        return []
+        print(f"  Arctic Shift error ({e}), falling back to RSS...")
+
+    # ── Fallback: Reddit RSS ───────────────────────────────────────────────
+    try:
+        raw = _fetch_rss_fallback(subreddit, limit)
+        return _parse_posts(raw, "RSS fallback")
+    except urllib.error.HTTPError as e:
+        print(f"  RSS HTTP error: {e.code} {e.reason}")
+    except ET.ParseError as e:
+        print(f"  RSS XML parse error: {e}")
+    except Exception as e:
+        print(f"  RSS unexpected error: {e}")
+
+    return []
 
 
 def build_html(posts_by_sub: dict) -> str:
@@ -190,7 +242,7 @@ def send_email(html: str, total: int):
 def main():
     posts_by_sub = {}
     for sub in SUBREDDITS:
-        print(f"\nFetching r/{sub} via RSS...")
+        print(f"\nFetching r/{sub}...")
         posts = fetch_posts(sub)
         posts_by_sub[sub] = posts
         print(f"  → {len(posts)} posts will appear in email")
