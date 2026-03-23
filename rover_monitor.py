@@ -69,8 +69,7 @@ def _fetch_arctic_shift(subreddit: str, limit: int) -> list[dict]:
     params = urllib.parse.urlencode({
         "subreddit": subreddit,
         "limit":     limit,
-        "sort":      "created_utc",
-        "order":     "desc",
+        "sort":      "desc",
     })
     url = f"https://arctic-shift.photon-reddit.com/api/posts/search?{params}"
     req = urllib.request.Request(url, headers={"User-Agent": "rover-monitor/1.0"})
