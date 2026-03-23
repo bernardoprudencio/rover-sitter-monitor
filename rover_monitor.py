@@ -194,7 +194,7 @@ def build_html(posts_by_sub: dict) -> str:
                 f'font-size:11px;padding:2px 7px;border-radius:10px;margin-right:4px;">{t}</span>'
                 for t in p.get("tags", [])
             )
-            meta = f"🕐 {age_str} &nbsp;·&nbsp; {tags_html}u/{p['author']}"
+            meta = f"🕐 {age_str} &nbsp;·&nbsp; u/{p['author']} &nbsp;{tags_html}"
             img_html = (
                 f'<div style="margin-bottom:10px;">'
                 f'<a href="{p["url"]}"><img src="{p["img"]}" alt="" width="140" height="140" '
