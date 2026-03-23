@@ -21,7 +21,7 @@ A daily automated pipeline that monitors r/RoverPetSitting and:
 ## Environment variables / GitHub Secrets
 | Secret | Used by | Value |
 |--------|---------|-------|
-| `GMAIL_SENDER` | rover_monitor.py | Gmail address |
+| `GMAIL_SENDER` | rover_monitor.py | Gmail address (sender) |
 | `GMAIL_APP_PASS` | rover_monitor.py | 16-char Gmail App Password |
 | `SHEET_ID` | rover_sheet_dump.py | Google Sheet ID from URL |
 | `GOOGLE_CREDS_JSON` | rover_sheet_dump.py | Full contents of credentials.json |
@@ -43,6 +43,7 @@ A daily automated pipeline that monitors r/RoverPetSitting and:
 ## Email script logic (rover_monitor.py)
 - Fetches posts from the last **24h**, always (no Monday special case)
 - Sends HTML email via `smtplib.SMTP_SSL("smtp.gmail.com", 465)`
+- Recipient: `ux@rover.com` (hardcoded)
 - Post dict keys: `title`, `url`, `author`, `created`, `age_hours`, `preview`, `sort_key`, `upvotes`, `comments`, `img`, `tags`
 - **Thumbnails**: `thumbnail` field from Arctic Shift — skip values `self`, `default`, `nsfw`, `spoiler`; render as 140×140 image above the post title when present
 - **Tags**: imported from `rover_sheet_dump.tag_post()` — problem tags rendered as gray pills after `u/username` in the meta line; posts with no matches show no pills
