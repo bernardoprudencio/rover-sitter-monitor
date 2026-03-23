@@ -23,7 +23,7 @@ except (ImportError, SystemExit):
 SUBREDDITS   = ["RoverPetSitting"]
 GMAIL_SENDER = os.environ["GMAIL_SENDER"]    # your Gmail address
 GMAIL_PASS   = os.environ["GMAIL_APP_PASS"]  # Gmail App Password
-RECIPIENT    = os.environ["GMAIL_SENDER"]
+RECIPIENTS   = ["bernardo.prudencio@rover.com", "ux@rover.com"]
 MAX_POSTS    = 100                           # posts to fetch
 # ─────────────────────────────────────────────────────────────────────────────
 
@@ -255,14 +255,14 @@ def send_email(html: str, total: int):
     msg = MIMEMultipart("alternative")
     msg["Subject"] = f"🐾 Rover Sitter Pulse — {today} ({total} posts)"
     msg["From"]    = GMAIL_SENDER
-    msg["To"]      = RECIPIENT
+    msg["To"]      = ", ".join(RECIPIENTS)
     msg.attach(MIMEText(html, "html"))
 
     ctx = ssl.create_default_context()
     with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=ctx) as server:
         server.login(GMAIL_SENDER, GMAIL_PASS)
-        server.sendmail(GMAIL_SENDER, RECIPIENT, msg.as_string())
-    print(f"✅ Email sent to {RECIPIENT}")
+        server.sendmail(GMAIL_SENDER, RECIPIENTS, msg.as_string())
+    print(f"✅ Email sent to {', '.join(RECIPIENTS)}")
 
 
 def main():
