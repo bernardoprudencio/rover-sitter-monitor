@@ -23,7 +23,7 @@ except (ImportError, SystemExit):
 SUBREDDITS   = ["RoverPetSitting"]
 GMAIL_SENDER = os.environ["GMAIL_SENDER"]    # your Gmail address
 GMAIL_PASS   = os.environ["GMAIL_APP_PASS"]  # Gmail App Password
-RECIPIENT    = os.environ["GMAIL_SENDER"]    # sending to yourself
+RECIPIENT    = "ux@rover.com"
 MAX_POSTS    = 100                           # posts to fetch
 # ─────────────────────────────────────────────────────────────────────────────
 
