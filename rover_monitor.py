@@ -45,6 +45,10 @@ def _parse_posts(raw_posts: list[dict], source: str) -> list[dict]:
         selftext = p.get("selftext", "") or ""
         clean_content = re.sub(r"<[^>]+>", "", selftext).strip()
 
+        # Thumbnail: skip non-image placeholder values
+        thumb = p.get("thumbnail", "") or ""
+        img = thumb if thumb and thumb not in ("self", "default", "nsfw", "spoiler", "") else None
+
         posts.append({
             "title":    p.get("title", "(no title)"),
             "url":      url_val,
@@ -55,6 +59,7 @@ def _parse_posts(raw_posts: list[dict], source: str) -> list[dict]:
             "sort_key": created_utc,
             "upvotes":  p.get("score"),
             "comments": p.get("num_comments"),
+            "img":      img,
         })
 
     posts.sort(key=lambda x: x["sort_key"], reverse=True)
@@ -120,8 +125,9 @@ def _fetch_rss_fallback(subreddit: str, limit: int) -> list[dict]:
             "author":      author.replace("/u/", ""),
             "created_utc": created_utc,
             "selftext":    clean_content,
-            "score":       None,
+            "score":        None,
             "num_comments": None,
+            "thumbnail":    None,
         })
     return posts
 
@@ -171,10 +177,15 @@ def build_html(posts_by_sub: dict) -> str:
         for p in posts:
             age_str = f"{p['age_hours']:.0f}h ago" if p['age_hours'] < 48 else p['created']
             meta = f"🕐 {age_str} &nbsp;·&nbsp; u/{p['author']}"
+            img_html = (
+                f'<div style="margin-bottom:10px;">'
+                f'<a href="{p["url"]}"><img src="{p["img"]}" alt="" width="140" height="140" '
+                f'style="border-radius:6px;object-fit:cover;display:block;"></a></div>'
+            ) if p.get("img") else ""
             rows += f"""
         <tr>
           <td style="padding:16px 0;border-bottom:1px solid #eee;vertical-align:top;">
-            <div style="font-size:15px;font-weight:600;margin-bottom:6px;">
+            {img_html}<div style="font-size:15px;font-weight:600;margin-bottom:6px;">
               <a href="{p['url']}" style="color:#1a1a1a;text-decoration:none;">{p['title']}</a>
             </div>
             <div style="color:#555;font-size:13px;line-height:1.5;margin-bottom:8px;">
