@@ -224,14 +224,18 @@ PROBLEM_TO_THEME = {
 
 
 def tag_post(title: str, text: str) -> tuple[list[str], list[str]]:
-    """Return (matched_themes, matched_problems) for a post."""
+    """Return (matched_themes, matched_problems) for a post.
+
+    Uses whole-word regex matching so short keywords like 'cat' don't
+    fire inside unrelated words (e.g. 'appli**cat**ions').
+    """
     combined = (title + " " + text).lower()
     matched_problems = []
     matched_themes   = []
 
     for problem, keywords in PROBLEMS.items():
         for kw in keywords:
-            if kw in combined:
+            if re.search(r'\b' + re.escape(kw) + r'\b', combined):
                 matched_problems.append(problem)
                 theme = PROBLEM_TO_THEME.get(problem)
                 if theme and theme not in matched_themes:
@@ -433,6 +437,49 @@ def get_latest_timestamp(ws) -> float:
         return 0.0
 
 
+def retag_sheet(ws):
+    """Re-run tag_post() on every existing row and update Themes/Problems columns in place."""
+    print("Reading all rows from sheet...")
+    all_rows = ws.get_all_values()
+    if not all_rows or len(all_rows) < 2:
+        print("  Sheet is empty or has only a header — nothing to retag.")
+        return
+
+    header   = all_rows[0]
+    data_rows = all_rows[1:]
+    print(f"  {len(data_rows)} posts to retag...")
+
+    theme_updates   = []  # list of (row_index, new_value) — 1-based, skipping header
+    problem_updates = []
+
+    changed = 0
+    for i, row in enumerate(data_rows):
+        row_num = i + 2  # 1-based; +1 for header, +1 for 1-indexing
+        title   = row[1] if len(row) > 1 else ""
+        preview = row[4] if len(row) > 4 else ""
+        old_themes   = row[5] if len(row) > 5 else ""
+        old_problems = row[6] if len(row) > 6 else ""
+
+        new_themes, new_problems = tag_post(title, preview)
+        new_themes_str   = ", ".join(new_themes)
+        new_problems_str = ", ".join(new_problems)
+
+        theme_updates.append([new_themes_str])
+        problem_updates.append([new_problems_str])
+
+        if new_themes_str != old_themes or new_problems_str != old_problems:
+            changed += 1
+
+    # Batch-update columns F and G (themes=6, problems=7) in one API call each
+    start_row = 2  # skip header
+    end_row   = 1 + len(data_rows)
+
+    ws.update(f"F{start_row}:F{end_row}", theme_updates,   value_input_option="RAW")
+    ws.update(f"G{start_row}:G{end_row}", problem_updates, value_input_option="RAW")
+
+    print(f"  ✅ Retagged {len(data_rows)} rows — {changed} tags changed.")
+
+
 def append_posts(ws, posts: list[dict], subreddit: str):
     if not posts:
         print("  No new posts to append.")
@@ -447,8 +494,17 @@ def append_posts(ws, posts: list[dict], subreddit: str):
 
 
 def main():
+    import sys
+    retag_mode = "--retag" in sys.argv
+
     print("Connecting to Google Sheets...")
     ws = get_sheet()
+
+    if retag_mode:
+        print("🔁 RETAG MODE — re-tagging all existing rows with improved matching")
+        retag_sheet(ws)
+        print("\nDone!")
+        return
 
     if HISTORICAL_MODE:
         print("📚 HISTORICAL MODE — paginating from Jan 1 2025 to today")
