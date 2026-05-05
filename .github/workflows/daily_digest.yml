@@ -25,6 +25,10 @@ on:
         description: 'Skip Google Sheet step? (yes/no)'
         required: false
         default: 'no'
+      skip_email:
+        description: 'Skip the Reddit email digest entirely? (yes/no) — use for Confluence-only smoke tests'
+        required: false
+        default: 'no'
       confluence_full:
         description: 'Confluence: ignore cursor and re-fetch all pages? (yes/no)'
         required: false
@@ -48,7 +52,12 @@ jobs:
     # Skip the email + sheet append on push events — those are for the
     # daily cron + manual dispatch only. Push-triggered runs only deploy.
     # Skip on the Monday-only Confluence cron (08:00 UTC Mon).
-    if: github.event_name != 'push' && github.event.schedule != '0 8 * * 1'
+    # Also skip when explicitly opted out via skip_email input (Confluence
+    # smoke tests, etc.)
+    if: |
+      github.event_name != 'push' &&
+      github.event.schedule != '0 8 * * 1' &&
+      github.event.inputs.skip_email != 'yes'
     runs-on: ubuntu-latest
 
     steps:
