@@ -1,0 +1,36 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --chart-grid: #e2e8f0;
+  --chart-text: #475569;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, Roboto, sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+  color: #0f172a;
+  background-color: #f8fafc;
+}
+
+*:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px #ff6b00, 0 0 0 4px #fff;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
