@@ -4,6 +4,14 @@ on:
   schedule:
     # 9:00 AM CET = 8:00 AM UTC
     - cron: '0 8 * * *'
+  push:
+    branches: [main]
+    paths:
+      - 'rover_export_json.py'
+      - 'rover_sheet_dump.py'
+      - 'taxonomy.json'
+      - 'dashboard/**'
+      - '.github/workflows/daily_digest.yml'
   workflow_dispatch:
     inputs:
       historical:
@@ -26,6 +34,9 @@ concurrency:
 
 jobs:
   send-digest:
+    # Skip the email + sheet append on push events — those are for the
+    # daily cron + manual dispatch only. Push-triggered runs only deploy.
+    if: github.event_name != 'push'
     runs-on: ubuntu-latest
 
     steps:
@@ -64,6 +75,10 @@ jobs:
 
   build-and-deploy:
     needs: send-digest
+    # Run after send-digest succeeds OR when send-digest was skipped (push events).
+    if: |
+      always() &&
+      (needs.send-digest.result == 'success' || needs.send-digest.result == 'skipped')
     runs-on: ubuntu-latest
     environment:
       name: github-pages
