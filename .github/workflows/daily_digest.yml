@@ -2,13 +2,16 @@ name: Rover Sitter Daily Digest
 
 on:
   schedule:
-    # 9:00 AM CET = 8:00 AM UTC
+    # 9:00 AM CET = 8:00 AM UTC daily (Reddit digest + dashboard deploy)
     - cron: '0 8 * * *'
+    # 8:00 AM UTC every Monday (Confluence research dump)
+    - cron: '0 8 * * 1'
   push:
     branches: [main]
     paths:
       - 'rover_export_json.py'
       - 'rover_sheet_dump.py'
+      - 'rover_confluence_dump.py'
       - 'taxonomy.json'
       - 'dashboard/**'
       - '.github/workflows/daily_digest.yml'
@@ -22,6 +25,18 @@ on:
         description: 'Skip Google Sheet step? (yes/no)'
         required: false
         default: 'no'
+      skip_email:
+        description: 'Skip the Reddit email digest entirely? (yes/no) — use for Confluence-only smoke tests'
+        required: false
+        default: 'no'
+      confluence_full:
+        description: 'Confluence: ignore cursor and re-fetch all pages? (yes/no)'
+        required: false
+        default: 'no'
+      confluence_limit:
+        description: 'Confluence: cap pages per space (smoke test). Empty = no cap. Cursor is NOT advanced when set.'
+        required: false
+        default: ''
 
 permissions:
   contents: read
@@ -36,7 +51,13 @@ jobs:
   send-digest:
     # Skip the email + sheet append on push events — those are for the
     # daily cron + manual dispatch only. Push-triggered runs only deploy.
-    if: github.event_name != 'push'
+    # Skip on the Monday-only Confluence cron (08:00 UTC Mon).
+    # Also skip when explicitly opted out via skip_email input (Confluence
+    # smoke tests, etc.)
+    if: |
+      github.event_name != 'push' &&
+      github.event.schedule != '0 8 * * 1' &&
+      github.event.inputs.skip_email != 'yes'
     runs-on: ubuntu-latest
 
     steps:
@@ -73,12 +94,64 @@ jobs:
           HISTORICAL_MODE:   'true'
         run: python3 rover_sheet_dump.py
 
+  confluence-dump:
+    # Runs on the weekly Monday cron, on workflow_dispatch, or when the
+    # ingest scripts/workflow themselves change on push to main. The daily
+    # cron skips this job — research changes too slowly to merit daily fetch.
+    if: |
+      github.event_name == 'workflow_dispatch' ||
+      github.event.schedule == '0 8 * * 1' ||
+      github.event_name == 'push'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install gspread google-auth requests beautifulsoup4
+
+      - name: Dump Confluence research → Google Sheet
+        env:
+          SHEET_ID:               ${{ secrets.SHEET_ID }}
+          GOOGLE_CREDS_JSON:      ${{ secrets.GOOGLE_CREDS_JSON }}
+          CONFLUENCE_DOMAIN:      ${{ secrets.CONFLUENCE_DOMAIN }}
+          CONFLUENCE_EMAIL:       ${{ secrets.CONFLUENCE_EMAIL }}
+          CONFLUENCE_API_TOKEN:   ${{ secrets.CONFLUENCE_API_TOKEN }}
+          CONFLUENCE_SPACE_KEYS:  ${{ secrets.CONFLUENCE_SPACE_KEYS }}
+        # Skip silently if Confluence secrets are not configured yet — keeps
+        # the daily Reddit pipeline from failing during initial rollout.
+        run: |
+          if [ -z "$CONFLUENCE_API_TOKEN" ]; then
+            echo "::notice::CONFLUENCE_API_TOKEN not set — skipping Confluence dump"
+            exit 0
+          fi
+          FLAGS=""
+          if [ "${{ github.event.inputs.confluence_full }}" = "yes" ]; then
+            FLAGS="$FLAGS --full"
+          fi
+          if [ -n "${{ github.event.inputs.confluence_limit }}" ]; then
+            FLAGS="$FLAGS --limit ${{ github.event.inputs.confluence_limit }}"
+          fi
+          python3 rover_confluence_dump.py $FLAGS
+
   build-and-deploy:
-    needs: send-digest
-    # Run after send-digest succeeds OR when send-digest was skipped (push events).
+    needs: [send-digest, confluence-dump]
+    # Run after both ingest jobs settle. A Confluence failure must not block
+    # the daily Reddit deploy, so we accept success OR skipped on either job.
+    # Only deploy from main — workflow_dispatch from a feature branch should
+    # not push code to prod GitHub Pages. Push-to-main and the daily cron
+    # both run on main, so this guard doesn't change normal behavior.
     if: |
       always() &&
-      (needs.send-digest.result == 'success' || needs.send-digest.result == 'skipped')
+      github.ref == 'refs/heads/main' &&
+      (needs.send-digest.result == 'success' || needs.send-digest.result == 'skipped') &&
+      (needs.confluence-dump.result == 'success' || needs.confluence-dump.result == 'skipped' || needs.confluence-dump.result == 'failure')
     runs-on: ubuntu-latest
     environment:
       name: github-pages

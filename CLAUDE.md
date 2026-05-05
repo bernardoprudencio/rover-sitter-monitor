@@ -1,6 +1,11 @@
 # Rover Sitter Monitor — Project Notes
 
-Reddit r/RoverPetSitting → Google Sheets pipeline + tagging taxonomy + dashboard. Iteratively auditing tag quality round-by-round.
+Two ingestion pipelines feeding one taxonomy and one dashboard:
+
+- **Reddit** (daily): r/RoverPetSitting → Google Sheets ("Reddit Posts" tab) → `tag_post`.
+- **Confluence** (weekly): internal research from spaces DSN + PSD → Google Sheets ("Confluence Research" tab) → same `tag_post`.
+
+Both surfaces consume `taxonomy.json` (the single source of truth) and render on the same dashboard, with research linked alongside Reddit on each problem/theme page. Tag quality is iteratively audited round-by-round.
 
 ## Current state (as of 2026-05-05, Round 4)
 
@@ -41,6 +46,16 @@ make export                                # refresh dashboard JSON (new posts.<
 # 6. Subagent writes reviews/<date>-tag-review-round{N}.{md,json}
 ```
 
+## Confluence pipeline
+
+- **Spaces:** `DSN` (User Experience) + `PSD` (Provider Space). Override with the `CONFLUENCE_SPACE_KEYS` env var (comma-separated keys).
+- **Cadence:** weekly cron (Mondays 08:00 UTC) in [.github/workflows/daily_digest.yml](.github/workflows/daily_digest.yml). Daily cron skips this job — research lands too slowly to merit daily fetch.
+- **Auth env vars:** `CONFLUENCE_DOMAIN` (`roverdotcom.atlassian.net`), `CONFLUENCE_EMAIL`, `CONFLUENCE_API_TOKEN`. Generate token at https://id.atlassian.com/manage-profile/security/api-tokens.
+- **Cursor:** `confluence_meta` worksheet stores `last_run_utc`. Subsequent runs only fetch pages with `version.createdAt > cursor`. Use `--full` to ignore the cursor and re-fetch everything.
+- **Tagging:** uses the same `tag_post` from [rover_sheet_dump.py:48](rover_sheet_dump.py:48) — research is regex-tagged with the same keyword list as Reddit. Long-form research uses formal language and may have lower recall than Reddit; first-run audit lives in `reviews/`.
+- **`--retag` mode:** `python3 rover_confluence_dump.py --retag` re-runs `tag_post` on stored Confluence rows in place, no Confluence fetch. Run after each taxonomy round alongside `rover_sheet_dump.py --retag`.
+- **Make targets:** `make confluence-dump` / `make confluence-retag` / `make confluence-full`.
+
 ## Operational nuance
 
 - **Auth:** `credentials.json` must be in CWD (this worktree has it as a symlink to the main repo's file; gitignored). `SHEET_ID` env var comes from `.env` at the repo root.
@@ -52,7 +67,8 @@ make export                                # refresh dashboard JSON (new posts.<
 ## Files
 
 - [taxonomy.json](taxonomy.json) — 107 problems × 13 themes, single source of truth
-- [rover_sheet_dump.py](rover_sheet_dump.py) — `tag_post` matcher (line 48), `--retag` mode (line 263)
-- [rover_export_json.py](rover_export_json.py) — sheet → dashboard JSON, `PREVIEW_MAX` (line 24)
+- [rover_sheet_dump.py](rover_sheet_dump.py) — Reddit ingest, `tag_post` matcher (line 48), `--retag` mode (line 263)
+- [rover_confluence_dump.py](rover_confluence_dump.py) — Confluence ingest, reuses `tag_post`, `--retag` / `--full` / `--limit` / `--space` flags
+- [rover_export_json.py](rover_export_json.py) — sheet → dashboard JSON for both Reddit and Confluence, `PREVIEW_MAX` (line 24)
 - [tests/test_taxonomy.py](tests/test_taxonomy.py) — 3 smoke tests; must pass after every taxonomy edit
 - `reviews/` — per-round markdown + JSON sidecar audits; each round links forward via "Round N+1 plan" section

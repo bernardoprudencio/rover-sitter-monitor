@@ -7,7 +7,7 @@ import { buildThemeToSlug } from '../lib/slug';
 import { formatCount } from '../lib/format';
 
 export default function Overview() {
-  const { aggregates, taxonomy } = useData();
+  const { aggregates, taxonomy, researchAggregates } = useData();
   const themeToSlug = useMemo(() => buildThemeToSlug(taxonomy), [taxonomy]);
 
   const cards = useMemo(() => {
@@ -67,16 +67,21 @@ export default function Overview() {
             <span className="text-body text-neutral-500">({untaggedPct}%)</span>
           </div>
         </div>
-        <div
-          className="rounded-xl bg-primary-50 p-4 shadow-card text-primary-800"
-          title="Posts can match multiple themes, so theme totals can sum to more than the total post count."
+        <Link
+          to="/research"
+          className="block rounded-xl bg-white p-4 shadow-card transition hover:shadow-md"
+          title="Internal Confluence research tagged against the same taxonomy"
         >
-          <div className="text-caption uppercase tracking-wide text-primary-700">Heads up ⓘ</div>
-          <div className="mt-1 text-body">
-            Posts can match multiple themes, so theme totals can sum to more than the total post
-            count.
+          <div className="text-caption uppercase tracking-wide text-neutral-500">
+            Research docs
           </div>
-        </div>
+          <div className="mt-1 text-h1 text-neutral-900">
+            {formatCount(researchAggregates?.totalDocs ?? 0)}
+          </div>
+          <div className="mt-1 text-caption text-primary-700">
+            from Confluence →
+          </div>
+        </Link>
       </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
