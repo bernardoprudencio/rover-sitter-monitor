@@ -15,6 +15,15 @@ on:
         required: false
         default: 'no'
 
+permissions:
+  contents: read
+  pages:    write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
 jobs:
   send-digest:
     runs-on: ubuntu-latest
@@ -42,7 +51,7 @@ jobs:
         env:
           SHEET_ID:          ${{ secrets.SHEET_ID }}
           GOOGLE_CREDS_JSON: ${{ secrets.GOOGLE_CREDS_JSON }}
-          HISTORICAL_MODE:   false
+          HISTORICAL_MODE:   'false'
         run: python3 rover_sheet_dump.py
 
       - name: Historical dump to Google Sheet (one-time)
@@ -50,5 +59,78 @@ jobs:
         env:
           SHEET_ID:          ${{ secrets.SHEET_ID }}
           GOOGLE_CREDS_JSON: ${{ secrets.GOOGLE_CREDS_JSON }}
-          HISTORICAL_MODE:   true
+          HISTORICAL_MODE:   'true'
         run: python3 rover_sheet_dump.py
+
+  build-and-deploy:
+    needs: send-digest
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url:  ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Python dependencies
+        run: pip install gspread google-auth
+
+      - name: Run taxonomy regression tests
+        run: |
+          pip install pytest
+          python3 -m pytest tests/ -q
+
+      - name: Export JSON dataset from sheet
+        env:
+          SHEET_ID:          ${{ secrets.SHEET_ID }}
+          GOOGLE_CREDS_JSON: ${{ secrets.GOOGLE_CREDS_JSON }}
+        run: python3 rover_export_json.py --out dashboard/public/data
+
+      - name: Secret-leak tripwire
+        run: |
+          if grep -rE "private_key|BEGIN PRIVATE" dashboard/public/data; then
+            echo "::error::Secret leakage detected in data export"
+            exit 1
+          fi
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: dashboard/package-lock.json
+
+      - name: Install npm dependencies
+        run: npm ci
+        working-directory: dashboard
+
+      - name: Build dashboard
+        run: npm run build
+        working-directory: dashboard
+
+      - name: Smoke-check built site (preview server)
+        working-directory: dashboard
+        run: |
+          npm run preview &
+          PREVIEW_PID=$!
+          sleep 4
+          curl -fsS http://localhost:4173/rover-sitter-monitor/ > /dev/null
+          kill $PREVIEW_PID 2>/dev/null || true
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dashboard/dist
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
