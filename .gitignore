@@ -8,6 +8,8 @@ credentials.json
 !tsconfig.node.json
 !dashboard/public/data/.gitkeep
 !reviews/*tag-review*.json
+!reviews/*confluence-discovery*.json
+!reviews/*confluence-filter-round*.json
 __pycache__/
 *.pyc
 .DS_Store

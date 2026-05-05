@@ -52,8 +52,12 @@ make export                                # refresh dashboard JSON (new posts.<
 - **Cadence:** weekly cron (Mondays 08:00 UTC) in [.github/workflows/daily_digest.yml](.github/workflows/daily_digest.yml). Daily cron skips this job — research lands too slowly to merit daily fetch.
 - **Auth env vars:** `CONFLUENCE_DOMAIN` (`roverdotcom.atlassian.net`), `CONFLUENCE_EMAIL`, `CONFLUENCE_API_TOKEN`. Generate token at https://id.atlassian.com/manage-profile/security/api-tokens.
 - **Cursor:** `confluence_meta` worksheet stores `last_run_utc`. Subsequent runs only fetch pages with `version.createdAt > cursor`. Use `--full` to ignore the cursor and re-fetch everything.
-- **Tagging:** uses the same `tag_post` from [rover_sheet_dump.py:48](rover_sheet_dump.py:48) — research is regex-tagged with the same keyword list as Reddit. Long-form research uses formal language and may have lower recall than Reddit; first-run audit lives in `reviews/`.
-- **`--retag` mode:** `python3 rover_confluence_dump.py --retag` re-runs `tag_post` on stored Confluence rows in place, no Confluence fetch. Run after each taxonomy round alongside `rover_sheet_dump.py --retag`.
+- **Tagging:** uses the same `tag_post` from [rover_sheet_dump.py:48](rover_sheet_dump.py:48) — research is regex-tagged with the same keyword list as Reddit. Long-form research uses formal language and may have lower recall than Reddit.
+- **Eligibility filter:** `evaluate_eligibility` in [rover_confluence_dump.py](rover_confluence_dump.py) gates which pages reach the dashboard. Two AND'd checks: (1) doc-type is a finding (title whitelist + label/title blocklist), (2) audience is provider-relevant (PSD admits by default; DSN requires sitter/walker/trainer/groomer/provider/host/etc. terms in title or body). Verdict is stored on every row in columns `Eligible` (yes/no) and `FilterReason` (e.g. `non_findings_title:script`, `non_provider:dsn_no_provider_terms`). The dashboard skips rows where `Eligible="no"`. Rule derivation: [reviews/2026-05-05-confluence-filter-rules-derivation.md](reviews/2026-05-05-confluence-filter-rules-derivation.md). Audit accuracy is tracked round-by-round in `reviews/<date>-confluence-filter-roundN.md`.
+- **Sheet schema (12 cols):** `PageID | Updated | Space | Title | URL | Author | Excerpt | Themes | Problems | Labels | Eligible | FilterReason`. Pre-filter sheets had 10 cols; `--retag` extends them to 12 idempotently.
+- **`--retag` mode:** `python3 rover_confluence_dump.py --retag` re-runs both `tag_post` AND `evaluate_eligibility` on stored rows in place, no Confluence fetch. Run after each taxonomy round AND after each filter round.
+- **`--inspect` mode:** read-only snapshot of the sheet (label / title / author distributions + a 75-row random sample at seed `20260505`) into `reviews/<date>-confluence-discovery.{md,json}`. Used to design or revise the filter from real data.
+- **`--no-filter` mode:** bypass the eligibility filter (every row written with `Eligible="yes"`, `FilterReason="bypassed"`). For debug dumps and audit baselines only — do not deploy.
 - **Make targets:** `make confluence-dump` / `make confluence-retag` / `make confluence-full`.
 
 ## Operational nuance
@@ -68,7 +72,8 @@ make export                                # refresh dashboard JSON (new posts.<
 
 - [taxonomy.json](taxonomy.json) — 107 problems × 13 themes, single source of truth
 - [rover_sheet_dump.py](rover_sheet_dump.py) — Reddit ingest, `tag_post` matcher (line 48), `--retag` mode (line 263)
-- [rover_confluence_dump.py](rover_confluence_dump.py) — Confluence ingest, reuses `tag_post`, `--retag` / `--full` / `--limit` / `--space` flags
-- [rover_export_json.py](rover_export_json.py) — sheet → dashboard JSON for both Reddit and Confluence, `PREVIEW_MAX` (line 24)
+- [rover_confluence_dump.py](rover_confluence_dump.py) — Confluence ingest, reuses `tag_post`, holds `evaluate_eligibility` filter, `--retag` / `--full` / `--limit` / `--space` / `--inspect` / `--no-filter` flags
+- [rover_export_json.py](rover_export_json.py) — sheet → dashboard JSON for both Reddit and Confluence, `PREVIEW_MAX` (line 24); skips Confluence rows where `Eligible="no"`
 - [tests/test_taxonomy.py](tests/test_taxonomy.py) — 3 smoke tests; must pass after every taxonomy edit
+- [tests/test_confluence_filter.py](tests/test_confluence_filter.py) — 22 unit tests for `evaluate_eligibility`; must pass after every filter rule edit
 - `reviews/` — per-round markdown + JSON sidecar audits; each round links forward via "Round N+1 plan" section
