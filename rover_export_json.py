@@ -21,7 +21,7 @@ from datetime import datetime, timezone
 from typing import Optional
 
 SCHEMA_VERSION = 1
-PREVIEW_MAX = 200
+PREVIEW_MAX = 500
 
 # Inline stopword set (no nltk dependency).
 STOPWORDS = {

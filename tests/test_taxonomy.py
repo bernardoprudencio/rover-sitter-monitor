@@ -31,7 +31,7 @@ def test_taxonomy_loads_and_is_consistent():
     assert tax["schema_version"] == 1
     declared = set(tax["themes"])
     assert len(declared) == 13
-    assert len(tax["problems"]) == 102
+    assert len(tax["problems"]) == 107
     for problem, meta in tax["problems"].items():
         assert meta["theme"] in declared, f"{problem!r} → unknown theme {meta['theme']!r}"
         assert isinstance(meta["keywords"], list) and meta["keywords"], f"{problem!r} has no keywords"

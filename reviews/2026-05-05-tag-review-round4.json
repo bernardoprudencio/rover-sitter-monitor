@@ -1,0 +1,721 @@
+[
+  {
+    "url": "https://reddit.com/r/RoverPetSitting/comments/1r27ssf/no_more_dogs_who_pull_and_are_on_the_large_side/",
+    "title": "No more dogs who pull and are on the large side",
+    "verdict": "false_positive",
+    "current_problems": [
+      "Cats and kittens"
+    ],
+    "current_themes": [
+      "Preferences and rates"
+    ],
+    "proposed_problems": [],
+    "proposed_themes": [],
+    "confidence": 0.95,
+    "rationale": "'cat' fires Cats and kittens but the match is 'cat scan' (medical CT scan); not about cats at all"
+  },
+  {
+    "url": "https://reddit.com/r/RoverPetSitting/comments/1px8k0f/struggling_with_harassment_from_neighbor_on_walks/",
+    "title": "struggling with harassment from neighbor on walks",
+    "verdict": "false_positive",
+    "current_problems": [
+      "Navigation"
+    ],
+    "current_themes": [
+      "Experience"
+    ],
+    "proposed_problems": [],
+    "proposed_themes": [],
+    "confidence": 0.85,
+    "rationale": "'navigate' fires Navigation but post uses 'navigate the neighborhood safely' figuratively \u2014 topic is harassment"
+  },
+  {
+    "url": "https://reddit.com/r/RoverPetSitting/comments/1nok7zd/cats/",
+    "title": "Cats",
+    "verdict": "false_positive",
+    "current_problems": [
+      "Navigation",
+      "Cats and kittens"
+    ],
+    "current_themes": [
+      "Experience",
+      "Preferences and rates"
+    ],
+    "proposed_problems": [
+      "Cats and kittens"
+    ],
+    "proposed_themes": [
+      "Preferences and rates"
+    ],
+    "confidence": 0.85,
+    "rationale": "'navigate' fires Navigation but post asks 'how do you navigate with cats' figuratively \u2014 topic is cat drop-in routine"
+  },
+  {
+    "url": "https://reddit.com/r/RoverPetSitting/comments/1quhiik/seeking_advice_pet_parents_keep_extending_vetting/",
+    "title": "Seeking Advice: Pet Parents Keep Extending Vetting Process on Last Minute Booking",
+    "verdict": "false_positive",
+    "current_problems": [
+      "Time off / holidays",
+      "Short lead time",
+      "Meet and Greet"
+    ],
+    "current_themes": [
+      "Availability",
+      "Preferences and rates"
+    ],
+    "proposed_problems": [
+      "Short lead time",
+      "Meet and Greet"
+    ],
+    "proposed_themes": [
+      "Preferences and rates"
+    ],
+    "confidence": 0.85,
+    "rationale": "'unavailable' fires Time off / holidays but refers to client being unavailable for a phone call, not a sitter taking time off"
+  },
+  {
+    "url": "https://reddit.com/r/RoverPetSitting/comments/1kp8izc/undisclosed_cameras/",
+    "title": "Undisclosed cameras",
+    "verdict": "false_positive",
+    "current_problems": [
+      "Business insurance"
+    ],
+    "current_themes": [
+      "Business"
+    ],
+    "proposed_problems": [],
+    "proposed_themes": [],
+    "confidence": 0.85,
+    "rationale": "'protect' fires Business insurance but post says 'Protect your home and fur babies' \u2014 topic is camera disclosure"
+  },
+  {
+    "url": "https://reddit.com/r/RoverPetSitting/comments/1j3ifhr/longer_term_boarding_question/",
+    "title": "Longer term boarding question",
+    "verdict": "false_positive",
+    "current_problems": [
+      "Navigation",
+      "Cats and kittens"
+    ],
+    "current_themes": [
+      "Experience",
+      "Preferences and rates"
+    ],
+    "proposed_problems": [
+      "Cats and kittens"
+    ],
+    "proposed_themes": [
+      "Preferences and rates"
+    ],
+    "confidence": 0.8,
+    "rationale": "'can't find' fired Navigation but 'can't find another spot to live' is figurative \u2014 topic is housing/long-term boarding"
+  },
+  {
+    "url": "https://reddit.com/r/RoverPetSitting/comments/1jjihlh/asking_for_refund/",
+    "title": "Asking for refund?",
+    "verdict": "false_positive",
+    "current_problems": [
+      "Refunds",
+      "Short lead time"
+    ],
+    "current_themes": [
+      "Payments",
+      "Preferences and rates"
+    ],
+    "proposed_problems": [
+      "Refunds"
+    ],
+    "proposed_themes": [
+      "Payments"
+    ],
+    "confidence": 0.8,
+    "rationale": "'same day' fires Short lead time but post says 'these things happened on the same day' (event clustering, not booking lead time)"
+  },
+  {
+    "url": "https://reddit.com/r/RoverPetSitting/comments/1j08r1k/sudden_change/",
+    "title": "Sudden change",
+    "verdict": "false_positive",
+    "current_problems": [
+      "Cats and kittens"
+    ],
+    "current_themes": [
+      "Preferences and rates"
+    ],
+    "proposed_problems": [],
+    "proposed_themes": [],
+    "confidence": 0.8,
+    "rationale": "'cats' fires Cats and kittens but cats appear only in 'humans, dogs, cats and squirrels' list \u2014 topic is dog behavior change"
+  },
+  {
+    "url": "https://reddit.com/r/RoverPetSitting/comments/1mtqcti/are_my_new_rates_reasonable/",
+    "title": "Are my new rates reasonable?",
+    "verdict": "false_positive",
+    "current_problems": [
+      "Low demand"
+    ],
+    "current_themes": [
+      "Business"
+    ],
+    "proposed_problems": [],
+    "proposed_themes": [],
+    "confidence": 0.8,
+    "rationale": "'more clients' fires Low demand but post is about rate increase justified by getting MORE clients \u2014 opposite of low demand"
+  },
+  {
+    "url": "https://reddit.com/r/RoverPetSitting/comments/1n6yues/new_to_rover/",
+    "title": "New to Rover",
+    "verdict": "false_positive",
+    "current_problems": [
+      "Joining and starting on Rover",
+      "Low demand"
+    ],
+    "current_themes": [
+      "Business"
+    ],
+    "proposed_problems": [
+      "Joining and starting on Rover"
+    ],
+    "proposed_themes": [
+      "Business"
+    ],
+    "confidence": 0.75,
+    "rationale": "'more clients' fired Low demand but post is about intent to attract clients on signup, not low-demand complaint"
+  },
+  {
+    "url": "https://reddit.com/r/RoverPetSitting/comments/1rflydh/is_this_frustrating_or_am_i_overreacting_as_a/",
+    "title": "Is this frustrating or am I overreacting as a client?",
+    "verdict": "false_positive",
+    "current_problems": [
+      "Time off / holidays",
+      "Cats and kittens"
+    ],
+    "current_themes": [
+      "Availability",
+      "Preferences and rates"
+    ],
+    "proposed_problems": [
+      "Cats and kittens"
+    ],
+    "proposed_themes": [
+      "Preferences and rates"
+    ],
+    "confidence": 0.75,
+    "rationale": "'unavailable' fired Time off / holidays but refers to sitters being unavailable for the booking, not a sitter taking vacation"
+  },
+  {
+    "url": "https://reddit.com/r/RoverPetSitting/comments/1lyijmq/stressingdog_caused_damage_to_my_home_and_i_told/",
+    "title": "Stressing\u2014dog caused damage to my home and I told the owner, thinking I shouldn\u2019t have. Am I cooked?",
+    "verdict": "false_positive",
+    "current_problems": [
+      "Breeds",
+      "Meet and Greet"
+    ],
+    "current_themes": [
+      "Preferences and rates"
+    ],
+    "proposed_problems": [
+      "Meet and Greet"
+    ],
+    "proposed_themes": [
+      "Preferences and rates"
+    ],
+    "confidence": 0.75,
+    "rationale": "'breed' fires Breeds in 'husky/spitz breed' as descriptor; topic is about damage and what to tell owner"
+  },
+  {
+    "url": "https://reddit.com/r/RoverPetSitting/comments/1rt3uub/not_house_trained/",
+    "title": "Not house trained",
+    "verdict": "false_positive",
+    "current_problems": [
+      "High quality pet care"
+    ],
+    "current_themes": [
+      "Business"
+    ],
+    "proposed_problems": [],
+    "proposed_themes": [],
+    "confidence": 0.75,
+    "rationale": "'training' fires High quality pet care but post is about house-training a dog; not about sitter education"
+  },
+  {
+    "url": "https://reddit.com/r/RoverPetSitting/comments/1mijiqk/losing_my_mind/",
+    "title": "Losing my mind",
+    "verdict": "false_positive",
+    "current_problems": [
+      "Joining and starting on Rover"
+    ],
+    "current_themes": [
+      "Business"
+    ],
+    "proposed_problems": [],
+    "proposed_themes": [],
+    "confidence": 0.75,
+    "rationale": "'new to rover' fires Joining/starting but refers to the CLIENTS being new, not the sitter's onboarding question"
+  },
+  {
+    "url": "https://reddit.com/r/RoverPetSitting/comments/1lvxrt8/car_issues/",
+    "title": "Car issues",
+    "verdict": "false_positive",
+    "current_problems": [
+      "Distance"
+    ],
+    "current_themes": [
+      "Preferences and rates"
+    ],
+    "proposed_problems": [],
+    "proposed_themes": [],
+    "confidence": 0.75,
+    "rationale": "'distance' fires Distance but it refers to 'short distance' driving (mechanical context); topic is car trouble + drop-in cancellation"
+  },
+  {
+    "url": "https://reddit.com/r/RoverPetSitting/comments/1iwll4v/showing_appreciation/",
+    "title": "Showing appreciation?",
+    "verdict": "false_positive",
+    "current_problems": [
+      "Breeds"
+    ],
+    "current_themes": [
+      "Preferences and rates"
+    ],
+    "proposed_problems": [],
+    "proposed_themes": [],
+    "confidence": 0.7,
+    "rationale": "'breed', 'pitbull' fired Breeds but post is about gift-giving / appreciation; breed mention is incidental"
+  },
+  {
+    "url": "https://reddit.com/r/RoverPetSitting/comments/1nx2dk0/why_dont_clients_train_their_dogs_anymore_rant/",
+    "title": "Why Don't Clients Train Their Dogs Anymore? - Rant",
+    "verdict": "false_positive",
+    "current_problems": [
+      "Breeds"
+    ],
+    "current_themes": [
+      "Preferences and rates"
+    ],
+    "proposed_problems": [],
+    "proposed_themes": [],
+    "confidence": 0.7,
+    "rationale": "'breed' fired Breeds in 'small breed owners' as incidental modifier; post is about training, not breed-specific concerns"
+  },
+  {
+    "url": "https://reddit.com/r/RoverPetSitting/comments/1nyc0ux/dogs_that_stay_at_my_apartment_hate_the_crate/",
+    "title": "dogs that stay at my apartment hate the crate!",
+    "verdict": "false_positive",
+    "current_problems": [
+      "Puppies"
+    ],
+    "current_themes": [
+      "Preferences and rates"
+    ],
+    "proposed_problems": [],
+    "proposed_themes": [],
+    "confidence": 0.7,
+    "rationale": "'puppy' fired Puppies as a passing mention; post is about adult dogs hating crates"
+  },
+  {
+    "url": "https://reddit.com/r/RoverPetSitting/comments/1r2iv5v/christmas_day_house_fire_during_rover_booking/",
+    "title": "Christmas Day House Fire During Rover Booking \u2014 Displaced and Still Fighting for Accountability",
+    "verdict": "false_positive",
+    "current_problems": [
+      "Holidays"
+    ],
+    "current_themes": [
+      "Preferences and rates"
+    ],
+    "proposed_problems": [],
+    "proposed_themes": [],
+    "confidence": 0.7,
+    "rationale": "'christmas' fired Holidays but is just a date marker; post is about house fire damages, not holiday-specific issues"
+  },
+  {
+    "url": "https://reddit.com/r/RoverPetSitting/comments/1j3qah8/bad_sitters_frustrate_me/",
+    "title": "Bad sitters frustrate me",
+    "verdict": "false_positive",
+    "current_problems": [
+      "Cats and kittens",
+      "Meet and Greet"
+    ],
+    "current_themes": [
+      "Preferences and rates"
+    ],
+    "proposed_problems": [
+      "Meet and Greet"
+    ],
+    "proposed_themes": [
+      "Preferences and rates"
+    ],
+    "confidence": 0.7,
+    "rationale": "'cat' fires Cats and kittens as one detail in a bad-sitter rant \u2014 Cats not the topic"
+  },
+  {
+    "url": "https://reddit.com/r/RoverPetSitting/comments/1ohaln8/new_to_rover_as_dog_sitter_in_bristol_no_bookings/",
+    "title": "New to Rover as dog sitter in Bristol - no bookings yet - any tips?",
+    "verdict": "false_positive",
+    "current_problems": [
+      "Joining and starting on Rover",
+      "Low demand",
+      "Cats and kittens"
+    ],
+    "current_themes": [
+      "Business",
+      "Preferences and rates"
+    ],
+    "proposed_problems": [
+      "Joining and starting on Rover",
+      "Low demand"
+    ],
+    "proposed_themes": [
+      "Business"
+    ],
+    "confidence": 0.7,
+    "rationale": "'cat' fires Cats and kittens but cats appear only in profile photos; topic is new-sitter no-bookings"
+  },
+  {
+    "url": "https://reddit.com/r/RoverPetSitting/comments/1m631yn/he_says_it_was_a_mistake_but/",
+    "title": "He Says It Was a Mistake, But \u2026",
+    "verdict": "false_positive",
+    "current_problems": [
+      "Cats and kittens"
+    ],
+    "current_themes": [
+      "Preferences and rates"
+    ],
+    "proposed_problems": [],
+    "proposed_themes": [],
+    "confidence": 0.7,
+    "rationale": "'cat' fires Cats and kittens incidentally; post is about a creepy client message"
+  },
+  {
+    "url": "https://reddit.com/r/RoverPetSitting/comments/1p9ging/accused_of_stealing_a_cup/",
+    "title": "Accused of stealing a cup",
+    "verdict": "false_positive",
+    "current_problems": [
+      "Part/full-time"
+    ],
+    "current_themes": [
+      "Business"
+    ],
+    "proposed_problems": [],
+    "proposed_themes": [],
+    "confidence": 0.7,
+    "rationale": "'full-time' fires Part/full-time as life context ('I got a full-time job'); topic is being falsely accused"
+  },
+  {
+    "url": "https://reddit.com/r/RoverPetSitting/comments/1r1xa2t/boarding_guidelines/",
+    "title": "Boarding guidelines?",
+    "verdict": "false_positive",
+    "current_problems": [
+      "Cats and kittens"
+    ],
+    "current_themes": [
+      "Preferences and rates"
+    ],
+    "proposed_problems": [],
+    "proposed_themes": [],
+    "confidence": 0.7,
+    "rationale": "'cats' fires Cats and kittens but post is about boarding guidelines; cats mention is incidental ('I have cats')"
+  },
+  {
+    "url": "https://reddit.com/r/RoverPetSitting/comments/1n1hf8m/has_anybody_cared_for_a_working_dog/",
+    "title": "Has anybody cared for a working dog?",
+    "verdict": "false_positive",
+    "current_problems": [
+      "High quality pet care"
+    ],
+    "current_themes": [
+      "Business"
+    ],
+    "proposed_problems": [],
+    "proposed_themes": [],
+    "confidence": 0.7,
+    "rationale": "'training' fires High quality pet care but refers to a 'police dog in training' \u2014 the dog is being trained, not sitter learning"
+  },
+  {
+    "url": "https://reddit.com/r/RoverPetSitting/comments/1j3fky4/think_a_dog_under_my_care_is_losing_his_hearing/",
+    "title": "Think a dog under my care is losing his hearing",
+    "verdict": "false_positive",
+    "current_problems": [
+      "Flag repeat clients"
+    ],
+    "current_themes": [
+      "Communication"
+    ],
+    "proposed_problems": [],
+    "proposed_themes": [],
+    "confidence": 0.7,
+    "rationale": "'repeat client' fires Flag repeat clients but topic is dog losing hearing \u2014 phrase used as descriptive context"
+  },
+  {
+    "url": "https://reddit.com/r/RoverPetSitting/comments/1m8vnpj/dog_had_an_incident_at_home_owner_seems_to_be/",
+    "title": "Dog had an incident at home, owner seems to be considering giving him up and now all the upcoming sits I have booked with him are up in the air",
+    "verdict": "mixed",
+    "current_problems": [
+      "Pick-up and drop-off"
+    ],
+    "current_themes": [
+      "Preferences and rates"
+    ],
+    "proposed_problems": [
+      "Cancellations",
+      "Safety and aggression incidents"
+    ],
+    "proposed_themes": [
+      "Business",
+      "Clients"
+    ],
+    "confidence": 0.85,
+    "rationale": "'drop off' fires Pick-up/drop-off as incidental; post is about dog biting child + booking cancellation \u2014 missing Safety and aggression and Cancellations"
+  },
+  {
+    "url": "https://reddit.com/r/RoverPetSitting/comments/1kjjmri/should_i_disclose_my_recent_cancer_diagnosis_if/",
+    "title": "Should I disclose my recent cancer diagnosis?? If so -- how?",
+    "verdict": "mixed",
+    "current_problems": [
+      "Star ratings and reviews",
+      "Business insurance",
+      "Part/full-time"
+    ],
+    "current_themes": [
+      "Business"
+    ],
+    "proposed_problems": [
+      "Star ratings and reviews",
+      "Part/full-time"
+    ],
+    "proposed_themes": [
+      "Business"
+    ],
+    "confidence": 0.85,
+    "rationale": "'insurance' fires Business insurance but post mentions partner's HEALTH insurance, not pet/business insurance"
+  },
+  {
+    "url": "https://reddit.com/r/RoverPetSitting/comments/1m9vh8s/anyone_else_having_issues_with_the_app_not/",
+    "title": "Anyone else having issues with the app not showing your stats?",
+    "verdict": "mixed",
+    "current_problems": [
+      "Insights",
+      "Flag repeat clients"
+    ],
+    "current_themes": [
+      "Business",
+      "Communication"
+    ],
+    "proposed_problems": [
+      "Insights",
+      "Glitches / lag / bugs"
+    ],
+    "proposed_themes": [
+      "Business",
+      "Experience"
+    ],
+    "confidence": 0.75,
+    "rationale": "'repeat client' fired Flag repeat clients but post is about stats glitch \u2014 missing Glitches / lag / bugs"
+  },
+  {
+    "url": "https://reddit.com/r/RoverPetSitting/comments/1rqg3ba/bunnies/",
+    "title": "Bunnies",
+    "verdict": "mixed",
+    "current_problems": [
+      "Cats and kittens",
+      "Other pets"
+    ],
+    "current_themes": [
+      "Preferences and rates"
+    ],
+    "proposed_problems": [
+      "Other pets"
+    ],
+    "proposed_themes": [
+      "Preferences and rates"
+    ],
+    "confidence": 0.75,
+    "rationale": "'cat' fires Cats and kittens but post is about a rabbit (registered as cat in the app); incidental cat reference"
+  },
+  {
+    "url": "https://reddit.com/r/RoverPetSitting/comments/1i6oz5s/adding_tip_to_pet_sitter_fee/",
+    "title": "adding tip to pet sitter fee? ",
+    "verdict": "mixed",
+    "current_problems": [
+      "Refunds",
+      "Cats and kittens"
+    ],
+    "current_themes": [
+      "Payments",
+      "Preferences and rates"
+    ],
+    "proposed_problems": [
+      "Cats and kittens",
+      "Tipping",
+      "Expenses"
+    ],
+    "proposed_themes": [
+      "Payments",
+      "Preferences and rates"
+    ],
+    "confidence": 0.75,
+    "rationale": "'reimburse' fires Refunds but post is about reimbursing an out-of-pocket expense + tipping \u2014 missing Tipping and Expenses"
+  },
+  {
+    "url": "https://reddit.com/r/RoverPetSitting/comments/1s7u45u/empty_house/",
+    "title": "Empty house",
+    "verdict": "mixed",
+    "current_problems": [
+      "High quality pet care",
+      "Puppies",
+      "Recurring bookings"
+    ],
+    "current_themes": [
+      "Business",
+      "Preferences and rates"
+    ],
+    "proposed_problems": [
+      "Puppies",
+      "Recurring bookings"
+    ],
+    "proposed_themes": [
+      "Preferences and rates"
+    ],
+    "confidence": 0.7,
+    "rationale": "'training' fires High quality pet care but refers to training the puppy, not sitter education"
+  },
+  {
+    "url": "https://reddit.com/r/RoverPetSitting/comments/1rljpdu/booking_for_a_year_out/",
+    "title": "Booking for a year out",
+    "verdict": "miscategorized",
+    "current_problems": [
+      "Time off / holidays"
+    ],
+    "current_themes": [
+      "Availability"
+    ],
+    "proposed_problems": [
+      "Long lead time"
+    ],
+    "proposed_themes": [
+      "Availability"
+    ],
+    "confidence": 0.9,
+    "rationale": "'unavailable' fires Time off / holidays but post is about Spring 2027 booking \u2014 Long lead time"
+  },
+  {
+    "url": "https://reddit.com/r/RoverPetSitting/comments/1jp5h4y/advice_needed_boarding_dog_with_neglected/",
+    "title": "Advice needed- Boarding dog with neglected hygiene/coat",
+    "verdict": "miscategorized",
+    "current_problems": [
+      "Lost or injured pet"
+    ],
+    "current_themes": [
+      "Clients"
+    ],
+    "proposed_problems": [],
+    "proposed_themes": [],
+    "confidence": 0.75,
+    "rationale": "'neglected' fired Lost or injured pet but post is about a dog with neglected hygiene/coat \u2014 not about lost/injured pet"
+  },
+  {
+    "url": "https://reddit.com/r/RoverPetSitting/comments/1m6rb3m/some_people_dont_deserve_pets/",
+    "title": "Some people don\u2019t deserve pets.",
+    "verdict": "miscategorized",
+    "current_problems": [
+      "Cats and kittens"
+    ],
+    "current_themes": [
+      "Preferences and rates"
+    ],
+    "proposed_problems": [
+      "Lost or injured pet"
+    ],
+    "proposed_themes": [
+      "Clients"
+    ],
+    "confidence": 0.7,
+    "rationale": "Cats fires on incidental 'cat'; post describes neglect of dogs+cat \u2014 better fit Lost or injured pet"
+  },
+  {
+    "url": "https://reddit.com/r/RoverPetSitting/comments/1ni11aj/dog_sitter_was_negligent_and_let_the_dog_escape/",
+    "title": "Dog sitter was negligent and let the dog escape. The dog got hurt and has a scratch in her eye. What can I do ?",
+    "verdict": "missing_tag",
+    "current_problems": [
+      "Meet and Greet"
+    ],
+    "current_themes": [
+      "Preferences and rates"
+    ],
+    "proposed_problems": [
+      "Meet and Greet",
+      "Lost or injured pet"
+    ],
+    "proposed_themes": [
+      "Clients",
+      "Preferences and rates"
+    ],
+    "confidence": 0.9,
+    "rationale": "Title says dog escaped and got hurt \u2014 missing Lost or injured pet"
+  },
+  {
+    "url": "https://reddit.com/r/RoverPetSitting/comments/1m6md6b/received_my_dog_back_sick_and_injured/",
+    "title": "Received my dog back sick and injured",
+    "verdict": "missing_tag",
+    "current_problems": [
+      "Pick-up and drop-off",
+      "Meet and Greet"
+    ],
+    "current_themes": [
+      "Preferences and rates"
+    ],
+    "proposed_problems": [
+      "Pick-up and drop-off",
+      "Meet and Greet",
+      "Lost or injured pet"
+    ],
+    "proposed_themes": [
+      "Clients",
+      "Preferences and rates"
+    ],
+    "confidence": 0.85,
+    "rationale": "Title: 'Received my dog back sick and injured' \u2014 post is about pet returned injured; missing Lost or injured pet"
+  },
+  {
+    "url": "https://reddit.com/r/RoverPetSitting/comments/1l6x2ta/bummed_bad_review/",
+    "title": "bummed bad review.",
+    "verdict": "missing_tag",
+    "current_problems": [
+      "Cats and kittens",
+      "Short lead time"
+    ],
+    "current_themes": [
+      "Preferences and rates"
+    ],
+    "proposed_problems": [
+      "Cats and kittens",
+      "Short lead time",
+      "Star ratings and reviews"
+    ],
+    "proposed_themes": [
+      "Business",
+      "Preferences and rates"
+    ],
+    "confidence": 0.85,
+    "rationale": "Post is about getting a bad review \u2014 missing Star ratings and reviews"
+  },
+  {
+    "url": "https://reddit.com/r/RoverPetSitting/comments/1mk9kbi/how_do_i_offer_discounts/",
+    "title": "How Do I Offer Discounts?",
+    "verdict": "missing_tag",
+    "current_problems": [
+      "Joining and starting on Rover"
+    ],
+    "current_themes": [
+      "Business"
+    ],
+    "proposed_problems": [
+      "Joining and starting on Rover",
+      "Discounts / promos"
+    ],
+    "proposed_themes": [
+      "Business",
+      "Preferences and rates"
+    ],
+    "confidence": 0.85,
+    "rationale": "Post is asking how to offer 50% discount to new clients \u2014 missing Discounts / promos"
+  }
+]

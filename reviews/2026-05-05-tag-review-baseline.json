@@ -1,0 +1,642 @@
+[
+  {
+    "type": "recategorize_post",
+    "target": {
+      "problem": "(none)"
+    },
+    "current": "Star Sitter",
+    "proposed": "(none)",
+    "rationale": "Post is about cameras for adventure walks; 'star sitter' fired only because the author casually self-identifies as one. The Star Sitter problem is about the program/badge itself.",
+    "confidence": 0.85,
+    "examples": [
+      {
+        "post_id": "2b25c3c7bc",
+        "url": "https://reddit.com/r/RoverPetSitting/comments/1kxtqzq/best_camera_for_walks/"
+      }
+    ]
+  },
+  {
+    "type": "recategorize_post",
+    "target": {
+      "problem": "Dog sizes"
+    },
+    "current": "Time off / holidays",
+    "proposed": "Dog sizes",
+    "rationale": "Post is explicitly about owners booking dogs over the sitter's 40lb (medium) cap. Time off / holidays is wrong; Dog sizes fits.",
+    "confidence": 0.9,
+    "examples": [
+      {
+        "post_id": "c398b0f71c",
+        "url": "https://reddit.com/r/RoverPetSitting/comments/1t2bt6m/bait_and_switch/"
+      }
+    ]
+  },
+  {
+    "type": "recategorize_post",
+    "target": {
+      "problem": "Dog sizes, Short lead time"
+    },
+    "current": "Account suspension / deactivation, Short lead time",
+    "proposed": "Dog sizes, Short lead time",
+    "rationale": "Account suspension / deactivation fired but post isn't about being banned; it's about declining a 55lb dog because they cap at 25lb. Dog sizes is the clear primary tag.",
+    "confidence": 0.8,
+    "examples": [
+      {
+        "post_id": "1faf492fd0",
+        "url": "https://reddit.com/r/RoverPetSitting/comments/1sspwpb/first_time_getting_a_hateful_response_from_a/"
+      }
+    ]
+  },
+  {
+    "type": "recategorize_post",
+    "target": {
+      "problem": "Meet and Greet"
+    },
+    "current": "Time off / holidays, Reminders, Meet and Greet",
+    "proposed": "Meet and Greet",
+    "rationale": "'Reminders' fired on the colloquial title 'reminder to never skip the M&G' rather than the notification reminder feature. 'Time off / holidays' is also a likely false positive.",
+    "confidence": 0.75,
+    "examples": [
+      {
+        "post_id": "57062cfd1e",
+        "url": "https://reddit.com/r/RoverPetSitting/comments/1n2tg7o/another_reminder_to_never_skip_the_mg/"
+      }
+    ]
+  },
+  {
+    "type": "recategorize_post",
+    "target": {
+      "problem": "Lost or injured pet"
+    },
+    "current": "Puppies, Senior dogs",
+    "proposed": "Lost or injured pet",
+    "rationale": "Title and body are about neglect (whipped-cream feeding, won't eat food). 'neglect' is a Lost or injured pet keyword; Puppies/Senior dogs are incidental hits.",
+    "confidence": 0.85,
+    "examples": [
+      {
+        "post_id": "75c2dd2667",
+        "url": "https://reddit.com/r/RoverPetSitting/comments/1ipu0vg/new_client_neglects_her_dog/"
+      }
+    ]
+  },
+  {
+    "type": "recategorize_post",
+    "target": {
+      "problem": "Cancellations"
+    },
+    "current": "Short lead time",
+    "proposed": "Cancellations",
+    "rationale": "Title is 'Sitters always cancel'; 'last minute' fired Short lead time but the actual concern is sitter Cancellations.",
+    "confidence": 0.75,
+    "examples": [
+      {
+        "post_id": "2b4e066b96",
+        "url": "https://reddit.com/r/RoverPetSitting/comments/1iemb0x/sitters_always_cancel/"
+      }
+    ]
+  },
+  {
+    "type": "recategorize_post",
+    "target": {
+      "problem": "Safety and aggression incidents, Cats and kittens"
+    },
+    "current": "Business insurance, Cats and kittens, Intake form",
+    "proposed": "Safety and aggression incidents, Cats and kittens",
+    "rationale": "Post is about a cat-bite/scratch report. 'Intake form' fired on 'questionnaire' (the exit questionnaire, not intake). Missing Safety and aggression incidents.",
+    "confidence": 0.8,
+    "examples": [
+      {
+        "post_id": "7cf49dd449",
+        "url": "https://reddit.com/r/RoverPetSitting/comments/1pbrm7b/rant_about_bitescratch_report/"
+      }
+    ]
+  },
+  {
+    "type": "recategorize_post",
+    "target": {
+      "problem": "Cats and kittens"
+    },
+    "current": "Glitches / lag / bugs, Cats and kittens, Other pets",
+    "proposed": "Cats and kittens",
+    "rationale": "Post is a cute photo about Maine Coons. Glitches/lag/bugs and Other pets are spurious; only Cats and kittens fits.",
+    "confidence": 0.85,
+    "examples": [
+      {
+        "post_id": "47229b056d",
+        "url": "https://reddit.com/r/RoverPetSitting/comments/1q0kujl/spoiled_adorable_maine_coon_kitties/"
+      }
+    ]
+  },
+  {
+    "type": "recategorize_post",
+    "target": {
+      "problem": "Safety and aggression incidents, Puppies"
+    },
+    "current": "Glitches / lag / bugs, Puppies, Senior dogs",
+    "proposed": "Safety and aggression incidents, Puppies",
+    "rationale": "Post is about being attacked by a puppy. 'Senior dogs' fired on 'geriatric ages' (incidental). Glitches/lag/bugs is a clear FP. Missing Safety and aggression incidents.",
+    "confidence": 0.85,
+    "examples": [
+      {
+        "post_id": "302b8298b7",
+        "url": "https://reddit.com/r/RoverPetSitting/comments/1k3m46g/being_lunged_at_and_repeatedly_attacked_by_a/"
+      }
+    ]
+  },
+  {
+    "type": "recategorize_post",
+    "target": {
+      "problem": "Recurring bookings"
+    },
+    "current": "Joining and starting on Rover",
+    "proposed": "Recurring bookings",
+    "rationale": "Post is about a client accidentally setting weekly recurring booking. 'new to rover' fired Joining; the actual issue is Recurring bookings.",
+    "confidence": 0.7,
+    "examples": [
+      {
+        "post_id": "7ed292a226",
+        "url": "https://reddit.com/r/RoverPetSitting/comments/1l17bpy/repeat_weekly_booking/"
+      }
+    ]
+  },
+  {
+    "type": "recategorize_post",
+    "target": {
+      "problem": "Holidays"
+    },
+    "current": "Meet and Greet",
+    "proposed": "Holidays",
+    "rationale": "Title literally says 'around holiday rates'. The Meet and Greet tag is wrong; Holidays is correct.",
+    "confidence": 0.9,
+    "examples": [
+      {
+        "post_id": "fca8fe99b1",
+        "url": "https://reddit.com/r/RoverPetSitting/comments/1ogz13c/a_new_one_for_me_owners_trying_to_get_around/"
+      }
+    ]
+  },
+  {
+    "type": "recategorize_post",
+    "target": {
+      "problem": "Flag repeat clients"
+    },
+    "current": "Flag repeat clients, Holidays",
+    "proposed": "Flag repeat clients",
+    "rationale": "Post is about asking if a family member can visit during a house sit; no holiday-rate content.",
+    "confidence": 0.8,
+    "examples": [
+      {
+        "post_id": "6907b6ee93",
+        "url": "https://reddit.com/r/RoverPetSitting/comments/1sp8p0b/visitor_during_house_sit/"
+      }
+    ]
+  },
+  {
+    "type": "recategorize_post",
+    "target": {
+      "problem": "Safety and aggression incidents, Pick-up and drop-off, Meet and Greet"
+    },
+    "current": "Pick-up and drop-off, Meet and Greet",
+    "proposed": "Safety and aggression incidents, Pick-up and drop-off, Meet and Greet",
+    "rationale": "Title explicitly says 'dog bit me'; Safety and aggression incidents should be tagged.",
+    "confidence": 0.9,
+    "examples": [
+      {
+        "post_id": "451f30b889",
+        "url": "https://reddit.com/r/RoverPetSitting/comments/1nsaa99/after_a_really_good_meet_and_greet_dog_bit_me/"
+      }
+    ]
+  },
+  {
+    "type": "recategorize_post",
+    "target": {
+      "problem": "(none)"
+    },
+    "current": "Short lead time",
+    "proposed": "(none)",
+    "rationale": "Post is about a random $30 deposit. Short lead time does not match the actual content.",
+    "confidence": 0.8,
+    "examples": [
+      {
+        "post_id": "eba995954d",
+        "url": "https://reddit.com/r/RoverPetSitting/comments/1rq3o5l/random_deposit/"
+      }
+    ]
+  },
+  {
+    "type": "recategorize_post",
+    "target": {
+      "problem": "Cats and kittens, Meet and Greet"
+    },
+    "current": "Meet and Greet",
+    "proposed": "Cats and kittens, Meet and Greet",
+    "rationale": "Preview is entirely about 5 cats/litter boxes; Cats and kittens is an obvious missing tag.",
+    "confidence": 0.85,
+    "examples": [
+      {
+        "post_id": "c3ae1197e7",
+        "url": "https://reddit.com/r/RoverPetSitting/comments/1k3vwn0/first_sitting_experience_ended_in_disaster/"
+      }
+    ]
+  },
+  {
+    "type": "recategorize_post",
+    "target": {
+      "problem": "Joining and starting on Rover, Meet and Greet"
+    },
+    "current": "Joining and starting on Rover",
+    "proposed": "Joining and starting on Rover, Meet and Greet",
+    "rationale": "Title is 'Charge for meet and greets?'; Meet and Greet is clearly missing.",
+    "confidence": 0.9,
+    "examples": [
+      {
+        "post_id": "e84d7cf277",
+        "url": "https://reddit.com/r/RoverPetSitting/comments/1lhvu24/charge_for_meet_and_greets/"
+      }
+    ]
+  },
+  {
+    "type": "recategorize_post",
+    "target": {
+      "problem": "Glitches / lag / bugs"
+    },
+    "current": "Profile customization",
+    "proposed": "Glitches / lag / bugs",
+    "rationale": "Title 'App/website not loading' is about a bug; 'website' fired Profile customization but the issue is Glitches / lag / bugs.",
+    "confidence": 0.85,
+    "examples": [
+      {
+        "post_id": "6982f405bb",
+        "url": "https://reddit.com/r/RoverPetSitting/comments/1l6sarz/appwebsite_not_loading/"
+      }
+    ]
+  },
+  {
+    "type": "recategorize_post",
+    "target": {
+      "problem": "(none)"
+    },
+    "current": "Time off / holidays",
+    "proposed": "(none)",
+    "rationale": "'vacation' fired Time off / holidays but it refers to the owner's vacation while their dog is at a sitter, not the sitter taking time off.",
+    "confidence": 0.75,
+    "examples": [
+      {
+        "post_id": "d39ea8bd0e",
+        "url": "https://reddit.com/r/RoverPetSitting/comments/1rj67io/my_dog_got_destructive_on_some_outdoor_furniture/"
+      }
+    ]
+  },
+  {
+    "type": "recategorize_post",
+    "target": {
+      "problem": "Safety and aggression incidents, Going off app"
+    },
+    "current": "Going off app",
+    "proposed": "Safety and aggression incidents, Going off app",
+    "rationale": "Title is 'My dog just got attacked'; Safety and aggression incidents is an obvious missing tag.",
+    "confidence": 0.85,
+    "examples": [
+      {
+        "post_id": "c0c84c8e13",
+        "url": "https://reddit.com/r/RoverPetSitting/comments/1ih9ayi/my_dog_just_got_attacked/"
+      }
+    ]
+  },
+  {
+    "type": "recategorize_post",
+    "target": {
+      "problem": "Rover Support quality, Safety and aggression incidents, Meet and Greet"
+    },
+    "current": "Rover Support quality, Meet and Greet",
+    "proposed": "Rover Support quality, Safety and aggression incidents, Meet and Greet",
+    "rationale": "Title is 'Bit in the Face!' \u2014 Safety and aggression incidents is a clear missing tag.",
+    "confidence": 0.9,
+    "examples": [
+      {
+        "post_id": "a32419faba",
+        "url": "https://reddit.com/r/RoverPetSitting/comments/1ml3s63/bit_in_the_face_always_trust_your_gut_i_didnt/"
+      }
+    ]
+  },
+  {
+    "type": "recategorize_post",
+    "target": {
+      "problem": "(none)"
+    },
+    "current": "Holidays",
+    "proposed": "(none)",
+    "rationale": "Post says 'got one for Christmas' (a polaroid as a Christmas gift); Holidays taxonomy is about holiday rates/pricing, not Christmas mentions.",
+    "confidence": 0.8,
+    "examples": [
+      {
+        "post_id": "308eb9a4c2",
+        "url": "https://reddit.com/r/RoverPetSitting/comments/1jb6eqr/polairods/"
+      }
+    ]
+  },
+  {
+    "type": "recategorize_post",
+    "target": {
+      "problem": "Part/full-time"
+    },
+    "current": "Part/full-time, Trial",
+    "proposed": "Part/full-time",
+    "rationale": "'Trial' fired on '6 month trial of doing this full time' \u2014 the user's self-experiment, not a Rover trial booking.",
+    "confidence": 0.75,
+    "examples": [
+      {
+        "post_id": "c4c9928da3",
+        "url": "https://reddit.com/r/RoverPetSitting/comments/1q143y8/when_to_let_owners_know_im_leaving/"
+      }
+    ]
+  },
+  {
+    "type": "recategorize_post",
+    "target": {
+      "problem": "Entrance fee"
+    },
+    "current": "Refunds",
+    "proposed": "Entrance fee",
+    "rationale": "Post is about the $49 sitter sign-up fee and ROI ('make my money back' fired Refunds). Entrance fee is the correct tag.",
+    "confidence": 0.85,
+    "examples": [
+      {
+        "post_id": "4008c693dd",
+        "url": "https://reddit.com/r/RoverPetSitting/comments/1rs1izv/is_it_worth_it/"
+      }
+    ]
+  },
+  {
+    "type": "recategorize_post",
+    "target": {
+      "problem": "Overlaps"
+    },
+    "current": "Short lead time",
+    "proposed": "Overlaps",
+    "rationale": "Post is about double-booking an acquaintance over the same weekend; Overlaps fits, Short lead time doesn't.",
+    "confidence": 0.7,
+    "examples": [
+      {
+        "post_id": "438bb9c904",
+        "url": "https://reddit.com/r/RoverPetSitting/comments/1n2uwql/advice_im_a_noob/"
+      }
+    ]
+  },
+  {
+    "type": "recategorize_post",
+    "target": {
+      "problem": "Extended stay, Holidays"
+    },
+    "current": "Extended stay",
+    "proposed": "Extended stay, Holidays",
+    "rationale": "Title literally says 'Holiday Season Booking & Rate for long stay'; Holidays is missing.",
+    "confidence": 0.85,
+    "examples": [
+      {
+        "post_id": "e1dbe48476",
+        "url": "https://reddit.com/r/RoverPetSitting/comments/1oir63o/holiday_season_booking_rate_for_long_stay/"
+      }
+    ]
+  },
+  {
+    "type": "recategorize_post",
+    "target": {
+      "problem": "Lost or injured pet, Cats and kittens"
+    },
+    "current": "Cats and kittens",
+    "proposed": "Lost or injured pet, Cats and kittens",
+    "rationale": "Title is 'Outside cat missing' \u2014 Lost or injured pet is the clear primary problem.",
+    "confidence": 0.85,
+    "examples": [
+      {
+        "post_id": "c833280e7b",
+        "url": "https://reddit.com/r/RoverPetSitting/comments/1mu4pra/outside_cat_missing/"
+      }
+    ]
+  },
+  {
+    "type": "recategorize_post",
+    "target": {
+      "problem": "Joining and starting on Rover, Holidays"
+    },
+    "current": "Joining and starting on Rover",
+    "proposed": "Joining and starting on Rover, Holidays",
+    "rationale": "Title is 'undercharging holiday sits' \u2014 Holidays is missing.",
+    "confidence": 0.85,
+    "examples": [
+      {
+        "post_id": "176a82b500",
+        "url": "https://reddit.com/r/RoverPetSitting/comments/1ofiz7b/am_i_grossly_undercharging_holiday_sits/"
+      }
+    ]
+  },
+  {
+    "type": "recategorize_post",
+    "target": {
+      "problem": "Holidays, Recurring bookings"
+    },
+    "current": "Holidays",
+    "proposed": "Holidays, Recurring bookings",
+    "rationale": "Title is 'Using recurring drop-ins to avoid Holiday price'; Recurring bookings is missing.",
+    "confidence": 0.85,
+    "examples": [
+      {
+        "post_id": "037188d902",
+        "url": "https://reddit.com/r/RoverPetSitting/comments/1pa5434/using_recurring_dropins_to_avoid_holiday_price/"
+      }
+    ]
+  },
+  {
+    "type": "recategorize_post",
+    "target": {
+      "problem": "Dropping clients"
+    },
+    "current": "Cats and kittens",
+    "proposed": "Dropping clients",
+    "rationale": "Title is 'How do fire a boarding client'. Cats and kittens fired on incidental 'cats' mention; Dropping clients is the actual subject.",
+    "confidence": 0.85,
+    "examples": [
+      {
+        "post_id": "16e98f6ca2",
+        "url": "https://reddit.com/r/RoverPetSitting/comments/1m5yw75/how_do_fire_a_boarding_client/"
+      }
+    ]
+  },
+  {
+    "type": "recategorize_post",
+    "target": {
+      "problem": "Lost or injured pet, Cats and kittens, Meet and Greet"
+    },
+    "current": "Cats and kittens, Meet and Greet",
+    "proposed": "Lost or injured pet, Cats and kittens, Meet and Greet",
+    "rationale": "Title is 'Neglected cat'; 'neglect' is a Lost or injured pet keyword. Missing the key tag.",
+    "confidence": 0.85,
+    "examples": [
+      {
+        "post_id": "e1ad73ad3d",
+        "url": "https://reddit.com/r/RoverPetSitting/comments/1o0l56c/neglected_cat/"
+      }
+    ]
+  },
+  {
+    "type": "recategorize_post",
+    "target": {
+      "problem": "Lost or injured pet, Cats and kittens"
+    },
+    "current": "Cats and kittens",
+    "proposed": "Lost or injured pet, Cats and kittens",
+    "rationale": "Title is 'Missing outdoor cat'; Lost or injured pet is the primary problem.",
+    "confidence": 0.85,
+    "examples": [
+      {
+        "post_id": "1656869cfe",
+        "url": "https://reddit.com/r/RoverPetSitting/comments/1mrqbtq/missing_outdoor_cat_what_to_do/"
+      }
+    ]
+  },
+  {
+    "type": "recategorize_post",
+    "target": {
+      "problem": "Cancellations"
+    },
+    "current": "Trial",
+    "proposed": "Cancellations",
+    "rationale": "Title is 'Cancelling upcoming booking due to dog behaviour'; Cancellations is the correct tag, Trial doesn't apply.",
+    "confidence": 0.8,
+    "examples": [
+      {
+        "post_id": "9b15306b62",
+        "url": "https://reddit.com/r/RoverPetSitting/comments/1kjwrqb/cancelling_upcoming_booking_due_to_dog_behaviour/"
+      }
+    ]
+  },
+  {
+    "type": "recategorize_post",
+    "target": {
+      "problem": "Lost or injured pet, Meet and Greet"
+    },
+    "current": "Meet and Greet",
+    "proposed": "Lost or injured pet, Meet and Greet",
+    "rationale": "Preview includes 'TW: pet demise' and is about a pet death; Lost or injured pet is missing.",
+    "confidence": 0.8,
+    "examples": [
+      {
+        "post_id": "d1857414e0",
+        "url": "https://reddit.com/r/RoverPetSitting/comments/1oyccgb/sad_but_how_it_should_be/"
+      }
+    ]
+  },
+  {
+    "type": "recategorize_post",
+    "target": {
+      "problem": "Glitches / lag / bugs, GPS accuracy"
+    },
+    "current": "Joining and starting on Rover, Glitches / lag / bugs, Distance, GPS accuracy",
+    "proposed": "Glitches / lag / bugs, GPS accuracy",
+    "rationale": "'Joining and starting on Rover' fired on 'I hit start' \u2014 false positive. Real topic is Rover Card / GPS glitches.",
+    "confidence": 0.8,
+    "examples": [
+      {
+        "post_id": "8955a19daa",
+        "url": "https://reddit.com/r/RoverPetSitting/comments/1mqi40h/report_card_glitch/"
+      }
+    ]
+  },
+  {
+    "type": "recategorize_post",
+    "target": {
+      "problem": "Cancellations, Refunds, Short lead time"
+    },
+    "current": "Refunds, Short lead time",
+    "proposed": "Cancellations, Refunds, Short lead time",
+    "rationale": "Title literally says 'cancelation'; Cancellations is missing.",
+    "confidence": 0.85,
+    "examples": [
+      {
+        "post_id": "fd8ab02a3f",
+        "url": "https://reddit.com/r/RoverPetSitting/comments/1hvfjww/last_minute_cancelation/"
+      }
+    ]
+  },
+  {
+    "type": "recategorize_post",
+    "target": {
+      "problem": "Cats and kittens, Meet and Greet"
+    },
+    "current": "Cats and kittens",
+    "proposed": "Cats and kittens, Meet and Greet",
+    "rationale": "Preview opens with 'At the Meet & Greet this cat...'; Meet and Greet is an obvious missing tag.",
+    "confidence": 0.8,
+    "examples": [
+      {
+        "post_id": "5f941ae785",
+        "url": "https://reddit.com/r/RoverPetSitting/comments/1oou0mv/evil_genius_cat/"
+      }
+    ]
+  },
+  {
+    "type": "recategorize_post",
+    "target": {
+      "problem": "Joining and starting on Rover, Puppies"
+    },
+    "current": "Time off / holidays, Joining and starting on Rover, Puppies",
+    "proposed": "Joining and starting on Rover, Puppies",
+    "rationale": "Time off / holidays is unsupported by the preview content (about a recurring puppy drop-in request, no time off context).",
+    "confidence": 0.7,
+    "examples": [
+      {
+        "post_id": "dbe291d7e6",
+        "url": "https://reddit.com/r/RoverPetSitting/comments/1r0cd85/new_to_rover_and_feeling_unsure_about_a_request/"
+      }
+    ]
+  },
+  {
+    "type": "recategorize_post",
+    "target": {
+      "problem": "Cancellations"
+    },
+    "current": "Cancellations, Lost or injured pet, Contracts",
+    "proposed": "Cancellations",
+    "rationale": "Lost or injured pet fired on 'dad had just passed away' \u2014 about a human, not a pet. Contracts likely fired on 'agreement' but the post isn't about contracts.",
+    "confidence": 0.85,
+    "examples": [
+      {
+        "post_id": "6f3a97afbf",
+        "url": "https://reddit.com/r/RoverPetSitting/comments/1m85l8n/first_time_cancellation/"
+      }
+    ]
+  },
+  {
+    "type": "recategorize_post",
+    "target": {
+      "problem": "Glitches / lag / bugs"
+    },
+    "current": "Rover Support quality",
+    "proposed": "Glitches / lag / bugs",
+    "rationale": "Post is about walks disappearing from the booking \u2014 a bug, not a Rover Support interaction.",
+    "confidence": 0.7,
+    "examples": [
+      {
+        "post_id": "2c6127a521",
+        "url": "https://reddit.com/r/RoverPetSitting/comments/1k8t1bc/booking_disappeared_from_the_official_page/"
+      }
+    ]
+  },
+  {
+    "type": "recategorize_post",
+    "target": {
+      "problem": "Business insurance, Cats and kittens, Other pets"
+    },
+    "current": "Business insurance, Cats and kittens",
+    "proposed": "Business insurance, Cats and kittens, Other pets",
+    "rationale": "Sitter is sitting 'a cat and two reptiles' \u2014 Other pets (reptile) is an obvious missing tag.",
+    "confidence": 0.75,
+    "examples": [
+      {
+        "post_id": "e6bd27f4f9",
+        "url": "https://reddit.com/r/RoverPetSitting/comments/1jdfoam/roommate_at_home_during_visits/"
+      }
+    ]
+  }
+]
