@@ -15,6 +15,12 @@ Modes:
     --full         — ignore cursor and re-fetch every page (first run / recovery).
     --limit N      — cap pages fetched per space (smoke testing).
     --space KEY    — restrict to a single space (overrides CONFLUENCE_SPACE_KEYS).
+    --inspect      — read-only: snapshot the existing sheet (label / title /
+                     author distributions + a 75-row random sample at seed
+                     20260505) into reviews/<date>-confluence-discovery.{md,json}.
+                     Used to design the eligibility filter from real data.
+    --no-filter    — bypass evaluate_eligibility (every row marked
+                     Eligible="yes", FilterReason="bypassed"). Debug only.
 
 Requirements:
     pip install gspread google-auth requests beautifulsoup4
@@ -55,7 +61,112 @@ META_WORKSHEET_NAME = "confluence_meta"
 EXCERPT_MAX         = 500  # match rover_export_json.PREVIEW_MAX
 PAGE_FETCH_LIMIT    = 100  # per Confluence v2 API call
 COLUMNS             = ["PageID", "Updated", "Space", "Title", "URL",
-                       "Author", "Excerpt", "Themes", "Problems", "Labels"]
+                       "Author", "Excerpt", "Themes", "Problems", "Labels",
+                       "Eligible", "FilterReason"]
+# ─────────────────────────────────────────────────────────────────────────────
+
+
+# ── ELIGIBILITY FILTER ────────────────────────────────────────────────────────
+# Two gates, both must pass:
+#   1. Doc-type — is this a finished research finding (vs. plan / script /
+#      meeting note / retro / draft)?
+#   2. Audience — provider-relevant (sitter / walker / trainer / groomer /
+#      provider / host)? PSD admits by default; DSN must show provider terms
+#      in title or body.
+#
+# Rule derivation lives in reviews/<date>-confluence-filter-rules-derivation.md
+# (75-row sample at seed 20260505 from reviews/<date>-confluence-discovery.md).
+# Audit accuracy is tracked round-by-round in reviews/<date>-confluence-filter-roundN.md.
+
+NON_FINDINGS_LABELS = frozenset({
+    "meeting-notes", "okrs", "projectplan", "project",
+    "org-chart", "file-list", "figma", "kb-how-to-article",
+    "shared-links", "marketing-campaigns",
+})
+
+# Title patterns that disqualify a page regardless of other signals.
+NON_FINDINGS_TITLE_RE = re.compile(
+    # Date-prefix meeting notes: "2018-06-19 Design Sync", "2024-09-16 Design Check-in"
+    r"^\d{4}[-/]\d{1,2}[-/]\d{1,2}\b"
+    # Preparation / planning / org / draft prefixes
+    r"|^(script|screener|recruiting|research\s+plan|study\s+plan|discussion\s+guide|"
+    r"conjoint\s+design|design\s+exploration|vision|proposal|draft|wip|temp|template|"
+    r"agenda|kick[\s-]?off|retro|rfc|spec|standup|sync|meeting\s+notes|session\s+notes|"
+    r"test\s+session\s+notes|interview\s+notes|interview\s+transcript|notes\s+from|"
+    r"okrs?|q[1-4]\s+\d{4}|january\s+ideation|red\s+routes|rover\s+history|"
+    r"product\s+partners|resources?[\s\-:]|fonts?$|figma\b|matteo\s+q[1-4]|gino\s+okr|"
+    r"upwork|email\s+#|checklist)\b"
+    # Recurring meeting / planning markers anywhere in the title
+    r"|\b(meeting\s+notes|design\s+check[\s-]?in|design\s+sync|"
+    r"growth\s+(design\s+|project\s+)?sync|working\s+session|stand[\s-]?up|"
+    r"all[\s-]?hands|kick[\s-]?off|okr\s+timelines?|hiring\s+interview|"
+    r"checklist|survey\s+request)\b"
+    # WIP / draft / template markers anywhere
+    r"|\(wip\)|\bwip\b|[\(\[]draft[\)\]]|\[temp\b|\btemplate\b|\bplaceholder\b",
+    re.IGNORECASE,
+)
+
+# Title patterns that mark a page as a finding/research output.
+FINDINGS_TITLE_RE = re.compile(
+    r"^(findings(\s+report)?|early\s+findings|round\s+\d+\s+findings|key\s+findings|"
+    r"insights?(\s+assessment)?|key\s+insights?|read[\s-]?out|report|reports|results|"
+    r"write[\s-]?up|desk\s+research|survey\s+results|study\s+results|"
+    r"acceleration\s+#?\d+)\b"
+    r"|:\s*(findings|write[\s-]?up|insights?|results|report)\s*$",
+    re.IGNORECASE,
+)
+
+# Provider-research escape hatch: a `<provider> survey` is a finding even
+# without an explicit findings prefix (e.g. "Sitter Non-response Survey - 2022").
+PROVIDER_SURVEY_RE = re.compile(
+    r"\b(sitter|walker|trainer|groomer|provider|host)s?\b.{0,40}\bsurvey\b",
+    re.IGNORECASE,
+)
+
+PROVIDER_TERMS_RE = re.compile(
+    r"\b(sitter|sitters|walker|walkers|trainer|trainers|groomer|groomers|"
+    r"provider|providers|host|hosts|hosting|sitting|boarding|daycare|"
+    r"drop[\s-]?in|drop[\s-]?off|m&g|meet\s+and\s+greet|caregiver|"
+    r"pet\s+care\s+professional|pet\s+pro|pet\s+sitter|dog\s+walker|"
+    r"dog\s+walking|cat\s+sitter|service\s+provider)\b",
+    re.IGNORECASE,
+)
+
+
+def evaluate_eligibility(
+    title: str, body: str, labels: list[str], space: str
+) -> tuple[bool, str]:
+    """Decide if a Confluence page belongs in the dashboard.
+
+    Returns (eligible, reason_code). Empty reason iff eligible.
+    Pure function — no I/O. See module docstring for the derivation.
+    """
+    title = (title or "").strip()
+    title_l = title.lower()
+
+    # 1. Label blocklist — trumps title signals.
+    for lbl in (labels or []):
+        if lbl.lower() in NON_FINDINGS_LABELS:
+            return False, f"non_findings_label:{lbl.lower()}"
+
+    # 2. Title blocklist.
+    block_match = NON_FINDINGS_TITLE_RE.search(title_l)
+    if block_match:
+        snippet = block_match.group(0)[:30]
+        return False, f"non_findings_title:{snippet}"
+
+    # 3. Title whitelist (or provider-survey escape hatch).
+    if not (FINDINGS_TITLE_RE.search(title_l) or PROVIDER_SURVEY_RE.search(title_l)):
+        return False, "no_findings_signal"
+
+    # 4. Audience.
+    if space == "PSD":
+        return True, ""
+    haystack = f"{title}\n{body or ''}"
+    if PROVIDER_TERMS_RE.search(haystack):
+        return True, ""
+    return False, "non_provider:dsn_no_provider_terms"
+
 # ─────────────────────────────────────────────────────────────────────────────
 
 
@@ -276,7 +387,7 @@ def upsert_rows(ws, records: list[list[str]]) -> tuple[int, int]:
 
 # ── Modes ─────────────────────────────────────────────────────────────────────
 
-def build_record(page: dict, space_key: str) -> list[str]:
+def build_record(page: dict, space_key: str, bypass_filter: bool = False) -> list[str]:
     pid       = str(page.get("id", ""))
     title     = page.get("title", "(untitled)")
     updated   = page.get("version", {}).get("createdAt", "")
@@ -286,6 +397,10 @@ def build_record(page: dict, space_key: str) -> list[str]:
     themes, problems = tag_post(title, plain)
     labels    = page_labels(pid)
     author    = page_author(page)
+    if bypass_filter:
+        eligible, reason = True, "bypassed"
+    else:
+        eligible, reason = evaluate_eligibility(title, plain, labels, space_key)
     return [
         pid,
         updated,
@@ -297,6 +412,8 @@ def build_record(page: dict, space_key: str) -> list[str]:
         ", ".join(themes),
         ", ".join(problems),
         ", ".join(labels),
+        "yes" if eligible else "no",
+        reason,
     ]
 
 
@@ -327,12 +444,16 @@ def run_dump(args):
         print(f"\nFetching pages from {space_key} (id={space_id})...")
         count = 0
         for page in iter_pages(space_id, since_iso=cursor):
-            total_records.append(build_record(page, space_key))
+            total_records.append(build_record(page, space_key, bypass_filter=args.no_filter))
             count += 1
             if args.limit and count >= args.limit:
                 print(f"  hit --limit {args.limit}")
                 break
         print(f"  {count} pages fetched")
+    if not args.no_filter:
+        eligible_n = sum(1 for r in total_records if len(r) > 10 and r[10] == "yes")
+        print(f"\nFilter: {eligible_n}/{len(total_records)} eligible "
+              f"({(100*eligible_n/len(total_records)) if total_records else 0:.1f}%)")
 
     if not total_records:
         print("\nNo new pages to write.")
@@ -351,8 +472,189 @@ def run_dump(args):
         print(f"Cursor advanced to {started_at}")
 
 
-def run_retag(_args):
-    print("🔁 RETAG MODE — re-tagging Confluence rows in place")
+def run_inspect(_args):
+    """Read-only inspection of the Confluence Research sheet.
+
+    No Confluence API calls, no writes to the sheet. Produces a markdown
+    report and a JSON sidecar in reviews/ that capture the data needed to
+    design the eligibility filter (label frequency, title prefix patterns,
+    author distribution, and a fixed random sample for manual classification).
+    """
+    import json as _json
+    import random
+    from collections import Counter
+    from datetime import date
+
+    print("🔍 INSPECT MODE — read-only sheet snapshot")
+    print("Connecting to Google Sheets...")
+    sheet = get_sheet()
+    ws = get_research_ws(sheet)
+
+    rows = ws.get_all_values()
+    if len(rows) < 2:
+        print("  Sheet has no data rows — nothing to inspect.")
+        return
+
+    header = rows[0]
+    data = rows[1:]
+    print(f"  {len(data)} rows in '{WORKSHEET_NAME}'")
+
+    idx = {name: i for i, name in enumerate(header)}
+
+    def col(row: list[str], name: str, default: str = "") -> str:
+        i = idx.get(name)
+        if i is None or i >= len(row):
+            return default
+        return row[i] or default
+
+    space_counts: Counter = Counter(col(r, "Space") for r in data)
+
+    label_counts: Counter = Counter()
+    label_to_titles: dict[str, list[str]] = {}
+    no_label_count = 0
+    for r in data:
+        labels = [l.strip() for l in col(r, "Labels").split(",") if l.strip()]
+        if not labels:
+            no_label_count += 1
+        title = col(r, "Title")
+        for lbl in labels:
+            label_counts[lbl] += 1
+            samples = label_to_titles.setdefault(lbl, [])
+            if len(samples) < 3 and title and title not in samples:
+                samples.append(title)
+
+    first_word_counts: Counter = Counter()
+    prefix_counts: Counter = Counter()
+    for r in data:
+        title = col(r, "Title").strip()
+        if not title:
+            continue
+        m = re.match(r"^[\(\[]?\s*([^\s:|—–\-]+)", title)
+        if m:
+            first_word_counts[m.group(1).lower().rstrip(",.:;")] += 1
+        m2 = re.match(r"^([^:—–|]{2,60})[:—–|]\s+\S", title)
+        if m2:
+            prefix_counts[m2.group(1).strip().lower()] += 1
+
+    author_counts: Counter = Counter(col(r, "Author") for r in data)
+
+    rng = random.Random(20260505)
+    sample_size = min(75, len(data))
+    sampled = rng.sample(data, sample_size)
+    sample_records = [
+        {
+            "id": col(r, "PageID"),
+            "space": col(r, "Space"),
+            "title": col(r, "Title"),
+            "author": col(r, "Author"),
+            "labels": [l.strip() for l in col(r, "Labels").split(",") if l.strip()],
+            "themes": [t.strip() for t in col(r, "Themes").split(",") if t.strip()],
+            "problems": [p.strip() for p in col(r, "Problems").split(",") if p.strip()],
+            "excerpt": col(r, "Excerpt"),
+            "url": col(r, "URL"),
+        }
+        for r in sampled
+    ]
+
+    today = date.today().isoformat()
+    reviews_dir = "reviews"
+    os.makedirs(reviews_dir, exist_ok=True)
+    json_path = os.path.join(reviews_dir, f"{today}-confluence-discovery.json")
+    md_path = os.path.join(reviews_dir, f"{today}-confluence-discovery.md")
+
+    sidecar = {
+        "generated_at_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "total_rows": len(data),
+        "header": header,
+        "space_counts": dict(space_counts),
+        "no_label_count": no_label_count,
+        "top_labels": [
+            {"label": lbl, "count": n, "sample_titles": label_to_titles.get(lbl, [])}
+            for lbl, n in label_counts.most_common(50)
+        ],
+        "top_first_words": [{"word": w, "count": n} for w, n in first_word_counts.most_common(30)],
+        "top_prefixes": [{"prefix": p, "count": n} for p, n in prefix_counts.most_common(30)],
+        "top_authors": [{"author": a, "count": n} for a, n in author_counts.most_common(20)],
+        "sample_seed": 20260505,
+        "sample_size": sample_size,
+        "sample": sample_records,
+    }
+    with open(json_path, "w", encoding="utf-8") as f:
+        _json.dump(sidecar, f, ensure_ascii=False, indent=2)
+
+    def md_safe(s: str) -> str:
+        return (s or "").replace("|", "\\|").replace("\n", " ")
+
+    lines: list[str] = []
+    lines.append(f"# Confluence Research — Sheet Inspection ({today})")
+    lines.append("")
+    lines.append("Read-only snapshot of the `Confluence Research` tab to inform filter design.")
+    lines.append(f"Sidecar: [{os.path.basename(json_path)}]({os.path.basename(json_path)})")
+    lines.append("")
+    lines.append("## Summary")
+    lines.append("")
+    lines.append(f"- **Total rows:** {len(data)}")
+    pct_no_label = (100.0 * no_label_count / len(data)) if data else 0.0
+    lines.append(f"- **Rows with no label:** {no_label_count} ({pct_no_label:.1f}%)")
+    lines.append("")
+    lines.append("### Space distribution")
+    lines.append("")
+    lines.append("| Space | Count |")
+    lines.append("|---|---|")
+    for sp, n in space_counts.most_common():
+        lines.append(f"| {md_safe(sp) or '(blank)'} | {n} |")
+    lines.append("")
+    lines.append("## Top 50 labels")
+    lines.append("")
+    lines.append("| Label | Count | Sample titles |")
+    lines.append("|---|---|---|")
+    for lbl, n in label_counts.most_common(50):
+        samples = " · ".join(t[:60] for t in label_to_titles.get(lbl, []))
+        lines.append(f"| `{md_safe(lbl)}` | {n} | {md_safe(samples)} |")
+    lines.append("")
+    lines.append("## Top 30 title first-words")
+    lines.append("")
+    lines.append("| First word | Count |")
+    lines.append("|---|---|")
+    for w, n in first_word_counts.most_common(30):
+        lines.append(f"| `{md_safe(w)}` | {n} |")
+    lines.append("")
+    lines.append("## Top 30 title prefixes (text before `:` / `—` / `|`)")
+    lines.append("")
+    lines.append("| Prefix | Count |")
+    lines.append("|---|---|")
+    for p, n in prefix_counts.most_common(30):
+        lines.append(f"| `{md_safe(p)}` | {n} |")
+    lines.append("")
+    lines.append("## Top 20 authors")
+    lines.append("")
+    lines.append("| Author | Count |")
+    lines.append("|---|---|")
+    for a, n in author_counts.most_common(20):
+        lines.append(f"| {md_safe(a) or '(blank)'} | {n} |")
+    lines.append("")
+    lines.append(f"## Random sample of {sample_size} rows (seed `20260505`)")
+    lines.append("")
+    lines.append("Full data in the JSON sidecar. Manifest below — use the sidecar for classification.")
+    lines.append("")
+    lines.append("| # | Space | Title | Author | Labels |")
+    lines.append("|---|---|---|---|---|")
+    for i, rec in enumerate(sample_records, 1):
+        title = md_safe((rec["title"] or "")[:80])
+        labels = md_safe(", ".join(rec["labels"])[:40])
+        author = md_safe(rec["author"])
+        lines.append(f"| {i} | {rec['space']} | {title} | {author} | {labels} |")
+    lines.append("")
+
+    with open(md_path, "w", encoding="utf-8") as f:
+        f.write("\n".join(lines))
+
+    print(f"  ✅ Wrote {md_path}")
+    print(f"  ✅ Wrote {json_path}")
+
+
+def run_retag(args):
+    print("🔁 RETAG MODE — re-tagging + re-evaluating eligibility on Confluence rows")
     print("Connecting to Google Sheets...")
     sheet = get_sheet()
     ws = get_research_ws(sheet)
@@ -366,28 +668,70 @@ def run_retag(_args):
     data     = rows[1:]
     print(f"  {len(data)} rows to retag...")
 
-    theme_updates: list[list[str]] = []
-    problem_updates: list[list[str]] = []
-    changed = 0
+    # Ensure the sheet has 12 columns + headers — pre-filter sheets have 10.
+    old_col_count = ws.col_count
+    if old_col_count < len(COLUMNS):
+        ws.add_cols(len(COLUMNS) - old_col_count)
+        print(f"  ↪ Extended sheet from {old_col_count} to {len(COLUMNS)} columns")
+    if len(header) < len(COLUMNS):
+        new_header = list(COLUMNS)
+        ws.update(values=[new_header], range_name="A1:L1", value_input_option="RAW")
+        ws.format("K1:L1", {"textFormat": {"bold": True}})
+        print(f"  ↪ Extended header from {len(header)} to {len(new_header)} columns")
+
+    bypass = getattr(args, "no_filter", False)
+    updates: list[list[str]] = []  # H..L for each row
+    tag_changed = 0
+    elig_changed = 0
+    elig_yes = 0
 
     for r in data:
         title   = r[3] if len(r) > 3 else ""
         excerpt = r[6] if len(r) > 6 else ""
+        space   = r[2] if len(r) > 2 else ""
+        labels  = [l.strip() for l in (r[9] if len(r) > 9 else "").split(",") if l.strip()]
         old_t   = r[7] if len(r) > 7 else ""
         old_p   = r[8] if len(r) > 8 else ""
+        old_e   = r[10] if len(r) > 10 else ""
+        old_r   = r[11] if len(r) > 11 else ""
+
         themes, problems = tag_post(title, excerpt)
         new_t = ", ".join(themes)
         new_p = ", ".join(problems)
-        theme_updates.append([new_t])
-        problem_updates.append([new_p])
+
+        if bypass:
+            eligible, reason = True, "bypassed"
+        else:
+            # Use excerpt as proxy for body (full body isn't stored). 500 chars
+            # of plain text is usually enough to spot provider terms; if not,
+            # body-less FNs will surface in the audit and we can re-fetch.
+            eligible, reason = evaluate_eligibility(title, excerpt, labels, space)
+        new_e = "yes" if eligible else "no"
+
+        updates.append([new_t, new_p, "", "", new_e, reason])
         if new_t != old_t or new_p != old_p:
-            changed += 1
+            tag_changed += 1
+        if new_e != old_e or reason != old_r:
+            elig_changed += 1
+        if eligible:
+            elig_yes += 1
 
     end_row = 1 + len(data)
-    # Themes column is H (index 7 → "H"), Problems is I (index 8 → "I")
-    ws.update(f"H2:H{end_row}", theme_updates, value_input_option="RAW")
-    ws.update(f"I2:I{end_row}", problem_updates, value_input_option="RAW")
-    print(f"  ✅ Retagged {len(data)} rows — {changed} tags changed.")
+    # Single H..L batch update (column J = Labels is preserved by writing "" —
+    # but that would clobber labels! Instead, do two targeted updates.)
+    theme_col = [[u[0]] for u in updates]
+    problem_col = [[u[1]] for u in updates]
+    eligible_col = [[u[4]] for u in updates]
+    reason_col = [[u[5]] for u in updates]
+    ws.update(values=theme_col,    range_name=f"H2:H{end_row}", value_input_option="RAW")
+    ws.update(values=problem_col,  range_name=f"I2:I{end_row}", value_input_option="RAW")
+    ws.update(values=eligible_col, range_name=f"K2:K{end_row}", value_input_option="RAW")
+    ws.update(values=reason_col,   range_name=f"L2:L{end_row}", value_input_option="RAW")
+
+    pct = (100.0 * elig_yes / len(data)) if data else 0.0
+    print(f"  ✅ Retagged {len(data)} rows — {tag_changed} tag changes, "
+          f"{elig_changed} eligibility changes.")
+    print(f"  Eligible: {elig_yes}/{len(data)} ({pct:.1f}%)")
 
 
 def main():
@@ -400,9 +744,17 @@ def main():
                     help="Cap pages per space (smoke testing).")
     ap.add_argument("--space", type=str, default="",
                     help="Single space key (overrides CONFLUENCE_SPACE_KEYS).")
+    ap.add_argument("--inspect", action="store_true",
+                    help="Read-only snapshot of the sheet for filter design; "
+                         "writes reviews/<date>-confluence-discovery.{md,json}.")
+    ap.add_argument("--no-filter", action="store_true",
+                    help="Bypass the eligibility filter (Eligible='yes', "
+                         "FilterReason='bypassed'). For debugging / audit dumps.")
     args = ap.parse_args()
 
-    if args.retag:
+    if args.inspect:
+        run_inspect(args)
+    elif args.retag:
         run_retag(args)
     else:
         run_dump(args)

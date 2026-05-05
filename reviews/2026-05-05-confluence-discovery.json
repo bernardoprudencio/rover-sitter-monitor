@@ -1,0 +1,1953 @@
+{
+  "generated_at_utc": "2026-05-05T14:16:15Z",
+  "total_rows": 1554,
+  "header": [
+    "PageID",
+    "Updated",
+    "Space",
+    "Title",
+    "URL",
+    "Author",
+    "Excerpt",
+    "Themes",
+    "Problems",
+    "Labels"
+  ],
+  "space_counts": {
+    "DSN": 1405,
+    "PSD": 149
+  },
+  "no_label_count": 1374,
+  "top_labels": [
+    {
+      "label": "meeting-notes",
+      "count": 128,
+      "sample_titles": [
+        "2018-03-16 Decoupling on the Web Review",
+        "2018-03-13 Decoupling inquiry/assignment walkthrough with ENG",
+        "2018-03-01 Crit focused on decoupling"
+      ]
+    },
+    {
+      "label": "quick-match",
+      "count": 10,
+      "sample_titles": [
+        "Comparative usability testing of mobile web QM vs Wag's landing pages - Apr 2018",
+        "Comparative testing of QM landing page versus others March 2018",
+        "QM Prefer Before Booking Usability Testing Feb 2018"
+      ]
+    },
+    {
+      "label": "feature-specific",
+      "count": 7,
+      "sample_titles": [
+        "App Dashboard Today Usability Testing - October 2018",
+        "Sitter Sign-up New Design Hub Usability - August 2018",
+        "Sitter Sign-up Usability - July 2018"
+      ]
+    },
+    {
+      "label": "quickmatch-research",
+      "count": 7,
+      "sample_titles": [
+        "Comparative usability testing of mobile web QM vs Wag's landing pages - Apr 2018",
+        "Comparative testing of QM landing page versus others March 2018",
+        "QM Prefer Before Booking Usability Testing Feb 2018"
+      ]
+    },
+    {
+      "label": "kb-how-to-article",
+      "count": 4,
+      "sample_titles": [
+        "Group Facilitation & Workshops for Designers",
+        "Best Practices for Cross Pod UX Projects",
+        "Figma, getting started for developers & PMs"
+      ]
+    },
+    {
+      "label": "dilla",
+      "count": 4,
+      "sample_titles": [
+        "iOS Prototype: Dilla Messaging Usability Testing: July 2017",
+        "iOS Prototype: Dilla Usability Testing - June 22, 2017",
+        "iOS Production: Dilla Usability Testing - June 13-14, 2017"
+      ]
+    },
+    {
+      "label": "centaur",
+      "count": 3,
+      "sample_titles": [
+        "2017-08-08 Working session: Centaur",
+        "Centaur Prod Repeat-new Testing Nov 2017",
+        "Centaur Usability Testing for New-New users - Oct 2017"
+      ]
+    },
+    {
+      "label": "centaur-research",
+      "count": 3,
+      "sample_titles": [
+        "Rover Now Hybrid Owners (Rebooking & Service Selector)",
+        "Centaur Prod Repeat-new Testing Nov 2017",
+        "Centaur Usability Testing for New-New users - Oct 2017"
+      ]
+    },
+    {
+      "label": "favourite",
+      "count": 2,
+      "sample_titles": [
+        "Studies",
+        "Sitter Research to Review"
+      ]
+    },
+    {
+      "label": "content-design-glossary",
+      "count": 2,
+      "sample_titles": [
+        "Terms",
+        "UX Glossary"
+      ]
+    },
+    {
+      "label": "projectplan",
+      "count": 2,
+      "sample_titles": [
+        "Pet Sitting SEO City Page (WIP)",
+        "\"Walk-the-store\" experience audit (WIP)"
+      ]
+    },
+    {
+      "label": "okrs",
+      "count": 2,
+      "sample_titles": [
+        "H2 2020 UX OKRs",
+        "Q2 2020 UX OKRs"
+      ]
+    },
+    {
+      "label": "project",
+      "count": 2,
+      "sample_titles": [
+        "2017-08-08 Working session: Centaur",
+        "2018-03-29 - The Dog People Kick-off"
+      ]
+    },
+    {
+      "label": "europe",
+      "count": 2,
+      "sample_titles": [
+        "Dog Walking Plus (Rover Now) on-site survey in Barcelona - October 2018",
+        "Dog Walking Plus (Rover Now) - Weekly Reviews"
+      ]
+    },
+    {
+      "label": "dog_walking_plus",
+      "count": 2,
+      "sample_titles": [
+        "Dog Walking Plus (Rover Now) on-site survey in Barcelona - October 2018",
+        "Dog Walking Plus (Rover Now) - Weekly Reviews"
+      ]
+    },
+    {
+      "label": "adjacencies",
+      "count": 2,
+      "sample_titles": [
+        "Cat Care Homepage Visibility Tests - Sept 2018",
+        "Grooming Demand and Supply Interest - May/June 2018"
+      ]
+    },
+    {
+      "label": "sitter-surveys",
+      "count": 2,
+      "sample_titles": [
+        "Sitter Sign-up Funnel Drop off - March-August 2018",
+        "Recurring Services Sitter Survey - April 2017"
+      ]
+    },
+    {
+      "label": "wag-compete",
+      "count": 2,
+      "sample_titles": [
+        "Wag Branding Feedback January 2018",
+        "Wag booking flow October 2017"
+      ]
+    },
+    {
+      "label": "onboarding",
+      "count": 1,
+      "sample_titles": [
+        "🥳 Onboarding"
+      ]
+    },
+    {
+      "label": "meeting",
+      "count": 1,
+      "sample_titles": [
+        "Pre-kickoff sync"
+      ]
+    },
+    {
+      "label": "acquisition",
+      "count": 1,
+      "sample_titles": [
+        "Growth Referrals \"UX Tour\""
+      ]
+    },
+    {
+      "label": "activation",
+      "count": 1,
+      "sample_titles": [
+        "Growth Referrals \"UX Tour\""
+      ]
+    },
+    {
+      "label": "file-list",
+      "count": 1,
+      "sample_titles": [
+        "Fonts"
+      ]
+    },
+    {
+      "label": "marketing-campaigns",
+      "count": 1,
+      "sample_titles": [
+        "UX Team Learning Plan"
+      ]
+    },
+    {
+      "label": "figma",
+      "count": 1,
+      "sample_titles": [
+        "Figma, getting started for developers & PMs"
+      ]
+    },
+    {
+      "label": "shared-links",
+      "count": 1,
+      "sample_titles": [
+        "Legal approved marketing claims"
+      ]
+    },
+    {
+      "label": "customer-interviews",
+      "count": 1,
+      "sample_titles": [
+        "Kate Braithwaite - Customer Interview [UX Research Report]"
+      ]
+    },
+    {
+      "label": "org-chart",
+      "count": 1,
+      "sample_titles": [
+        "User Experience Org"
+      ]
+    }
+  ],
+  "top_first_words": [
+    {
+      "word": "2018",
+      "count": 96
+    },
+    {
+      "word": "script",
+      "count": 58
+    },
+    {
+      "word": "ux",
+      "count": 52
+    },
+    {
+      "word": "interview",
+      "count": 51
+    },
+    {
+      "word": "findings",
+      "count": 41
+    },
+    {
+      "word": "sitter",
+      "count": 40
+    },
+    {
+      "word": "2024",
+      "count": 39
+    },
+    {
+      "word": "2019",
+      "count": 36
+    },
+    {
+      "word": "rover",
+      "count": 20
+    },
+    {
+      "word": "2025",
+      "count": 20
+    },
+    {
+      "word": "owner",
+      "count": 19
+    },
+    {
+      "word": "research",
+      "count": 18
+    },
+    {
+      "word": "email",
+      "count": 16
+    },
+    {
+      "word": "1p",
+      "count": 16
+    },
+    {
+      "word": "design",
+      "count": 13
+    },
+    {
+      "word": "test",
+      "count": 13
+    },
+    {
+      "word": "training",
+      "count": 12
+    },
+    {
+      "word": "how",
+      "count": 11
+    },
+    {
+      "word": "write",
+      "count": 11
+    },
+    {
+      "word": "recruiting",
+      "count": 11
+    },
+    {
+      "word": "content",
+      "count": 10
+    },
+    {
+      "word": "q4",
+      "count": 10
+    },
+    {
+      "word": "session",
+      "count": 10
+    },
+    {
+      "word": "cat",
+      "count": 9
+    },
+    {
+      "word": "q2",
+      "count": 9
+    },
+    {
+      "word": "q3",
+      "count": 9
+    },
+    {
+      "word": "q1",
+      "count": 9
+    },
+    {
+      "word": "calendar",
+      "count": 9
+    },
+    {
+      "word": "product",
+      "count": 8
+    },
+    {
+      "word": "user",
+      "count": 8
+    }
+  ],
+  "top_prefixes": [
+    {
+      "prefix": "interview notes",
+      "count": 48
+    },
+    {
+      "prefix": "script",
+      "count": 42
+    },
+    {
+      "prefix": "findings",
+      "count": 37
+    },
+    {
+      "prefix": "1p",
+      "count": 16
+    },
+    {
+      "prefix": "session notes",
+      "count": 9
+    },
+    {
+      "prefix": "test session notes",
+      "count": 7
+    },
+    {
+      "prefix": "research plan",
+      "count": 6
+    },
+    {
+      "prefix": "write up",
+      "count": 6
+    },
+    {
+      "prefix": "conjoint survey",
+      "count": 4
+    },
+    {
+      "prefix": "report",
+      "count": 4
+    },
+    {
+      "prefix": "vision",
+      "count": 4
+    },
+    {
+      "prefix": "design exploration",
+      "count": 3
+    },
+    {
+      "prefix": "study plan",
+      "count": 3
+    },
+    {
+      "prefix": "desk research",
+      "count": 3
+    },
+    {
+      "prefix": "screener and script",
+      "count": 3
+    },
+    {
+      "prefix": "round 2 findings",
+      "count": 3
+    },
+    {
+      "prefix": "bookings on calendar",
+      "count": 3
+    },
+    {
+      "prefix": "write-up",
+      "count": 3
+    },
+    {
+      "prefix": "screener",
+      "count": 3
+    },
+    {
+      "prefix": "recruiting",
+      "count": 3
+    },
+    {
+      "prefix": "test notes and report",
+      "count": 3
+    },
+    {
+      "prefix": "ios prototype",
+      "count": 3
+    },
+    {
+      "prefix": "uxr",
+      "count": 3
+    },
+    {
+      "prefix": "discussion guide",
+      "count": 2
+    },
+    {
+      "prefix": "deep-dive",
+      "count": 2
+    },
+    {
+      "prefix": "ai",
+      "count": 2
+    },
+    {
+      "prefix": "discovery",
+      "count": 2
+    },
+    {
+      "prefix": "reports",
+      "count": 2
+    },
+    {
+      "prefix": "acceleration #5",
+      "count": 2
+    },
+    {
+      "prefix": "script and recruiting",
+      "count": 2
+    }
+  ],
+  "top_authors": [
+    {
+      "author": "Olivia Zinn",
+      "count": 423
+    },
+    {
+      "author": "Bernardo Prudêncio",
+      "count": 162
+    },
+    {
+      "author": "Camille Brito",
+      "count": 96
+    },
+    {
+      "author": "David Quiroz",
+      "count": 76
+    },
+    {
+      "author": "Aaron Mitchell (Deactivated)",
+      "count": 69
+    },
+    {
+      "author": "Lizeth Herrera",
+      "count": 68
+    },
+    {
+      "author": "Gino Valente",
+      "count": 64
+    },
+    {
+      "author": "Aaron Mitchell",
+      "count": 62
+    },
+    {
+      "author": "Derek Punsalan (Deactivated)",
+      "count": 62
+    },
+    {
+      "author": "Kathryn Mailler",
+      "count": 50
+    },
+    {
+      "author": "Vedran Zidanik (Deactivated)",
+      "count": 48
+    },
+    {
+      "author": "Mégane Martinez",
+      "count": 44
+    },
+    {
+      "author": "Matteo Giuzzi (Unlicensed)",
+      "count": 41
+    },
+    {
+      "author": "Cassy Rowe (she-her) (Deactivated)",
+      "count": 38
+    },
+    {
+      "author": "Carey Spies (Deactivated)",
+      "count": 34
+    },
+    {
+      "author": "Ananda Fernandes",
+      "count": 27
+    },
+    {
+      "author": "Soledad Strunc",
+      "count": 24
+    },
+    {
+      "author": "Brian Hartwell (Deactivated)",
+      "count": 23
+    },
+    {
+      "author": "Christine Ryu (Deactivated)",
+      "count": 16
+    },
+    {
+      "author": "Sandra Faucett (Deactivated)",
+      "count": 14
+    }
+  ],
+  "sample_seed": 20260505,
+  "sample_size": 75,
+  "sample": [
+    {
+      "id": "1850966304",
+      "space": "DSN",
+      "title": "UX/Brand Guidelines proposal draft",
+      "author": "Carey Spies (Deactivated)",
+      "labels": [],
+      "themes": [
+        "Untagged"
+      ],
+      "problems": [
+        "Untagged"
+      ],
+      "excerpt": "Reviewer Feedback due by 1 complete 2 complete design-system The content of rover.com/design-system will transform into a hub for brand content and design foundation elements. It will be geared toward a non-technical audience, with the primary consumers being designers, and secondary consumers being non-product Roverines. It will talk about the philosophy of the brand, and describe the “why” of the foundational elements. It should contain examples for designers and other Roverines like 1)when…",
+      "url": "https://roverdotcom.atlassian.net/wiki/spaces/DSN/pages/1850966304/UX+Brand+Guidelines+proposal+draft"
+    },
+    {
+      "id": "2664794089",
+      "space": "DSN",
+      "title": "Findings Report: Sitter Performance Score Interviews",
+      "author": "Olivia Zinn",
+      "labels": [],
+      "themes": [
+        "Business",
+        "Communication",
+        "Preferences and rates"
+      ],
+      "problems": [
+        "Search rank",
+        "High quality pet care",
+        "Cancellations",
+        "Part/full-time",
+        "Reports",
+        "Flag repeat clients",
+        "Meet and Greet"
+      ],
+      "excerpt": "Summary Sitter comprehension of the metrics is basic and sometimes incorrect. There were issues with understanding how the metrics were calculated and correctly identifying what would make it go up or down. At the most basic level, they could often identify what impacted the metric (i.e. booking rate is based off whether or not a client books with them). There was evidence that terms like “first time request” don’t make sense and complicate comprehension. The biggest offender here is the…",
+      "url": "https://roverdotcom.atlassian.net/wiki/spaces/DSN/pages/2664794089/Findings+Report+Sitter+Performance+Score+Interviews"
+    },
+    {
+      "id": "573473110",
+      "space": "DSN",
+      "title": "2018-06-19 - Design System Sync",
+      "author": "Vedran Zidanik (Deactivated)",
+      "labels": [
+        "meeting-notes"
+      ],
+      "themes": [
+        "Experience"
+      ],
+      "problems": [
+        "Navigation"
+      ],
+      "excerpt": "Date Attendees , Goals Update on the design system progress Feedback from real world use Discussion items Item Notes Update on the design system progress V: Most of the components and patterns have been optimized. There is around 10 of them still not optimized. Also, there will be a few more added to the library which are missing. Next update will be available tomorrow (Jun 20). Feedback from real world use B: Some components are one off so maybe we can have them in a page for c/p. V: Agree.…",
+      "url": "https://roverdotcom.atlassian.net/wiki/spaces/DSN/pages/573473110/2018-06-19+-+Design+System+Sync"
+    },
+    {
+      "id": "1854669097",
+      "space": "DSN",
+      "title": "Demographics Annual Survey",
+      "author": "Olivia Zinn",
+      "labels": [],
+      "themes": [
+        "Business"
+      ],
+      "problems": [
+        "Insights"
+      ],
+      "excerpt": "2021 187 complete early February 2021 - Draft follow-up analysis plan 211 incomplete late February 2021 - Execute on plan 188 incomplete early March 2021 - Translate take-aways into opportunities 189 incomplete early March 2021 - Share out opportunities with Product team 209 incomplete early August 2021 - Set up kick-off for 2021 survey Q1 2021 Plan Break down booked, requested, and none. Look for trends there, areas to dig in. Finish dashboards of all data. Further Analysis - All Options 210…",
+      "url": "https://roverdotcom.atlassian.net/wiki/spaces/DSN/pages/1854669097/Demographics+Annual+Survey"
+    },
+    {
+      "id": "2855731587",
+      "space": "DSN",
+      "title": "Writer tool implementation and process development",
+      "author": "Sandra Faucett (Deactivated)",
+      "labels": [],
+      "themes": [
+        "Business"
+      ],
+      "problems": [
+        "High quality pet care"
+      ],
+      "excerpt": "To consolidate our style and word-use resources and make guidance for writing in Rover’s brand voice and style available in authoring tools across the company, we are implementing Writer . Writer is an AI writing platform that we program with our style rules and word list. It will help us present our brand consistently in all customer-facing content and, through this and the process for keeping it updated, will also improve localization quality and efficiency. Background Currently, our…",
+      "url": "https://roverdotcom.atlassian.net/wiki/spaces/DSN/pages/2855731587/Writer+tool+implementation+and+process+development"
+    },
+    {
+      "id": "2319941758",
+      "space": "DSN",
+      "title": "Research Share-outs",
+      "author": "Olivia Zinn",
+      "labels": [],
+      "themes": [
+        "Communication"
+      ],
+      "problems": [
+        "Functionality"
+      ],
+      "excerpt": "Follow the #user-research slack channel for these updates. 6/22/2021 Brand Colors User Feedback Hi folks! This is the first of what we intend will be regular (every other week) updates about user research happening around the company. In light of the recent Taco Tuesday about the Brand 2.0 launch, I’d like to share some research that Carey and Yeji completed to help inform the new brand color palette. Study objectives Learn how users feel emotionally about the brand colors and what language…",
+      "url": "https://roverdotcom.atlassian.net/wiki/spaces/DSN/pages/2319941758/Research+Share-outs"
+    },
+    {
+      "id": "4164650342",
+      "space": "DSN",
+      "title": "H1 2024 Design check-ins",
+      "author": "Camille Brito",
+      "labels": [],
+      "themes": [
+        "Untagged"
+      ],
+      "problems": [
+        "Untagged"
+      ],
+      "excerpt": "true",
+      "url": "https://roverdotcom.atlassian.net/wiki/spaces/DSN/pages/4164650342/H1+2024+Design+check-ins"
+    },
+    {
+      "id": "2003010673",
+      "space": "DSN",
+      "title": "Resources for UX Learning",
+      "author": "Cassy Rowe (she-her) (Deactivated)",
+      "labels": [],
+      "themes": [
+        "Business"
+      ],
+      "problems": [
+        "High quality pet care"
+      ],
+      "excerpt": "Internal “Homemade” Trainings BJFogg and the Fogg Behavior Model Hooked Model collaborative training Paradox of Choice UX Resources https://growth.design/ https://lawsofux.com/ https://docs.google.com/spreadsheets/d/1y0xgnYOY28JWHIJ-xAyJdpMdBqM95OG_KzeI4fG_-Yg/edit#gid=1 https://behavioraleconomicsbootcamp.com/behavioraldesignonline/?gclid=EAIaIQobChMI9rbk_NXZ7wIVTxP5AB1FqQDEEAEYASAAEgKc9PD_BwE https://growth.design/psychology…",
+      "url": "https://roverdotcom.atlassian.net/wiki/spaces/DSN/pages/2003010673/Resources+for+UX+Learning"
+    },
+    {
+      "id": "2246115788",
+      "space": "DSN",
+      "title": "Video Chat Screens",
+      "author": "Matteo Giuzzi (Unlicensed)",
+      "labels": [],
+      "themes": [
+        "Business",
+        "Communication"
+      ],
+      "problems": [
+        "Insights",
+        "Video calls"
+      ],
+      "excerpt": "Focus Areas Motivation towards working in UX (specific to Junior roles) Excitement for opportunity of working at Rover Ability to collaborate on projects (both internally with other designers and cross-functionally) Candidate’s design process Usage of data Experience with UX principles Challenges Candidate expectations of the role Screen 1 Interviewers: 1 person in the UX team or from HR Duration: ~30mins This will just be a very informal conversation. Goal is to understand a little bit more…",
+      "url": "https://roverdotcom.atlassian.net/wiki/spaces/DSN/pages/2246115788/Video+Chat+Screens"
+    },
+    {
+      "id": "4528341499",
+      "space": "DSN",
+      "title": "Figma for devs",
+      "author": "Bernardo Prudêncio",
+      "labels": [],
+      "themes": [
+        "Experience"
+      ],
+      "problems": [
+        "Navigation"
+      ],
+      "excerpt": "1 6 false none list true This guide is for developers who need to access Figma designs but only have view access and no access to dev mode. It covers how to navigate Figma, inspect design details, and extract necessary information for implementation. Accessing Figma files Log in to Figma – Ensure you have a Figma account and access to the shared file. Open the file – Click the shared link or find it in your \"Recents\" or \"Shared with you\" tab. Use the left panel – Navigate between pages and…",
+      "url": "https://roverdotcom.atlassian.net/wiki/spaces/DSN/pages/4528341499/Figma+for+devs"
+    },
+    {
+      "id": "606175252",
+      "space": "DSN",
+      "title": "2018-08-20 Growth Design Sync",
+      "author": "Aaron Mitchell (Deactivated)",
+      "labels": [
+        "meeting-notes"
+      ],
+      "themes": [
+        "Experience",
+        "Preferences and rates"
+      ],
+      "problems": [
+        "Glitches / lag / bugs",
+        "Breeds",
+        "Distance"
+      ],
+      "excerpt": "Date Attendees Include discussion participants. Tip: Use \"@\" to tag peers. Goals Set goals, objectives or some context for this meeting. Discussion items Item Notes Native Search - Add Badges / Repeat Clients Badge UX Badge Information accessible from search Requires larger tappable areas Reduces tappable area of profile click through Recommended minimum tappable area iOS - 44pt x 44pt Android - 48dp x 48dp Badge information accessible from the profile Adds scope Better experience / Room for…",
+      "url": "https://roverdotcom.atlassian.net/wiki/spaces/DSN/pages/606175252/2018-08-20+Growth+Design+Sync"
+    },
+    {
+      "id": "2726920425",
+      "space": "DSN",
+      "title": "Sitter Non-response Survey - 2022, and 2026",
+      "author": "Olivia Zinn",
+      "labels": [],
+      "themes": [
+        "Availability",
+        "Preferences and rates"
+      ],
+      "problems": [
+        "Date range selection",
+        "Time of day",
+        "Time off / holidays",
+        "Breeds",
+        "Cats and kittens",
+        "Energy level",
+        "Special needs"
+      ],
+      "excerpt": "Here’s the final email copy , after Brand Studio did their review. Emails Note: each item in the bullet list will be a link the sitter can click to respond, which will go to a Survey Monkey survey for follow-up questions, where applicable. For new customer requests SL: We have a quick question for you, {{provider_first_name}} We’d like your feedback, {{provider_first_name}} Preheader: Your input will help us better understand the needs of our sitter community. Body: Hi {{provider_first_name}},…",
+      "url": "https://roverdotcom.atlassian.net/wiki/spaces/DSN/pages/2726920425/Sitter+Non-response+Survey+-+2022+and+2026"
+    },
+    {
+      "id": "3307078257",
+      "space": "DSN",
+      "title": "Cat care details feedback survey",
+      "author": "Olivia Zinn",
+      "labels": [],
+      "themes": [
+        "Business",
+        "Preferences and rates"
+      ],
+      "problems": [
+        "Profile customization",
+        "Cats and kittens"
+      ],
+      "excerpt": "Team: Expansions Stakeholders: Julie, Gino Background We’re launching a test of the cat care fields on the sitter profile. These are fields that allow the sitter to designate a specific tagline, bio, and photo for new cat customers to see, or as an addition to their general profile for dog+cat owners. Goals Feedback gathered via the survey will be used to help inform any design refinements or next steps for the beta of the cat care fields feature. Learning Objectives Is there anything causing…",
+      "url": "https://roverdotcom.atlassian.net/wiki/spaces/DSN/pages/3307078257/Cat+care+details+feedback+survey"
+    },
+    {
+      "id": "832602364",
+      "space": "DSN",
+      "title": "2019-11-12 Growth Project Sync",
+      "author": "Aaron Mitchell (Deactivated)",
+      "labels": [
+        "meeting-notes"
+      ],
+      "themes": [
+        "Business",
+        "Preferences and rates"
+      ],
+      "problems": [
+        "Star ratings and reviews",
+        "Dog sizes"
+      ],
+      "excerpt": "Date Attendees Goals Set goals, objectives or some context for this meeting. Discussion items Item Notes Projects in flight Working on this sprint Profile reordering (done this sprint) (Newfies) Has IP Profile Nav (Newfies) Ready for dev planning Section Collapsing (Newfies) Reviews (Chihuahuas) Headlines (Chihuahuas) Decimal Point Star Rating (Chihuahuas) Basic mWeb card cleanup (Chihuahuas) Blockers Search SSR needs to win before we can launch search tests What to work on next Basic mWeb Card…",
+      "url": "https://roverdotcom.atlassian.net/wiki/spaces/DSN/pages/832602364/2019-11-12+Growth+Project+Sync"
+    },
+    {
+      "id": "5948440866",
+      "space": "DSN",
+      "title": "Discovery: Three segments of users and their expectations regarding pet care and Rover site.",
+      "author": "David Quiroz",
+      "labels": [],
+      "themes": [
+        "Untagged"
+      ],
+      "problems": [
+        "Untagged"
+      ],
+      "excerpt": "Team pod & Stakeholders: Carolina de Goes, Michelle Micallef, Lokesh Mahajan Researcher: David Quiroz Timing: Q2, April 2026 Note: This study was facilitated by AI using NotebookLM. Study Goal(s) The goal of this study was to better understand the user needs/expectations of high and low intent (nonRover users) and marketplace resistant users (also nonRover users) when it comes to pet care arrangements and their perception and thoughts of marketplace services such as Rover. Study information…",
+      "url": "https://roverdotcom.atlassian.net/wiki/spaces/DSN/pages/5948440866/Discovery+Three+segments+of+users+and+their+expectations+regarding+pet+care+and+Rover+site."
+    },
+    {
+      "id": "1080265130",
+      "space": "DSN",
+      "title": "🌏 Creating a global product experience",
+      "author": "Christine Ryu (Deactivated)",
+      "labels": [],
+      "themes": [
+        "Untagged"
+      ],
+      "problems": [
+        "Untagged"
+      ],
+      "excerpt": "",
+      "url": "https://roverdotcom.atlassian.net/wiki/spaces/DSN/pages/1080265130/Creating+a+global+product+experience"
+    },
+    {
+      "id": "5848334987",
+      "space": "PSD",
+      "title": "M2a: modifications on web",
+      "author": "Bernardo Prudêncio",
+      "labels": [],
+      "themes": [
+        "Untagged"
+      ],
+      "problems": [
+        "Untagged"
+      ],
+      "excerpt": "Milestone 2a: Port all modification features to web Problem statement: Given that 9% of current week modifications happen on Web , how might we enable sitters and owners with a recurring relationship who use web rather than the apps to make all types of recurring modifications? Solution space: Enable the template level and future weeks modifications on Web Take the opportunity to improve the usability and create a unified code we reuse on apps later on Figma Make prototype:…",
+      "url": "https://roverdotcom.atlassian.net/wiki/spaces/PSD/pages/5848334987/M2a+modifications+on+web"
+    },
+    {
+      "id": "2633925184",
+      "space": "DSN",
+      "title": "Interview Notes: Lisa Seagrist",
+      "author": "Olivia Zinn",
+      "labels": [],
+      "themes": [
+        "Business",
+        "Clients",
+        "Preferences and rates"
+      ],
+      "problems": [
+        "Joining and starting on Rover",
+        "Cancellations",
+        "Off-platform management",
+        "Puppies",
+        "Cats and kittens",
+        "Other pets",
+        "Meet and Greet",
+        "Special needs"
+      ],
+      "excerpt": "Email: lisa_rumpf@yahoo.com Location: Sunbury, PA Services: Boarding, Housesitting, Drop-ins, Dog walking, Daycare Phone: 717-919-9801 Interview date: 2/16/2022 Recording link: https://drive.google.com/file/d/1cCa1h5GAxwdsffHu664UvJSmi5eapAPi/view?usp=sharing Intro Hi, this is <your name> from Rover. We arranged this call for today, is now still a good time to talk? (No? rearrange) I’m part of the product team here at Rover. We’re just taking the time to chat with pet sitters who’ve just joined…",
+      "url": "https://roverdotcom.atlassian.net/wiki/spaces/DSN/pages/2633925184/Interview+Notes+Lisa+Seagrist"
+    },
+    {
+      "id": "5974491550",
+      "space": "DSN",
+      "title": "Insights Assessment — Identifying the Most Critical Opportunity Areas",
+      "author": "Soledad Strunc",
+      "labels": [],
+      "themes": [
+        "Business"
+      ],
+      "problems": [
+        "Insights"
+      ],
+      "excerpt": "This document helps transform quarterly insights into a structured understanding of where the experience presents the biggest gaps and where improvements can generate the greatest impact on company goals . The objective is to analyse insights systematically to identify priority opportunity areas across the user journey, creating a strong foundation for tribe-level strategy. Purpose Identify the most critical friction points across the user journey Understand which problems have the greatest…",
+      "url": "https://roverdotcom.atlassian.net/wiki/spaces/DSN/pages/5974491550/Insights+Assessment+Identifying+the+Most+Critical+Opportunity+Areas"
+    },
+    {
+      "id": "5765464351",
+      "space": "PSD",
+      "title": "Email #08: service structure",
+      "author": "Bernardo Prudêncio",
+      "labels": [],
+      "themes": [
+        "Availability",
+        "Business",
+        "Payments",
+        "Preferences and rates",
+        "Requests",
+        "Taxes"
+      ],
+      "problems": [
+        "Time of day",
+        "Service structure",
+        "High quality pet care",
+        "Expenses",
+        "Cats and kittens",
+        "Pick-up and drop-off",
+        "Recurring bookings",
+        "Hourly",
+        "Distance",
+        "Contracts",
+        "Track mileage"
+      ],
+      "excerpt": "none TL;DR From six Product Partners (Mathew, Paulina, Brandy, Agata, Danica and Lesley), three describe clear workarounds to fit their real services into Rover’s current structure, while Paulina reinforces that owners can already find today’s services confusing. Lesley adds a new dimension: she regularly provides evening daycare (5pm–10:30pm) that has no distinct representation on Rover, and quietly absorbs the mismatch by charging her standard daycare rate. Taken together, their stories point…",
+      "url": "https://roverdotcom.atlassian.net/wiki/spaces/PSD/pages/5765464351/Email+08+service+structure"
+    },
+    {
+      "id": "2693891612",
+      "space": "DSN",
+      "title": "[Internal] DEI Focus Group Feedback Survey",
+      "author": "Aaron Mitchell",
+      "labels": [],
+      "themes": [
+        "Requests"
+      ],
+      "problems": [
+        "Contracts"
+      ],
+      "excerpt": "Takeaways All respondents found the session useful in uncovering biases int he project, and would be willing ot participate in future sessions. All felt comfortable speaking and thought the format encouraged participation. All respondents prefer a format that utilizes live verbal discussion with the opportunity to provide written thoughts and feedback. We should add a structured way of providing written feedback to this rhythm. Goal To better improve how we’re running DEI Focus groups, we want…",
+      "url": "https://roverdotcom.atlassian.net/wiki/spaces/DSN/pages/2693891612/Internal+DEI+Focus+Group+Feedback+Survey"
+    },
+    {
+      "id": "4133388716",
+      "space": "DSN",
+      "title": "Script: Training relationship page usability testing",
+      "author": "Olivia Zinn",
+      "labels": [],
+      "themes": [
+        "Business",
+        "Communication",
+        "Experience",
+        "Preferences and rates"
+      ],
+      "problems": [
+        "High quality pet care",
+        "Video calls",
+        "Navigation",
+        "Puppies"
+      ],
+      "excerpt": "Screener Thank you for joining me. I’ve got a few questions to start us off and then I’ll put a link to a prototype in the Zoom call chat to look at together. Background Tell me a little bit about your dog. Have you ever purchased dog training in the past, either for your current dog or for a different one? Tell me a bit about what kind of training. Tasks Now we're going to take a look at a prototype together. It's a clickable prototype so not everything will work, so if you're trying to do…",
+      "url": "https://roverdotcom.atlassian.net/wiki/spaces/DSN/pages/4133388716/Script+Training+relationship+page+usability+testing"
+    },
+    {
+      "id": "1780221595",
+      "space": "DSN",
+      "title": "Red Routes",
+      "author": "Matteo Giuzzi (Unlicensed)",
+      "labels": [],
+      "themes": [
+        "Availability"
+      ],
+      "problems": [
+        "Route optimization"
+      ],
+      "excerpt": "What are Red Routes Generally speaking, Red Routes are urban clearways that prohibit vehicles from stopping on the most crowded hi ghways , in a bid to prevent traffic jams from forming or at least minimize congestion resulting from lane blockages. The goal of red routes is to allow high traffic volumes to flow freely without obstruction . When applied to a digital products, Red routes are the critical and frequent paths that users take to complete their tasks. These routes are the foundational…",
+      "url": "https://roverdotcom.atlassian.net/wiki/spaces/DSN/pages/1780221595/Red+Routes"
+    },
+    {
+      "id": "564035585",
+      "space": "DSN",
+      "title": "2018-06-06 - Review sitter profile/rates concepts",
+      "author": "Justin Martin (Deactivated)",
+      "labels": [
+        "meeting-notes"
+      ],
+      "themes": [
+        "Business"
+      ],
+      "problems": [
+        "Profile customization"
+      ],
+      "excerpt": "Date Attendees Goals Review sitter profile & service rates concepts Set agenda and focus for upcoming meetings Discussion items Item Notes Sitter facing profile view Prototype: https://sketch.cloud/s/ElG9O/all/page-1/sitter-profile-sitter-view/play Instead of a modal, what about exposing editable fields? Break sections down into smaller, editable chunks Future dashboard updates should scalable and this may not make sense to include within the profile view Should there be more emphasis on…",
+      "url": "https://roverdotcom.atlassian.net/wiki/spaces/DSN/pages/564035585/2018-06-06+-+Review+sitter+profile+rates+concepts"
+    },
+    {
+      "id": "4205216074",
+      "space": "DSN",
+      "title": "Strengthening the Data & Insights partnerhsip",
+      "author": "Camille Brito",
+      "labels": [],
+      "themes": [
+        "Business"
+      ],
+      "problems": [
+        "Insights",
+        "Part/full-time",
+        "Reports"
+      ],
+      "excerpt": "During the Tech summit in October 2024 we had a workshop about the collaboration between UX, product and data roles. We wanted to understand some of the challenges we face in our ways of working and opportunities to continue being data informed and be even more user centric. We believe better collaboration will lead to better results. :Paw: ba228263-f0c0-4449-80c7-884ee5a8fcda :Paw: #57D9A3 Want to join the working team? Please sign up here to help with the working agreements or be a full time…",
+      "url": "https://roverdotcom.atlassian.net/wiki/spaces/DSN/pages/4205216074/Strengthening+the+Data+Insights+partnerhsip"
+    },
+    {
+      "id": "4431609857",
+      "space": "DSN",
+      "title": "2025-01-16 Design Check-in",
+      "author": "Camille Brito",
+      "labels": [],
+      "themes": [
+        "Availability",
+        "Payments"
+      ],
+      "problems": [
+        "Route optimization",
+        "Paying upfront"
+      ],
+      "excerpt": "Monday check-ins are weekly sessions to review ongoing design work between IC and manager. More info here . This week Aaron Design file reviewed Eu sitter verification Status of project What was presented (brought up by the designer, include specific questions or doubts to discuss with manager) We’re removing the ability for us to verify phone in Ireland initiatilly because of twilio delays we will still collect the phone number there’s a contact page version of this in europe already it is…",
+      "url": "https://roverdotcom.atlassian.net/wiki/spaces/DSN/pages/4431609857/2025-01-16+Design+Check-in"
+    },
+    {
+      "id": "326795587",
+      "space": "DSN",
+      "title": "Rover History",
+      "author": "Vedran Zidanik (Deactivated)",
+      "labels": [],
+      "themes": [
+        "Business"
+      ],
+      "problems": [
+        "Part/full-time"
+      ],
+      "excerpt": "Startup Weekend The idea for Rover came from two places: Greg's family dog, Ruby, had a terrible experience at a kennel Airbnb had reached meaningful scale and marketplace businesses had become a major area of early startup investment Greg went to a Startup Weekend event at Amazon and pitched this idea. Phil walked up to him and said \"Yeah, I think I could help you build this.\" Over the course of the weekend the team built a prototype product, which is still the same codebase we have today (try…",
+      "url": "https://roverdotcom.atlassian.net/wiki/spaces/DSN/pages/326795587/Rover+History"
+    },
+    {
+      "id": "5957944000",
+      "space": "PSD",
+      "title": "Design exploration: unified modification model for ongoing relationships",
+      "author": "Bernardo Prudêncio",
+      "labels": [],
+      "themes": [
+        "Business",
+        "Payments",
+        "Preferences and rates"
+      ],
+      "problems": [
+        "Service structure",
+        "Cancellations",
+        "Refunds",
+        "Short lead time",
+        "Recurring bookings"
+      ],
+      "excerpt": "none Why this exploration exists Rover's recurring billing system was built around a weekly template — a fixed pattern that defines which days and times repeat, materialized into concrete units for a rolling 5-week window. That architecture made sense for a simple \"same walk, same time, every week\" use case, but it has become the root cause of most of the pain documented in the recurring relationships audit. The template model breaks down in a few predictable ways. Modifications are split…",
+      "url": "https://roverdotcom.atlassian.net/wiki/spaces/PSD/pages/5957944000/Design+exploration+unified+modification+model+for+ongoing+relationships"
+    },
+    {
+      "id": "5162766168",
+      "space": "DSN",
+      "title": "Upwork",
+      "author": "Lizeth Herrera",
+      "labels": [],
+      "themes": [
+        "Business",
+        "Diversion",
+        "Preferences and rates",
+        "Requests",
+        "Rover fees"
+      ],
+      "problems": [
+        "Insights",
+        "Search rank",
+        "Reports",
+        "Going off app",
+        "Automated rates",
+        "Contracts",
+        "20% fee"
+      ],
+      "excerpt": "Summary Upwork is a global marketplace that connects businesses with freelancers and agencies across more than 10,000 skills. In 2025, the company’s revenue model evolved from a simple percentage-based fee into a multi‑pronged pay‑to‑play system. It charges freelancers variable commission fees (0–15 %), sells tokens called Connects to submit proposals, offers subscription plans that enhance visibility and analytics, collects processing and contract‑initiation fees from clients, and sells…",
+      "url": "https://roverdotcom.atlassian.net/wiki/spaces/DSN/pages/5162766168/Upwork"
+    },
+    {
+      "id": "3599564989",
+      "space": "DSN",
+      "title": "Findings: Travel Time Distance",
+      "author": "Bernardo Prudêncio",
+      "labels": [],
+      "themes": [
+        "Preferences and rates"
+      ],
+      "problems": [
+        "Distance"
+      ],
+      "excerpt": "note Recommendations Compared to the POC that we used in UserTesting. Must have: Provide flexibility with a text input for miles/minutes. Nice to have: allow decimals in miles. Should have: Provide the option to setup either mile or time based service areas (this is a preference and we need to understand the complexity of adding it such as displaying time based distance in requests). Reinforce that all time based areas are estimations and don’t take into account traffic. Distance in requests…",
+      "url": "https://roverdotcom.atlassian.net/wiki/spaces/DSN/pages/3599564989/Findings+Travel+Time+Distance"
+    },
+    {
+      "id": "6008504366",
+      "space": "DSN",
+      "title": "Conjoint Design_Options",
+      "author": "Lizeth Herrera",
+      "labels": [],
+      "themes": [
+        "Business"
+      ],
+      "problems": [
+        "Insights"
+      ],
+      "excerpt": "Conjoint Study Design — Options & Recommendation April 2025 | Research & Insights Team Background & Context Following the Canada conjoint study, the team has been evaluating the design of the next conjoint for the US market. A central discussion has emerged around the number of attributes to include (3 vs. 5) and how this affects data quality, cognitive load, timelines, and cost. This document consolidates the options discussed, the evidence gathered through UserTesting, and input from Saul…",
+      "url": "https://roverdotcom.atlassian.net/wiki/spaces/DSN/pages/6008504366/Conjoint+Design_Options"
+    },
+    {
+      "id": "4918313018",
+      "space": "DSN",
+      "title": "Social Artifacts Post Experiment Interviews",
+      "author": "Aaron Mitchell",
+      "labels": [],
+      "themes": [
+        "Availability",
+        "Business",
+        "Experience"
+      ],
+      "problems": [
+        "Calendar sync",
+        "Self promotion",
+        "Profile customization",
+        "Navigation"
+      ],
+      "excerpt": "Team: Acceleration team Stakeholders: none View research results Background We recently launched an experiment that added social artifacts for sitters to share. This test failed to increase overall sharing metrics, with the impact most felt for searchable sitters who were exposed to the generic artifact. This experiment has been paused as we plan a new iteration. Experiment results Sitters did share the artifact, with it representing 23% of all shares, although it heavily cannibalized direct…",
+      "url": "https://roverdotcom.atlassian.net/wiki/spaces/DSN/pages/4918313018/Social+Artifacts+Post+Experiment+Interviews"
+    },
+    {
+      "id": "4865819557",
+      "space": "PSD",
+      "title": "Product Partners",
+      "author": "Camille Brito",
+      "labels": [],
+      "themes": [
+        "Business",
+        "Preferences and rates"
+      ],
+      "problems": [
+        "Insights",
+        "Recurring bookings"
+      ],
+      "excerpt": "previously Sitter Advisory Board none The program This last year we spent a lot of time trying to understand the problems that our sitters face to be able to provide them with better solutions that make them more engaged, loyal and reliant on Rover. We are committed to validate the solutions we’ve envisioned with our sitters in the next 6 months (H2 2025 OKR). And once again we’ve come to ask ourselves some questions such as Should we have a sitter feedback group? and How can we be better…",
+      "url": "https://roverdotcom.atlassian.net/wiki/spaces/PSD/pages/4865819557/Product+Partners"
+    },
+    {
+      "id": "4930404353",
+      "space": "DSN",
+      "title": "Photo Gallery Meeting Notes",
+      "author": "Aaron Mitchell",
+      "labels": [],
+      "themes": [
+        "Business",
+        "Preferences and rates"
+      ],
+      "problems": [
+        "High quality pet care",
+        "Profile customization",
+        "Meet and Greet"
+      ],
+      "excerpt": "This document is used to collect notes from any meetings related to advancing the photo gallery vision. Conversation Test No going back, it will be rolled out Saw 1% decrease in conversion, probably related to new things like M&G events, since this may be increasing disintermediation Bright horizons dependency New functionality on the web where people can upload multiple photos at same time, was added with conversation unification - lets monitor People dont have access to a gallery until a…",
+      "url": "https://roverdotcom.atlassian.net/wiki/spaces/DSN/pages/4930404353/Photo+Gallery+Meeting+Notes"
+    },
+    {
+      "id": "5445616654",
+      "space": "DSN",
+      "title": "Findings: Groomer sign-up usability",
+      "author": "Olivia Zinn",
+      "labels": [],
+      "themes": [
+        "Availability",
+        "Business",
+        "Preferences and rates"
+      ],
+      "problems": [
+        "Time of day",
+        "High quality pet care",
+        "Reports",
+        "Breeds",
+        "Dog sizes",
+        "Distance"
+      ],
+      "excerpt": "Summary of key findings This section will summarize key findings from sessions with current Rover sitters (who already offer a core service) and new-to-Rover groomers (who have no background with Rover). See here for provisional findings of the sessions with new-to-Rover groomers using v1 of the design. Current Rover sitters felt the rates per dog size generally met their needs, although a few indicated more granular ranges would be more appropriate. Note: We didn’t test rates per dog size with…",
+      "url": "https://roverdotcom.atlassian.net/wiki/spaces/DSN/pages/5445616654/Findings+Groomer+sign-up+usability"
+    },
+    {
+      "id": "559808575",
+      "space": "DSN",
+      "title": "[TEMP FOR SPLITTING PURPOSES] Style guide iteration",
+      "author": "Chris Mabrey (Deactivated)",
+      "labels": [],
+      "themes": [
+        "Requests",
+        "Rover Cards"
+      ],
+      "problems": [
+        "Contracts",
+        "GPS accuracy"
+      ],
+      "excerpt": "Tracking style guide iteration efforts. Goals Modern style is unified between Android & iOS Web has an established baseline in its current configuration with modern lifts Lifts may include some elements from the apps' style Style is modern, on-brand, and scalable for the future Style improves accessibility like text legibility and color contrast Style makes accommodations for internationalization Resources Location: Product Design > 1 Product > Libraries > Native > Rover Native Library In…",
+      "url": "https://roverdotcom.atlassian.net/wiki/spaces/DSN/pages/559808575/TEMP+FOR+SPLITTING+PURPOSES+Style+guide+iteration"
+    },
+    {
+      "id": "2245755590",
+      "space": "DSN",
+      "title": "UX Hiring Interview Process",
+      "author": "Matteo Giuzzi (Unlicensed)",
+      "labels": [],
+      "themes": [
+        "Untagged"
+      ],
+      "problems": [
+        "Untagged"
+      ],
+      "excerpt": "Phone Screens Screen 1 Screen 2 On-site On-site (1/3) On-site (2/3) On-site (3/3) or alternatively HR Final Interview (Contribution to Rover’s culture)",
+      "url": "https://roverdotcom.atlassian.net/wiki/spaces/DSN/pages/2245755590/UX+Hiring+Interview+Process"
+    },
+    {
+      "id": "328007805",
+      "space": "DSN",
+      "title": "2018-02-26 Decoupling follow-up",
+      "author": "Derek Punsalan (Deactivated)",
+      "labels": [
+        "meeting-notes"
+      ],
+      "themes": [
+        "Untagged"
+      ],
+      "problems": [
+        "Untagged"
+      ],
+      "excerpt": "Date Attendees Lia Goals Regroup with Lia on high level explorations to support decoupling in-app Align on goals for the upcoming sprint Should inquiries show up inside the web inbox? Discussion items Item Notes Re-alignment on the \"why\" We're doing this to understand the impact to demand when we don't tell QM owners who their walker will be until right before their walk. Where possible, understand impact to demand when we assign different walkers for different units within the same inquiry.…",
+      "url": "https://roverdotcom.atlassian.net/wiki/spaces/DSN/pages/328007805/2018-02-26+Decoupling+follow-up"
+    },
+    {
+      "id": "2837512684",
+      "space": "DSN",
+      "title": "Bookings on calendar: write Up",
+      "author": "Bernardo Prudêncio",
+      "labels": [],
+      "themes": [
+        "Availability",
+        "Business",
+        "Experience"
+      ],
+      "problems": [
+        "Time off / holidays",
+        "Capacity comprehension",
+        "Cancellations",
+        "Navigation",
+        "User friendly"
+      ],
+      "excerpt": "New sitters The Good Most participants were able to correctly interpret the meanings of the color coding of the Red (fully booked - at capacity) and Grey/Patterned (unavailable) marked days on the calendar. For the most part, blank days were interpreted to be available days with no activity. Most participants discovered the “Select multiple day” and used it to complete tasks. Some participants tried a dragging motion to select contiguous days but easily self-corrected to pick a range of dates…",
+      "url": "https://roverdotcom.atlassian.net/wiki/spaces/DSN/pages/2837512684/Bookings+on+calendar+write+Up"
+    },
+    {
+      "id": "2639987219",
+      "space": "DSN",
+      "title": "Script - Regular Use Group: Sitter Scores Discovery Interviews",
+      "author": "Olivia Zinn",
+      "labels": [],
+      "themes": [
+        "Communication",
+        "Rover Cards"
+      ],
+      "problems": [
+        "Video calls",
+        "GPS accuracy"
+      ],
+      "excerpt": "Intro Hi, this is <your name> from Rover. We arranged this call for today, is now still a good time to talk? (No? rearrange) Great, I also have <note taker name> with me taking notes who may also jump in with questions. We’re just taking the time to chat with pet sitters like you to learn a bit about your experiences on Rover and also wanted to get your feedback on a particular feature. As a thank you for your time, after the call, we’ll deposit $25 in your Rover account you can withdraw like…",
+      "url": "https://roverdotcom.atlassian.net/wiki/spaces/DSN/pages/2639987219/Script+-+Regular+Use+Group+Sitter+Scores+Discovery+Interviews"
+    },
+    {
+      "id": "4138828293",
+      "space": "DSN",
+      "title": "2024-09-16 Design Check-in",
+      "author": "Camille Brito",
+      "labels": [],
+      "themes": [
+        "Availability",
+        "Business",
+        "Experience",
+        "Requests"
+      ],
+      "problems": [
+        "Overlaps",
+        "Time off / holidays",
+        "Insights",
+        "User friendly",
+        "Contracts"
+      ],
+      "excerpt": "Monday check-ins are weekly sessions to review ongoing design work between IC and manager. More info here . This week Ananda → Also chatted about progress on Price transparency in Minesotta: next step sync with David K about approach and wait for One pager Design file reviewed Cancel and archive 💬 Post Conversation Migration Status of project What was presented (brought up by the designer, include specific questions or doubts to discuss with manager) Existing research : we know that people…",
+      "url": "https://roverdotcom.atlassian.net/wiki/spaces/DSN/pages/4138828293/2024-09-16+Design+Check-in"
+    },
+    {
+      "id": "4763812119",
+      "space": "DSN",
+      "title": "Script: Gingr exploration with New-to-Rover owners",
+      "author": "Olivia Zinn",
+      "labels": [],
+      "themes": [
+        "Preferences and rates"
+      ],
+      "problems": [
+        "Breeds",
+        "Special needs"
+      ],
+      "excerpt": "Intro [Welcome/greetings] Thank-you for joining me. I’m meeting with pet owners like yourself to learn a bit about you and your pet. We’ll chat for a few minutes and then I’m going to have you use a website to walk through some tasks and provide your feedback. [confirm that they’ve not used Rover before] Pet and daycare past experience I see from the screener you have a dog. Tell me about them. [age, breed, name, how long owned] Does your dog have any unique quirks or special needs? When you’re…",
+      "url": "https://roverdotcom.atlassian.net/wiki/spaces/DSN/pages/4763812119/Script+Gingr+exploration+with+New-to-Rover+owners"
+    },
+    {
+      "id": "4746841435",
+      "space": "DSN",
+      "title": "Gingr experience exploration w/ new-to-Rover owners",
+      "author": "Olivia Zinn",
+      "labels": [],
+      "themes": [
+        "Business"
+      ],
+      "problems": [
+        "Joining and starting on Rover"
+      ],
+      "excerpt": "Team: Expansions Stakeholders: Clare, Jon Background The Gingr team has observed a pattern of users visiting Rover, but instead of booking a facility on platform, they’re directly booking the daycare center through the facility’s website or phone number. We estimate we’d see roughly 85% more bookings if these pet owners didn’t divert. It’s not entirely clear what’s driving this behavior. Because of low volume, efforts to learn about this directly from users booking off Rover has been difficult.…",
+      "url": "https://roverdotcom.atlassian.net/wiki/spaces/DSN/pages/4746841435/Gingr+experience+exploration+w+new-to-Rover+owners"
+    },
+    {
+      "id": "4431512956",
+      "space": "DSN",
+      "title": "Q1 2025 Studies",
+      "author": "Olivia Zinn",
+      "labels": [],
+      "themes": [
+        "Untagged"
+      ],
+      "problems": [
+        "Untagged"
+      ],
+      "excerpt": "true",
+      "url": "https://roverdotcom.atlassian.net/wiki/spaces/DSN/pages/4431512956/Q1+2025+Studies"
+    },
+    {
+      "id": "4474830906",
+      "space": "DSN",
+      "title": "January Ideation",
+      "author": "Camille Brito",
+      "labels": [],
+      "themes": [
+        "Business",
+        "Experience",
+        "Preferences and rates"
+      ],
+      "problems": [
+        "Cancellations",
+        "User friendly",
+        "Recurring bookings"
+      ],
+      "excerpt": "Topic: Recurring bookings Team: Sitter experience Scope: As an owner I want to be able to modify the current week of my recurring booking Context: Owners currently cannot make modifications to the current week or to the whole booking. We decided to take this into the scope of the team because after reviewing relationships that weren’t continuing we realised there is friction that happens, usually in the first weeks that comes from the inability to modify certain parts of the booking We observe…",
+      "url": "https://roverdotcom.atlassian.net/wiki/spaces/DSN/pages/4474830906/January+Ideation"
+    },
+    {
+      "id": "803635355",
+      "space": "DSN",
+      "title": "2019-07-01",
+      "author": "Brian Hartwell (Deactivated)",
+      "labels": [
+        "meeting-notes"
+      ],
+      "themes": [
+        "Untagged"
+      ],
+      "problems": [
+        "Untagged"
+      ],
+      "excerpt": "Date Attendees Goals Review concepts and brainstorm/decide which direction(s) to take and set a date for user testing. Notes Non-persona wizard after sign up – JM Persona wizard after sign up– BH Persona personality types – YK Pet overview – YK Completeness level of pet profile on dashboard – JM Annual check-up – BH Prototypes and scripts ready for user testing on July 15",
+      "url": "https://roverdotcom.atlassian.net/wiki/spaces/DSN/pages/803635355/2019-07-01"
+    },
+    {
+      "id": "2669248888",
+      "space": "DSN",
+      "title": "Interview notes: Catherine George (4/1/2022)",
+      "author": "Olivia Zinn",
+      "labels": [],
+      "themes": [
+        "Business",
+        "Clients",
+        "Preferences and rates"
+      ],
+      "problems": [
+        "High quality pet care",
+        "Part/full-time",
+        "Safety and aggression incidents",
+        "Puppies",
+        "Holidays",
+        "Meet and Greet"
+      ],
+      "excerpt": "Email: cathygeorgedesign@gmail.com Location: Napa, CA Services: Boarding (primary), Daycare, Housesitting, Dog Walking (migrated from DV) Recording: https://drive.google.com/file/d/1YPo9-IZ6SmeP8rNcQeUer3b8FHJAI-83/view?usp=sharing Intro Hi, this is Olivia from Rover. We arranged this call for today, is now still a good time to talk? (No? rearrange) I’m just taking the time to chat with pet sitters to learn more about your experiences on Rover. As a thank you for your time, after the call,…",
+      "url": "https://roverdotcom.atlassian.net/wiki/spaces/DSN/pages/2669248888/Interview+notes+Catherine+George+4+1+2022"
+    },
+    {
+      "id": "4021289747",
+      "space": "DSN",
+      "title": "Script: Rover Card migration validation testing",
+      "author": "Olivia Zinn",
+      "labels": [],
+      "themes": [
+        "Business"
+      ],
+      "problems": [
+        "Star ratings and reviews"
+      ],
+      "excerpt": "Prototype link: https://www.figma.com/proto/4C31qqHcDWEkuOVr3BCxoI/%5BUX2-3315%5D-UXR-Rover-Card?page-id=12988%3A1590&node-id=16102-9223&viewport=1031%2C495%2C0.26&t=EIbIiAk3Cty2NHRp-8&scaling=contain&content-scaling=fixed&starting-point-node-id=16102%3A9223&show-proto-sidebar=1&disable-default-keyboard-nav=1&hotspot-hints=0&hide-ui=1 Scenario: During this test, you will be using a prototype. That means that not everything will be clickable or functional. If there’s something you expected to be…",
+      "url": "https://roverdotcom.atlassian.net/wiki/spaces/DSN/pages/4021289747/Script+Rover+Card+migration+validation+testing"
+    },
+    {
+      "id": "5133107252",
+      "space": "DSN",
+      "title": "Dog walking flexible services concept test",
+      "author": "Olivia Zinn",
+      "labels": [],
+      "themes": [
+        "Business",
+        "Preferences and rates"
+      ],
+      "problems": [
+        "Insights",
+        "Discounts / promos",
+        "Puppies",
+        "Senior dogs",
+        "Hourly",
+        "Distance"
+      ],
+      "excerpt": "Team: Sitter Experience Stakeholders: Bernardo, Mégane, Cami Background The Sitter Experience team has an OKR in H2 around the hypothesis that allowing greater flexibility in how services are defined will result in greater LTV. In short, we believe that “Giving sitters more control over services and pricing to attract and retain their ideal clients.” We’ve already amassed feedback from sitters about what flexible service features might be valuable, but we aim to build confidence that adding…",
+      "url": "https://roverdotcom.atlassian.net/wiki/spaces/DSN/pages/5133107252/Dog+walking+flexible+services+concept+test"
+    },
+    {
+      "id": "2113372333",
+      "space": "DSN",
+      "title": "Matteo Q2 2021 OKR Timelines",
+      "author": "Matteo Giuzzi (Unlicensed)",
+      "labels": [],
+      "themes": [
+        "Business"
+      ],
+      "problems": [
+        "Insights"
+      ],
+      "excerpt": "Design Quality (Ux Metrics) 62 complete Define UX KPIs/metrics (April 2021) 331 complete Create a report template and process to measure top priority 5-10 user tasks for sitters and owners, in collaboration with Product and Analytics. 332 complete Propose a process for how designers can measure the quality of their UX designs alongside business goals 333 complete Agree with rest of the team on what are the best metrics to start measuring 342 incomplete Test at least with a couple of metrics…",
+      "url": "https://roverdotcom.atlassian.net/wiki/spaces/DSN/pages/2113372333/Matteo+Q2+2021+OKR+Timelines"
+    },
+    {
+      "id": "4085973319",
+      "space": "DSN",
+      "title": "Findings: SMS comparative testing",
+      "author": "Olivia Zinn",
+      "labels": [],
+      "themes": [
+        "Availability",
+        "Business",
+        "Communication",
+        "Experience",
+        "Preferences and rates"
+      ],
+      "problems": [
+        "Overlaps",
+        "Time of day",
+        "Service structure",
+        "Reports",
+        "Flag repeat clients",
+        "Navigation",
+        "Puppies",
+        "Meet and Greet",
+        "Recurring bookings",
+        "Special needs",
+        "Distance"
+      ],
+      "excerpt": "Summary Our proposed design is generally acceptable, but the removal of the requested times for daytime services is viewed negatively. Risk: if the times are not included in the notification, providers might ask the pet owners what time they want via SMS, rather than going into the app to look up the information. Providers prefer that pet names be included with both new and repeat customer requests, alongside the owner names. Risk: not including pet’s name could impact the sitter’s ability to…",
+      "url": "https://roverdotcom.atlassian.net/wiki/spaces/DSN/pages/4085973319/Findings+SMS+comparative+testing"
+    },
+    {
+      "id": "1903263893",
+      "space": "DSN",
+      "title": "Gino OKR Timelines",
+      "author": "Gino Valente",
+      "labels": [],
+      "themes": [
+        "Rover Cards"
+      ],
+      "problems": [
+        "GPS accuracy"
+      ],
+      "excerpt": "Embrace Profitability Support the rollout and scalability of the new sitter sign up experience #team #ssuMigration 418 incomplete Complete a research study and document recommendations for migrating current legacy SSU users 419 complete Complete research study 420 complete Review videos 421 incomplete Create analysis and recommendations 422 incomplete Deliver recommended solutions to balance supply and demand via SSU design changes (Pushed to Q2 under Facundo) Improve organic rankings by…",
+      "url": "https://roverdotcom.atlassian.net/wiki/spaces/DSN/pages/1903263893/Gino+OKR+Timelines"
+    },
+    {
+      "id": "3329066241",
+      "space": "DSN",
+      "title": "Public star rating usability testing",
+      "author": "Bernardo Prudêncio",
+      "labels": [],
+      "themes": [
+        "Business",
+        "Preferences and rates"
+      ],
+      "problems": [
+        "Star ratings and reviews",
+        "Cats and kittens"
+      ],
+      "excerpt": "Team: Matching Stakeholders: Background Describe what led to this study. Discuss the recent history of the project. Be brief, no more than five lines. Following the project of improving the way we handle star ratings, we would like to update the copy at the time of review submission to remove the callout that stars will not appear on the review. This is blocking us from having public star ratings, either now or in the future. This is a pretty common pattern across marketplaces and online…",
+      "url": "https://roverdotcom.atlassian.net/wiki/spaces/DSN/pages/3329066241/Public+star+rating+usability+testing"
+    },
+    {
+      "id": "2961473844",
+      "space": "DSN",
+      "title": "Script: Paid M&G interviews with sitters",
+      "author": "Olivia Zinn",
+      "labels": [],
+      "themes": [
+        "Preferences and rates"
+      ],
+      "problems": [
+        "Meet and Greet"
+      ],
+      "excerpt": "Intro We’d like to learn a bit more about you, some of the challenges you encounter as a pet sitter, and we’d also like get your feedback on a few programs we’re considering here at Rover. Mostly we’ll just be chatting, but later I’ll share my screen to make it easier for you to reference as we talk about some potential program ideas. As a thank you for your time, after the call, we’ll deposit $30 in your Rover account you can withdraw like regular earnings. Warm up It looks like you’ve been a…",
+      "url": "https://roverdotcom.atlassian.net/wiki/spaces/DSN/pages/2961473844/Script+Paid+M+G+interviews+with+sitters"
+    },
+    {
+      "id": "5344657422",
+      "space": "DSN",
+      "title": "Early findings: New-to-Rover groomers",
+      "author": "Olivia Zinn",
+      "labels": [],
+      "themes": [
+        "Business",
+        "Clients",
+        "Preferences and rates"
+      ],
+      "problems": [
+        "Service structure",
+        "Off-platform management",
+        "Cats and kittens",
+        "Dog sizes",
+        "Distance"
+      ],
+      "excerpt": "Areas most in need of improvement I. Lack of foundational understanding/context for how Rover works New providers don't have any sense of how a Rover profile presents services to customers, so they lack that context to help them make sense of the information they're entering and recognize why it’s relevant. Specifically, they don't know: Owners reach out to them to request services. What info owners will be asked to provide which will then be passed on to them. That they’ll have the opportunity…",
+      "url": "https://roverdotcom.atlassian.net/wiki/spaces/DSN/pages/5344657422/Early+findings+New-to-Rover+groomers"
+    },
+    {
+      "id": "5933662842",
+      "space": "DSN",
+      "title": "Conjoint Survey: Alt. Monetization [United States]",
+      "author": "Lizeth Herrera",
+      "labels": [],
+      "themes": [
+        "Untagged"
+      ],
+      "problems": [
+        "Untagged"
+      ],
+      "excerpt": "Content 1️⃣ Research Plan IN PROGRESS Yellow 2️⃣ Email survey checklist template IN PROGRESS Yellow 3️⃣ Questionnarie IN PROGRESS Yellow 4️⃣ Comms strategy IN PROGRESS Yellow 5️⃣ Results TO BE COMPLETED Other Slack channel Project folder",
+      "url": "https://roverdotcom.atlassian.net/wiki/spaces/DSN/pages/5933662842/Conjoint+Survey+Alt.+Monetization+United+States"
+    },
+    {
+      "id": "2108063748",
+      "space": "DSN",
+      "title": "Resources - Articles and Conferences",
+      "author": "Olivia Zinn",
+      "labels": [],
+      "themes": [
+        "Untagged"
+      ],
+      "problems": [
+        "Untagged"
+      ],
+      "excerpt": "Olivia’s take-aways from the Advancing Research Conference",
+      "url": "https://roverdotcom.atlassian.net/wiki/spaces/DSN/pages/2108063748/Resources+-+Articles+and+Conferences"
+    },
+    {
+      "id": "4928771168",
+      "space": "PSD",
+      "title": "Rate ordering in ledgers and settings",
+      "author": "Bernardo Prudêncio",
+      "labels": [],
+      "themes": [
+        "Business",
+        "Experience",
+        "Preferences and rates",
+        "Recurring billings"
+      ],
+      "problems": [
+        "Cancellations",
+        "Navigation",
+        "User friendly",
+        "Extended stay",
+        "Puppies",
+        "Cats and kittens",
+        "Holidays",
+        "Constant care",
+        "Pick-up and drop-off",
+        "Distance",
+        "Cancellation policies"
+      ],
+      "excerpt": "none Context This proposal stems from our ongoing work around revenue optimization and user experience for both sitters and pet parents. Our current approach to displaying rates, does not reflect how customers naturally perceive or interact with different charges. Specifically, the current structure groups together different types of rates, such as optional add-ons (e.g:. bathing/grooming) with intrinsic booking charges (e.g:. 60 min, weekends). This can create confusion for users, as it blurs…",
+      "url": "https://roverdotcom.atlassian.net/wiki/spaces/PSD/pages/4928771168/Rate+ordering+in+ledgers+and+settings"
+    },
+    {
+      "id": "3313402926",
+      "space": "DSN",
+      "title": "Google Pay Checkout: Findings",
+      "author": "Gino Valente",
+      "labels": [],
+      "themes": [
+        "Untagged"
+      ],
+      "problems": [
+        "Untagged"
+      ],
+      "excerpt": "",
+      "url": "https://roverdotcom.atlassian.net/wiki/spaces/DSN/pages/3313402926/Google+Pay+Checkout+Findings"
+    },
+    {
+      "id": "2791965706",
+      "space": "DSN",
+      "title": "Interview notes: Judy Weir 8/23/2022",
+      "author": "Olivia Zinn",
+      "labels": [],
+      "themes": [
+        "Business",
+        "Preferences and rates"
+      ],
+      "problems": [
+        "Low demand",
+        "Business insurance",
+        "Part/full-time",
+        "Cats and kittens",
+        "Meet and Greet"
+      ],
+      "excerpt": "Email: oceangal4dogs@gmail.com Location: Waldport, OR Intro Hi, this is <your name> from Rover. We arranged this call for today, is now still a good time to talk? (No? rearrange) We’re just taking the time to chat with pet sitters to learn more about your experiences on Rover. As a thank you for your time, after the call, we’ll deposit $30 in your Rover account you can withdraw like regular earnings. We’d like to record for internal purposes, just in case we miss something and need to review…",
+      "url": "https://roverdotcom.atlassian.net/wiki/spaces/DSN/pages/2791965706/Interview+notes+Judy+Weir+8+23+2022"
+    },
+    {
+      "id": "4974477882",
+      "space": "DSN",
+      "title": "Research Plan: Cat in a Flat: Validating Assumptions ",
+      "author": "Lizeth Herrera",
+      "labels": [],
+      "themes": [
+        "Availability",
+        "Business",
+        "Communication",
+        "Experience",
+        "Preferences and rates"
+      ],
+      "problems": [
+        "Overlaps",
+        "Insights",
+        "Functionality",
+        "Glitches / lag / bugs",
+        "Cats and kittens",
+        "Other pets"
+      ],
+      "excerpt": "Research Plan: Cat in a Flat: Validating Assumptions Team : Main Stakeholders : Camille Brito Markets : TBD Status : Draft Relevant links : Revisions and approvals Stakeholder Status Camille Brito Checked Person Checked Person Checked Person Checked Background In October 2024, Rover acquired Cat in a Flat, a UK-based platform specializing exclusively in cat sitting. Cat in a Flat connects cat owners with local, vetted sitters who provide in-home care, including daily visits and overnight stays,…",
+      "url": "https://roverdotcom.atlassian.net/wiki/spaces/DSN/pages/4974477882/Research+Plan+Cat+in+a+Flat+Validating+Assumptions"
+    },
+    {
+      "id": "2878013510",
+      "space": "DSN",
+      "title": "Training Offerings Landing Page Usability",
+      "author": "Olivia Zinn",
+      "labels": [],
+      "themes": [
+        "Business"
+      ],
+      "problems": [
+        "High quality pet care"
+      ],
+      "excerpt": "Team: Expansion Stakeholders: Clare and Gino Background See here for more information: Training Concept Test - Usability Test Page mockup here: https://www.figma.com/file/gFklqX3EHZ4SYrmESJSzBG/Training-Concept-Test?node-id=0%3A1&t=npnLeyTaG9kGlEdi-1 Goals The findings of this study will be used to: Inform long-term prioritization for in-person or self-guided training, in conjunction with the quant conversion data of the landing page test. Provide more context for the conversion data. To help…",
+      "url": "https://roverdotcom.atlassian.net/wiki/spaces/DSN/pages/2878013510/Training+Offerings+Landing+Page+Usability"
+    },
+    {
+      "id": "2255093982",
+      "space": "DSN",
+      "title": "Q&A Reflection on the GCA 28 days test",
+      "author": "Carey Spies (Deactivated)",
+      "labels": [],
+      "themes": [
+        "Availability",
+        "Business",
+        "Preferences and rates"
+      ],
+      "problems": [
+        "Capacity comprehension",
+        "Search rank",
+        "Short lead time"
+      ],
+      "excerpt": "Project / Test Extend Generalized Confirmed Availability to 28 Days Owners Things we know to be true from the data More confirmed available sitters appear in search results People who confirm, at the time they confirm are pretty accurate But fewer sitters come back, and they are performing worse The frequency and accuracy of confirmed avail goes down as time goes on We didn’t have any reminders or notifications We predicted this would be most useful during the summer time July 4th – Fall Could…",
+      "url": "https://roverdotcom.atlassian.net/wiki/spaces/DSN/pages/2255093982/Q+A+Reflection+on+the+GCA+28+days+test"
+    },
+    {
+      "id": "2633630222",
+      "space": "DSN",
+      "title": "Interview Notes: Michael Coelho",
+      "author": "Olivia Zinn",
+      "labels": [],
+      "themes": [
+        "Business",
+        "Clients",
+        "Experience",
+        "Preferences and rates"
+      ],
+      "problems": [
+        "Joining and starting on Rover",
+        "High quality pet care",
+        "Cancellations",
+        "Off-platform management",
+        "Glitches / lag / bugs",
+        "Breeds",
+        "Puppies",
+        "Cats and kittens",
+        "Pick-up and drop-off",
+        "Meet and Greet",
+        "Distance"
+      ],
+      "excerpt": "Email: intwocities@gmail.com Location: Oakland, CA Services: Housesitting, Drop-ins, Dog walking Phone: 808-214-2294 Interview date: 2/15/2022 Recording link: https://drive.google.com/file/d/11DuDtPqaOXdMs3Al0G6g1_koPpUsa2iH/view?usp=sharing Intro Hi, this is <your name> from Rover. We arranged this call for today, is now still a good time to talk? (No? rearrange) I’m part of the product team here at Rover. We’re just taking the time to chat with pet sitters who’ve just joined Rover, to learn…",
+      "url": "https://roverdotcom.atlassian.net/wiki/spaces/DSN/pages/2633630222/Interview+Notes+Michael+Coelho"
+    },
+    {
+      "id": "3992256576",
+      "space": "DSN",
+      "title": "Script: Training owner usability - contact to book",
+      "author": "Olivia Zinn",
+      "labels": [],
+      "themes": [
+        "Business",
+        "Communication",
+        "Preferences and rates"
+      ],
+      "problems": [
+        "High quality pet care",
+        "Video calls",
+        "Puppies"
+      ],
+      "excerpt": "Thank you for joining me. I’ve got a few questions to start us off and then I’ll put a link to a prototype in the Zoom call chat to look at together. Background Tell me a little bit about your dog. Have you ever purchased dog training in the past, either for your current dog or for a different one? Tell me a bit about what kind of training. Tasks Now we're going to take a look at a prototype together. It's a clickable prototype so not everything will work, so if you're trying to do something…",
+      "url": "https://roverdotcom.atlassian.net/wiki/spaces/DSN/pages/3992256576/Script+Training+owner+usability+-+contact+to+book"
+    },
+    {
+      "id": "3760686084",
+      "space": "DSN",
+      "title": "2024-05-06 Design Check-in",
+      "author": "Camille Brito",
+      "labels": [],
+      "themes": [
+        "Availability",
+        "Business",
+        "Preferences and rates"
+      ],
+      "problems": [
+        "Capacity comprehension",
+        "High quality pet care",
+        "Profile customization",
+        "Puppies"
+      ],
+      "excerpt": "Monday check-ins are weekly sessions to review ongoing design work between IC and manager. More info here . This week Ananda Design file reviewed https://www.figma.com/file/xGuTlRM0mjY4IaVy2OYiNh/BE-Roadmap-ideation?type=design&node-id=26%3A2025&mode=design&t=drkZOLxCa6nB5jEF-1 Status of project What was presented (brought up by the designer, include specific questions or doubts to discuss with manager) Camille asked to see what Ananda presented to Ane for future work (inspired by search…",
+      "url": "https://roverdotcom.atlassian.net/wiki/spaces/DSN/pages/3760686084/2024-05-06+Design+Check-in"
+    },
+    {
+      "id": "2644771046",
+      "space": "DSN",
+      "title": "Session Notes: Chad Carmicheal (3/4/2022)",
+      "author": "Olivia Zinn",
+      "labels": [],
+      "themes": [
+        "Business",
+        "Clients",
+        "Payments",
+        "Rover Cards"
+      ],
+      "problems": [
+        "High quality pet care",
+        "Cancellations",
+        "Dropping clients",
+        "Refunds",
+        "GPS accuracy"
+      ],
+      "excerpt": "Session recording: https://app.usertesting.com/v/624d51cd-0195-4579-baba-1ea18b6a6631?encrypted_video_handle=7bbf0b62-3711-4540-a22c-d56ae3a788d5 Email: chad.carmicheal@gmail.com Infrequent scores visitor Service Booking Score Booking Rate Review Rate Response Time Housesitting 80 25% 100% 8m Drop-ins 87 60% 0% 8m Walking 99 90% 23% 8m Service Repeat Score Total Clients Repeat Clients Repeat Stays Housesitting 63 2 0 0 Drop-ins 99 3 1 43 Walking 98 9 7 205 Intro Hello/welcome to the…",
+      "url": "https://roverdotcom.atlassian.net/wiki/spaces/DSN/pages/2644771046/Session+Notes+Chad+Carmicheal+3+4+2022"
+    },
+    {
+      "id": "3614048471",
+      "space": "DSN",
+      "title": "Script: Cat-specific Rover Cards testing",
+      "author": "Olivia Zinn",
+      "labels": [],
+      "themes": [
+        "Preferences and rates"
+      ],
+      "problems": [
+        "Cats and kittens"
+      ],
+      "excerpt": "Intro Hellos/greetings. I also have [name] with me taking notes, who may also jump in with questions. We’d like to learn a bit more about you and your experiences with using Rover to arrange care for your cat. We’ll start with some general questions and then after that, have you try out a new design and provide feedback. Warm-up Tell me a bit about your cat(s). What lead you to need someone to take care of your cat(s)? Tell me a bit about your experience using Rover. About Rover Cards When your…",
+      "url": "https://roverdotcom.atlassian.net/wiki/spaces/DSN/pages/3614048471/Script+Cat-specific+Rover+Cards+testing"
+    },
+    {
+      "id": "2714765068",
+      "space": "DSN",
+      "title": "Findings: SSS Safety Quiz",
+      "author": "Aaron Mitchell",
+      "labels": [],
+      "themes": [
+        "Untagged"
+      ],
+      "problems": [
+        "Untagged"
+      ],
+      "excerpt": "View the maze report here See my manual analysis each tester here Takeaway The quiz takes 1.5 minutes to complete on average and 90% rated it as very easy. 85% of users passed the test, with 70% getting all 4 questions correct. 95% of users found the gifs very helpful, and only 1 user returned to the learning materials for reference during the quiz. Pet owners generally knew ‘most of the material, but learned a few new things’, while non pet owners generally ‘knew some of it but learned many…",
+      "url": "https://roverdotcom.atlassian.net/wiki/spaces/DSN/pages/2714765068/Findings+SSS+Safety+Quiz"
+    },
+    {
+      "id": "2688254819",
+      "space": "DSN",
+      "title": "Findings: HVS early experiences and characteristics",
+      "author": "Olivia Zinn",
+      "labels": [],
+      "themes": [
+        "Availability",
+        "Business",
+        "Preferences and rates"
+      ],
+      "problems": [
+        "Time off / holidays",
+        "Capacity comprehension",
+        "High quality pet care",
+        "Self promotion",
+        "Part/full-time",
+        "Reports",
+        "Breeds",
+        "Cats and kittens",
+        "Energy level",
+        "Meet and Greet"
+      ],
+      "excerpt": "Identification of two segments As part of this study , it became apparent there were two rough segments emerging from the “high volume” boarding group we identified (see criteria defined here ). I’m going to refer to the two groups as “moderate-earning full-time sitters” and “high-earning full-time sitters”. While they share a number of characteristics, there are also distinctions between them I want to call out. #DEEBFF The moderate-earning FT group refers to high-volume boarding providers who…",
+      "url": "https://roverdotcom.atlassian.net/wiki/spaces/DSN/pages/2688254819/Findings+HVS+early+experiences+and+characteristics"
+    },
+    {
+      "id": "4334978553",
+      "space": "DSN",
+      "title": "M&Gs",
+      "author": "David Quiroz",
+      "labels": [],
+      "themes": [
+        "Untagged"
+      ],
+      "problems": [
+        "Untagged"
+      ],
+      "excerpt": "Note: Trying to share a large google sheet file that was having difficulty being shared via Slack. https://docs.google.com/spreadsheets/d/1G0DtAY9dv0N9GoA5IymtnOjylNadjObTdmkOfa3R-jg/edit?usp=sharing",
+      "url": "https://roverdotcom.atlassian.net/wiki/spaces/DSN/pages/4334978553/M+Gs"
+    },
+    {
+      "id": "5322612157",
+      "space": "DSN",
+      "title": "Acceleration #4: Sitter Self-Promotion Hub (vision work)",
+      "author": "David Quiroz",
+      "labels": [],
+      "themes": [
+        "Business",
+        "Preferences and rates",
+        "Rover Cards"
+      ],
+      "problems": [
+        "Joining and starting on Rover",
+        "Self promotion",
+        "Discounts / promos",
+        "GPS accuracy"
+      ],
+      "excerpt": "Team & Stakeholders: Acceleration - Aaron Mitchell, Eduard Davletshin, Lokesh Mahajan, Kathryn Mailler Researcher: David Quiroz Date: November, Q4 - 2025 Key findings: Generally, the Sitter Self Promotion (SSP) vision was received with a mostly positive reaction from the participant group of Rover sitters. Participants generally indicated that the content was informative and recognized the potential to make more money. For sitters that had a lower incentive to self-promote indicated that the…",
+      "url": "https://roverdotcom.atlassian.net/wiki/spaces/DSN/pages/5322612157/Acceleration+4+Sitter+Self-Promotion+Hub+vision+work"
+    },
+    {
+      "id": "2788885541",
+      "space": "DSN",
+      "title": "Interview notes: Holly Carpentier 8/22/2022",
+      "author": "Olivia Zinn",
+      "labels": [],
+      "themes": [
+        "Availability",
+        "Business",
+        "Clients",
+        "Experience",
+        "Preferences and rates",
+        "Requests"
+      ],
+      "problems": [
+        "Time off / holidays",
+        "High quality pet care",
+        "Part/full-time",
+        "Lost or injured pet",
+        "Glitches / lag / bugs",
+        "Navigation",
+        "Meet and Greet",
+        "Contracts"
+      ],
+      "excerpt": "Email: newdirectionk9@gmail.com Location: Toledo, WA Intro Hi, this is <your name> from Rover. We arranged this call for today, is now still a good time to talk? (No? rearrange) We’re just taking the time to chat with pet sitters to learn more about your experiences on Rover. As a thank you for your time, after the call, we’ll deposit $30 in your Rover account you can withdraw like regular earnings. We’d like to record for internal purposes, just in case we miss something and need to review it.…",
+      "url": "https://roverdotcom.atlassian.net/wiki/spaces/DSN/pages/2788885541/Interview+notes+Holly+Carpentier+8+22+2022"
+    },
+    {
+      "id": "4057695343",
+      "space": "DSN",
+      "title": "SMS revisions comparative testing",
+      "author": "Olivia Zinn",
+      "labels": [],
+      "themes": [
+        "Untagged"
+      ],
+      "problems": [
+        "Untagged"
+      ],
+      "excerpt": "Team: Marketplace + UX Content Strategy Stakeholders: David Kornfield, Kathryn, Bernardo Background The team is working on reducing the amount of SMS messages sent, in an effort to cut costs. The first step is making changes to the New Booking notification messages sent that involves rewriting the primary message and removing the secondary “times” message. More about that here: SMS copy updates Goals Inform changes to the SMS copy. Uncover any risks we should be aware of. Gather some (shallow)…",
+      "url": "https://roverdotcom.atlassian.net/wiki/spaces/DSN/pages/4057695343/SMS+revisions+comparative+testing"
+    },
+    {
+      "id": "5996249368",
+      "space": "DSN",
+      "title": "Kibble Design System: Shadow Elevation Guide for UI Elements - WIP",
+      "author": "Karolina Kopacz",
+      "labels": [],
+      "themes": [
+        "Business",
+        "Preferences and rates"
+      ],
+      "problems": [
+        "Service structure",
+        "Star ratings and reviews",
+        "Profile customization",
+        "Reports",
+        "Distance"
+      ],
+      "excerpt": "How and when to use Kibble elevation styles: elevation_low, elevation_medium, and elevation_high Overview Shadows in Kibble communicate vertical hierarchy - how far above the base surface a UI element is floating. Using them consistently across Rover helps users build an accurate mental model of what is interactive, what is temporary, and what demands immediate attention. There are three elevation tokens. Each maps to a specific layer in Rover's UI stack: Token Elevation level Layer in Rover UI…",
+      "url": "https://roverdotcom.atlassian.net/wiki/spaces/DSN/pages/5996249368/Kibble+Design+System+Shadow+Elevation+Guide+for+UI+Elements+-+WIP"
+    }
+  ]
+}

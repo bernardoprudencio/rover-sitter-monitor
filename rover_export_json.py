@@ -88,9 +88,17 @@ def top_keywords(texts, n: int = 50):
 def parse_research_row(row) -> Optional[dict]:
     """Parse a row from the 'Confluence Research' sheet tab.
 
-    Sheet columns: PageID | Updated | Space | Title | URL | Author | Excerpt | Themes | Problems | Labels
+    Sheet columns: PageID | Updated | Space | Title | URL | Author | Excerpt
+                 | Themes | Problems | Labels | Eligible | FilterReason
+
+    Rows where Eligible is explicitly "no" are dropped from the dashboard.
+    Rows from a pre-filter sheet (length < 11) are treated as eligible — they
+    get filtered the next time `rover_confluence_dump.py --retag` runs.
     """
     if len(row) < 9 or not row[0] or not row[4]:  # need PageID and URL
+        return None
+    eligible = (row[10] if len(row) > 10 else "").strip().lower()
+    if eligible == "no":
         return None
     updated = row[1]
     # Date as YYYY-MM-DD for compatibility with Reddit posts (sort/filter).
