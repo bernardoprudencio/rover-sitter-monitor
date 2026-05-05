@@ -341,8 +341,14 @@ def run_dump(args):
         new, upd = upsert_rows(ws, total_records)
         print(f"  ✅ {new} new, {upd} updated")
 
-    write_cursor(meta_ws, started_at)
-    print(f"Cursor advanced to {started_at}")
+    # Skip cursor advance on --limit runs — they're smoke tests, not full
+    # ingests. Otherwise the next scheduled run would think there is nothing
+    # to do and the rest of the corpus would never get fetched.
+    if args.limit:
+        print(f"⏸  --limit {args.limit} run — cursor NOT advanced (re-run without --limit to fully ingest)")
+    else:
+        write_cursor(meta_ws, started_at)
+        print(f"Cursor advanced to {started_at}")
 
 
 def run_retag(_args):

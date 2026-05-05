@@ -29,6 +29,10 @@ on:
         description: 'Confluence: ignore cursor and re-fetch all pages? (yes/no)'
         required: false
         default: 'no'
+      confluence_limit:
+        description: 'Confluence: cap pages per space (smoke test). Empty = no cap. Cursor is NOT advanced when set.'
+        required: false
+        default: ''
 
 permissions:
   contents: read
@@ -118,11 +122,14 @@ jobs:
             echo "::notice::CONFLUENCE_API_TOKEN not set — skipping Confluence dump"
             exit 0
           fi
-          FLAG=""
+          FLAGS=""
           if [ "${{ github.event.inputs.confluence_full }}" = "yes" ]; then
-            FLAG="--full"
+            FLAGS="$FLAGS --full"
           fi
-          python3 rover_confluence_dump.py $FLAG
+          if [ -n "${{ github.event.inputs.confluence_limit }}" ]; then
+            FLAGS="$FLAGS --limit ${{ github.event.inputs.confluence_limit }}"
+          fi
+          python3 rover_confluence_dump.py $FLAGS
 
   build-and-deploy:
     needs: [send-digest, confluence-dump]
