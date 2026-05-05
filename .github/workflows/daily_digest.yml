@@ -144,8 +144,12 @@ jobs:
     needs: [send-digest, confluence-dump]
     # Run after both ingest jobs settle. A Confluence failure must not block
     # the daily Reddit deploy, so we accept success OR skipped on either job.
+    # Only deploy from main — workflow_dispatch from a feature branch should
+    # not push code to prod GitHub Pages. Push-to-main and the daily cron
+    # both run on main, so this guard doesn't change normal behavior.
     if: |
       always() &&
+      github.ref == 'refs/heads/main' &&
       (needs.send-digest.result == 'success' || needs.send-digest.result == 'skipped') &&
       (needs.confluence-dump.result == 'success' || needs.confluence-dump.result == 'skipped' || needs.confluence-dump.result == 'failure')
     runs-on: ubuntu-latest
