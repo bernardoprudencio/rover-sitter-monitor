@@ -243,33 +243,38 @@ def write_cursor(meta_ws, iso_value: str) -> None:
     rows = meta_ws.get_all_values()
     for i, r in enumerate(rows):
         if r and r[0] == "last_run_utc":
-            meta_ws.update(f"B{i + 1}", [[iso_value]], value_input_option="RAW")
+            meta_ws.update(values=[[iso_value]], range_name=f"B{i + 1}", value_input_option="RAW")
             return
     meta_ws.append_row(["last_run_utc", iso_value], value_input_option="RAW")
 
 
 def upsert_rows(ws, records: list[list[str]]) -> tuple[int, int]:
-    """Upsert by PageID (column A). Returns (new_count, updated_count)."""
+    """Upsert by PageID (column A). Returns (new_count, updated_count).
+
+    Updates are sent via a single batch_update call to stay under the Sheets
+    per-user/per-minute write quota (default 60). Earlier per-row update()
+    loops blew the quota on the first full DSN ingest (1.4k pages).
+    """
     if not records:
         return 0, 0
     existing = ws.get_all_values()
-    header = existing[0] if existing else COLUMNS
     id_to_row = {row[0]: i + 2 for i, row in enumerate(existing[1:]) if row and row[0]}
 
+    end_col = chr(ord("A") + len(COLUMNS) - 1)
     appends: list[list[str]] = []
-    updates: list[tuple[int, list[str]]] = []
+    updates: list[dict] = []
     for rec in records:
         pid = rec[0]
         if pid in id_to_row:
-            updates.append((id_to_row[pid], rec))
+            row_num = id_to_row[pid]
+            updates.append({"range": f"A{row_num}:{end_col}{row_num}", "values": [rec]})
         else:
             appends.append(rec)
 
     if appends:
         ws.append_rows(appends, value_input_option="RAW")
-    for row_num, rec in updates:
-        ws.update(f"A{row_num}:{chr(ord('A') + len(COLUMNS) - 1)}{row_num}",
-                  [rec], value_input_option="RAW")
+    if updates:
+        ws.batch_update(updates, value_input_option="RAW")
 
     return len(appends), len(updates)
 
@@ -385,8 +390,8 @@ def run_retag(_args):
 
     end_row = 1 + len(data)
     # Themes column is H (index 7 → "H"), Problems is I (index 8 → "I")
-    ws.update(f"H2:H{end_row}", theme_updates, value_input_option="RAW")
-    ws.update(f"I2:I{end_row}", problem_updates, value_input_option="RAW")
+    ws.update(values=theme_updates, range_name=f"H2:H{end_row}", value_input_option="RAW")
+    ws.update(values=problem_updates, range_name=f"I2:I{end_row}", value_input_option="RAW")
     print(f"  ✅ Retagged {len(data)} rows — {changed} tags changed.")
 
 
