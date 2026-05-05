@@ -34,6 +34,31 @@ export interface Meta {
   date_range: { start: string | null; end: string | null };
   posts_file: string;
   aggregates_file: string;
+  research_file?: string;
+  research_aggregates_file?: string;
+  research_count?: number;
+}
+
+export interface ResearchDoc {
+  id: string;
+  updated: string;
+  date: string;
+  space: string;
+  title: string;
+  url: string;
+  author: string;
+  excerpt: string;
+  themes: string[];
+  problems: string[];
+  labels: string[];
+}
+
+export interface ResearchAggregates {
+  themeCounts: Record<string, number>;
+  problemCounts: Record<string, number>;
+  spaceCounts: Record<string, number>;
+  untaggedCount: number;
+  totalDocs: number;
 }
 
 export interface ThemeFilterState {

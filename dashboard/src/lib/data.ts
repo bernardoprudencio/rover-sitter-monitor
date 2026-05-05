@@ -1,4 +1,11 @@
-import type { Aggregates, Meta, Post, Taxonomy } from '../types';
+import type {
+  Aggregates,
+  Meta,
+  Post,
+  ResearchAggregates,
+  ResearchDoc,
+  Taxonomy,
+} from '../types';
 
 const DATA_BASE = `${import.meta.env.BASE_URL}data/`;
 
@@ -20,6 +27,13 @@ export async function fetchAggregates(meta: Meta): Promise<Aggregates> {
   return fetchJson<Aggregates>(`${DATA_BASE}${meta.aggregates_file}`);
 }
 
+export async function fetchResearchAggregates(
+  meta: Meta,
+): Promise<ResearchAggregates | null> {
+  if (!meta.research_aggregates_file) return null;
+  return fetchJson<ResearchAggregates>(`${DATA_BASE}${meta.research_aggregates_file}`);
+}
+
 const postsCache = new Map<string, Promise<Post[]>>();
 
 export function loadPosts(meta: Meta): Promise<Post[]> {
@@ -28,5 +42,17 @@ export function loadPosts(meta: Meta): Promise<Post[]> {
   if (existing) return existing;
   const p = fetchJson<Post[]>(`${DATA_BASE}${meta.posts_file}`);
   postsCache.set(key, p);
+  return p;
+}
+
+const researchCache = new Map<string, Promise<ResearchDoc[]>>();
+
+export function loadResearch(meta: Meta): Promise<ResearchDoc[]> {
+  if (!meta.research_file) return Promise.resolve([]);
+  const key = meta.research_file;
+  const existing = researchCache.get(key);
+  if (existing) return existing;
+  const p = fetchJson<ResearchDoc[]>(`${DATA_BASE}${meta.research_file}`);
+  researchCache.set(key, p);
   return p;
 }

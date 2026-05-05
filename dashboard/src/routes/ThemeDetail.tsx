@@ -13,6 +13,7 @@ import {
 } from 'recharts';
 import { useData } from '../context/DataContext';
 import { usePosts } from '../hooks/usePosts';
+import { useResearch } from '../hooks/useResearch';
 import { useThemeFilters } from '../hooks/useThemeFilters';
 import { buildSlugToTheme } from '../lib/slug';
 import {
@@ -28,6 +29,7 @@ import { themeColor } from '../components/ThemeCard';
 import { StatTile } from '../components/StatTile';
 import { FilterBar, presetToRange } from '../components/FilterBar';
 import { PostList } from '../components/PostList';
+import { ResearchList } from '../components/ResearchList';
 import { ExportButton } from '../components/ExportButton';
 import { Skeleton } from '../components/Skeleton';
 
@@ -35,6 +37,7 @@ export default function ThemeDetail() {
   const { slug } = useParams<{ slug: string }>();
   const { aggregates, taxonomy } = useData();
   const { posts, loading } = usePosts();
+  const { research, loading: researchLoading } = useResearch();
   const [filters, setFilters] = useThemeFilters();
 
   const slugToTheme = useMemo(() => buildSlugToTheme(taxonomy), [taxonomy]);
@@ -93,6 +96,15 @@ export default function ThemeDetail() {
       q: filters.q,
     });
   }, [posts, theme, filters, loading]);
+
+  const filteredResearch = useMemo(() => {
+    if (researchLoading) return [];
+    return research.filter((d) => {
+      if (!d.themes.includes(theme)) return false;
+      if (filters.problems.length && !d.problems.some((p) => filters.problems.includes(p))) return false;
+      return true;
+    });
+  }, [research, theme, filters.problems, researchLoading]);
 
   const color = themeColor(theme);
 
@@ -256,6 +268,42 @@ export default function ThemeDetail() {
           </span>
         }
       />
+
+      {(researchLoading || filteredResearch.length > 0) && (
+        <section className="rounded-xl bg-white p-4 shadow-card">
+          <div className="flex items-baseline justify-between">
+            <h2 className="text-h2 text-neutral-900">Internal research</h2>
+            <span className="text-caption text-neutral-500">
+              {researchLoading ? '…' : `${filteredResearch.length} doc${filteredResearch.length === 1 ? '' : 's'}`}
+              {' · '}
+              <Link to="/research" className="text-primary-700 hover:underline">
+                view all
+              </Link>
+            </span>
+          </div>
+          <p className="mt-1 text-caption text-neutral-500">
+            Confluence pages tagged with this theme
+            {filters.problems.length > 0 && ' (filtered to selected sub-problems)'}
+          </p>
+          <div className="mt-3">
+            {researchLoading ? (
+              <Skeleton rows={3} />
+            ) : (
+              <ResearchList
+                docs={filteredResearch}
+                onProblemClick={(p) => {
+                  if (!filters.problems.includes(p)) {
+                    setFilters({ problems: [...filters.problems, p] });
+                  }
+                }}
+                showResetAction={false}
+                emptyMessage="No research tagged with this theme yet."
+                maxHeight="32rem"
+              />
+            )}
+          </div>
+        </section>
+      )}
 
       {loading ? (
         <Skeleton rows={6} />

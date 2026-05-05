@@ -1,12 +1,18 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
-import type { Aggregates, Meta, Taxonomy } from '../types';
-import { fetchAggregates, fetchMeta, fetchTaxonomy } from '../lib/data';
+import type { Aggregates, Meta, ResearchAggregates, Taxonomy } from '../types';
+import {
+  fetchAggregates,
+  fetchMeta,
+  fetchResearchAggregates,
+  fetchTaxonomy,
+} from '../lib/data';
 import { Skeleton } from '../components/Skeleton';
 
 interface DataContextValue {
   meta: Meta;
   taxonomy: Taxonomy;
   aggregates: Aggregates;
+  researchAggregates: ResearchAggregates | null;
 }
 
 const DataContext = createContext<DataContextValue | null>(null);
@@ -20,8 +26,12 @@ export function DataProvider({ children }: { children: ReactNode }) {
     (async () => {
       try {
         const meta = await fetchMeta();
-        const [taxonomy, aggregates] = await Promise.all([fetchTaxonomy(), fetchAggregates(meta)]);
-        if (!cancelled) setValue({ meta, taxonomy, aggregates });
+        const [taxonomy, aggregates, researchAggregates] = await Promise.all([
+          fetchTaxonomy(),
+          fetchAggregates(meta),
+          fetchResearchAggregates(meta),
+        ]);
+        if (!cancelled) setValue({ meta, taxonomy, aggregates, researchAggregates });
       } catch (e) {
         if (!cancelled) setError(e instanceof Error ? e.message : String(e));
       }

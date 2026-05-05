@@ -9,6 +9,7 @@ const Overview = lazy(() => import('./routes/Overview'));
 const ThemeDetail = lazy(() => import('./routes/ThemeDetail'));
 const Trends = lazy(() => import('./routes/Trends'));
 const Untagged = lazy(() => import('./routes/Untagged'));
+const Research = lazy(() => import('./routes/Research'));
 
 export default function App() {
   return (
@@ -22,6 +23,7 @@ export default function App() {
                 <Route path="theme/:slug" element={<ThemeDetail />} />
                 <Route path="trends" element={<Trends />} />
                 <Route path="untagged" element={<Untagged />} />
+                <Route path="research" element={<Research />} />
                 <Route
                   path="*"
                   element={

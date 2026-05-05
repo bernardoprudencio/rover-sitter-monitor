@@ -22,3 +22,10 @@ export const trendsParsers = {
 export const untaggedParsers = {
   q: parseAsString.withDefault(''),
 };
+
+export const researchParsers = {
+  themes: parseAsArrayOf(parseAsString).withDefault([]),
+  problems: parseAsArrayOf(parseAsString).withDefault([]),
+  spaces: parseAsArrayOf(parseAsString).withDefault([]),
+  q: parseAsString.withDefault(''),
+};

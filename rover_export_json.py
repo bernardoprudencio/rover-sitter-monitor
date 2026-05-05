@@ -85,6 +85,61 @@ def top_keywords(texts, n: int = 50):
     return [{"word": w, "count": c} for w, c in freq.most_common(n)]
 
 
+def parse_research_row(row) -> Optional[dict]:
+    """Parse a row from the 'Confluence Research' sheet tab.
+
+    Sheet columns: PageID | Updated | Space | Title | URL | Author | Excerpt | Themes | Problems | Labels
+    """
+    if len(row) < 9 or not row[0] or not row[4]:  # need PageID and URL
+        return None
+    updated = row[1]
+    # Date as YYYY-MM-DD for compatibility with Reddit posts (sort/filter).
+    date_str = updated[:10] if updated else ""
+    themes = [t for t in (row[7] or "").split(", ") if t]
+    problems = [p for p in (row[8] or "").split(", ") if p]
+    labels = [l for l in ((row[9] if len(row) > 9 else "") or "").split(", ") if l]
+    return {
+        "id": row[0],
+        "updated": updated,
+        "date": date_str,
+        "space": row[2],
+        "title": row[3],
+        "url": row[4],
+        "author": row[5],
+        "excerpt": truncate_preview(row[6] or ""),
+        "themes": themes,
+        "problems": problems,
+        "labels": labels,
+    }
+
+
+def build_research_aggregates(docs) -> dict:
+    """Counts by theme, problem, and space for research docs."""
+    theme_counts: Counter = Counter()
+    problem_counts: Counter = Counter()
+    space_counts: Counter = Counter()
+    untagged = 0
+
+    for d in docs:
+        if d["themes"] == ["Untagged"] or not d["themes"]:
+            untagged += 1
+        else:
+            for t in d["themes"]:
+                theme_counts[t] += 1
+            for pr in d["problems"]:
+                problem_counts[pr] += 1
+        if d["space"]:
+            space_counts[d["space"]] += 1
+
+    return {
+        "themeCounts": dict(theme_counts),
+        "problemCounts": dict(problem_counts),
+        "spaceCounts": dict(space_counts),
+        "untaggedCount": untagged,
+        "totalDocs": len(docs),
+    }
+
+
 def build_aggregates(posts) -> dict:
     """Precompute aggregates for instant Overview/Trends render.
 
@@ -137,8 +192,13 @@ def atomic_write(out_dir: str, filename: str, content) -> None:
     os.replace(tmp, os.path.join(out_dir, filename))
 
 
-def write_dataset(posts, taxonomy, out_dir: str) -> dict:
-    """Write the 4-file dataset to out_dir. Returns the meta dict."""
+def write_dataset(posts, taxonomy, out_dir: str, research=None) -> dict:
+    """Write the dataset to out_dir. Returns the meta dict.
+
+    If `research` is provided (list of ResearchDoc), also writes
+    research.<hash>.json + research_aggregates.<hash>.json and adds
+    research_file / research_aggregates_file / research_count to meta.
+    """
     os.makedirs(out_dir, exist_ok=True)
     aggs = build_aggregates(posts)
 
@@ -162,6 +222,17 @@ def write_dataset(posts, taxonomy, out_dir: str) -> dict:
         "posts_file": posts_name,
         "aggregates_file": aggs_name,
     }
+
+    if research is not None:
+        research_aggs = build_research_aggregates(research)
+        research_name = hashed_name("research", {"r": research})
+        research_aggs_name = hashed_name("research_aggregates", research_aggs)
+        atomic_write(out_dir, research_name, research)
+        atomic_write(out_dir, research_aggs_name, research_aggs)
+        meta["research_file"] = research_name
+        meta["research_aggregates_file"] = research_aggs_name
+        meta["research_count"] = len(research)
+
     # meta.json LAST — a crashed run never leaves a partial dataset visible.
     atomic_write(out_dir, "meta.json", meta)
     return meta
@@ -192,12 +263,33 @@ def main() -> None:
         (p for p in (parse_row(r) for r in rows) if p),
         key=lambda p: p["date"],
     )
+
+    research = None
+    try:
+        import gspread  # noqa: WPS433
+        sheet = ws.spreadsheet
+        try:
+            research_ws = sheet.worksheet("Confluence Research")
+            r_rows = research_ws.get_all_values()[1:]
+            research = sorted(
+                (d for d in (parse_research_row(r) for r in r_rows) if d),
+                key=lambda d: d.get("updated", ""),
+                reverse=True,
+            )
+        except gspread.exceptions.WorksheetNotFound:
+            research = None
+    except Exception as e:
+        print(f"  ⚠ skipping research export: {e}")
+        research = None
+
     taxonomy = load_taxonomy()
-    meta = write_dataset(posts, taxonomy, args.out)
+    meta = write_dataset(posts, taxonomy, args.out, research=research)
     print(f"Wrote {meta['post_count']} posts → {args.out}")
     print(f"  posts:      {meta['posts_file']}")
     print(f"  aggregates: {meta['aggregates_file']}")
     print(f"  date range: {meta['date_range']['start']} → {meta['date_range']['end']}")
+    if "research_file" in meta:
+        print(f"  research:   {meta['research_file']} ({meta['research_count']} docs)")
 
 
 if __name__ == "__main__":

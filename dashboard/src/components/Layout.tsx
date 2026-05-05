@@ -6,6 +6,7 @@ import { formatAbsolute, formatCount, formatRelative } from '../lib/format';
 const NAV_ITEMS = [
   { to: '/', label: 'Overview', icon: '◧' },
   { to: '/trends', label: 'Trends', icon: '↗' },
+  { to: '/research', label: 'Research', icon: '✎' },
   { to: '/untagged', label: 'Untagged', icon: '?' },
 ];
 
