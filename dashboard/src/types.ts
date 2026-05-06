@@ -8,6 +8,7 @@ export interface Post {
   themes: string[];
   problems: string[];
   subreddit: string;
+  llmTagged?: boolean;
 }
 
 export interface Aggregates {
@@ -37,6 +38,7 @@ export interface Meta {
   research_file?: string;
   research_aggregates_file?: string;
   research_count?: number;
+  sheet_url?: string;
 }
 
 export interface ResearchDoc {
@@ -51,6 +53,7 @@ export interface ResearchDoc {
   themes: string[];
   problems: string[];
   labels: string[];
+  llmTagged?: boolean;
 }
 
 export interface ResearchAggregates {

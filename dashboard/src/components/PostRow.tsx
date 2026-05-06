@@ -25,6 +25,14 @@ export function PostRow({
         <span>{formatDate(post.date)}</span>
         <span>·</span>
         <span>u/{post.author}</span>
+        {post.llmTagged && (
+          <span
+            title="Tagged by Claude (~92% accuracy)"
+            className="rounded-full bg-primary-50 px-1.5 py-0.5 font-mono text-[10px] text-primary-700"
+          >
+            LLM
+          </span>
+        )}
         {post.problems
           .filter((p) => p !== 'Untagged')
           .map((p) => (

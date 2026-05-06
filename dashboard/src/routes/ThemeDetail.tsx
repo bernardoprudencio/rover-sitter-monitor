@@ -94,7 +94,7 @@ export default function ThemeDetail() {
       from: filters.from ?? undefined,
       to: filters.to ?? undefined,
       q: filters.q,
-    });
+    }).sort((a, b) => b.date.localeCompare(a.date));
   }, [posts, theme, filters, loading]);
 
   const filteredResearch = useMemo(() => {
