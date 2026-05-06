@@ -52,7 +52,8 @@ def truncate_preview(s: str) -> str:
 def parse_row(row) -> Optional[dict]:
     """Parse a sheet row into a post dict. Returns None if row is malformed.
 
-    Sheet columns: Date | Title | URL | Author | Preview | Themes | Problems | Subreddit
+    Sheet columns: Date | Title | URL | Author | Preview | Themes | Problems
+                 | Subreddit | LLMTaggedAt
     """
     if len(row) < 8 or not row[2]:
         return None
@@ -62,6 +63,7 @@ def parse_row(row) -> Optional[dict]:
         return None
     themes = [t for t in (row[5] or "").split(", ") if t]
     problems = [p for p in (row[6] or "").split(", ") if p]
+    llm_tagged = bool(row[8].strip()) if len(row) > 8 and row[8] else False
     return {
         "id": hashlib.sha1(row[2].encode()).hexdigest()[:10],
         "date": dt.strftime("%Y-%m-%d"),
@@ -72,6 +74,7 @@ def parse_row(row) -> Optional[dict]:
         "themes": themes,
         "problems": problems,
         "subreddit": row[7],
+        "llmTagged": llm_tagged,
     }
 
 
@@ -90,6 +93,7 @@ def parse_research_row(row) -> Optional[dict]:
 
     Sheet columns: PageID | Updated | Space | Title | URL | Author | Excerpt
                  | Themes | Problems | Labels | Eligible | FilterReason
+                 | LLMTaggedAt
 
     Rows where Eligible is explicitly "no" are dropped from the dashboard.
     Rows from a pre-filter sheet (length < 11) are treated as eligible — they
@@ -106,6 +110,7 @@ def parse_research_row(row) -> Optional[dict]:
     themes = [t for t in (row[7] or "").split(", ") if t]
     problems = [p for p in (row[8] or "").split(", ") if p]
     labels = [l for l in ((row[9] if len(row) > 9 else "") or "").split(", ") if l]
+    llm_tagged = bool(row[12].strip()) if len(row) > 12 and row[12] else False
     return {
         "id": row[0],
         "updated": updated,
@@ -118,6 +123,7 @@ def parse_research_row(row) -> Optional[dict]:
         "themes": themes,
         "problems": problems,
         "labels": labels,
+        "llmTagged": llm_tagged,
     }
 
 
@@ -200,7 +206,7 @@ def atomic_write(out_dir: str, filename: str, content) -> None:
     os.replace(tmp, os.path.join(out_dir, filename))
 
 
-def write_dataset(posts, taxonomy, out_dir: str, research=None) -> dict:
+def write_dataset(posts, taxonomy, out_dir: str, research=None, sheet_url: Optional[str] = None) -> dict:
     """Write the dataset to out_dir. Returns the meta dict.
 
     If `research` is provided (list of ResearchDoc), also writes
@@ -241,6 +247,9 @@ def write_dataset(posts, taxonomy, out_dir: str, research=None) -> dict:
         meta["research_aggregates_file"] = research_aggs_name
         meta["research_count"] = len(research)
 
+    if sheet_url:
+        meta["sheet_url"] = sheet_url
+
     # meta.json LAST — a crashed run never leaves a partial dataset visible.
     atomic_write(out_dir, "meta.json", meta)
     return meta
@@ -266,6 +275,7 @@ def main() -> None:
     from rover_sheet_dump import get_sheet  # noqa: WPS433
 
     ws = get_sheet()
+    sheet_url = f"https://docs.google.com/spreadsheets/d/{ws.spreadsheet.id}"
     rows = ws.get_all_values()[1:]  # skip header
     posts = sorted(
         (p for p in (parse_row(r) for r in rows) if p),
@@ -291,7 +301,7 @@ def main() -> None:
         research = None
 
     taxonomy = load_taxonomy()
-    meta = write_dataset(posts, taxonomy, args.out, research=research)
+    meta = write_dataset(posts, taxonomy, args.out, research=research, sheet_url=sheet_url)
     print(f"Wrote {meta['post_count']} posts → {args.out}")
     print(f"  posts:      {meta['posts_file']}")
     print(f"  aggregates: {meta['aggregates_file']}")

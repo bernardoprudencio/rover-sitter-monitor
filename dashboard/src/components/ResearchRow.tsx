@@ -25,6 +25,14 @@ export function ResearchRow({
         <span className="rounded-full bg-primary-50 px-2 py-0.5 font-mono text-caption text-primary-700">
           {doc.space}
         </span>
+        {doc.llmTagged && (
+          <span
+            title="Tagged by Claude (~92% accuracy)"
+            className="rounded-full bg-primary-50 px-1.5 py-0.5 font-mono text-[10px] text-primary-700"
+          >
+            LLM
+          </span>
+        )}
         {doc.author && <span>· {doc.author}</span>}
         {doc.problems
           .filter((p) => p !== 'Untagged')

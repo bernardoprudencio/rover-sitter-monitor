@@ -8,6 +8,7 @@ const NAV_ITEMS = [
   { to: '/trends', label: 'Trends', icon: '↗' },
   { to: '/research', label: 'Research', icon: '✎' },
   { to: '/untagged', label: 'Untagged', icon: '?' },
+  { to: '/how-it-works', label: 'How it works', icon: '✦' },
 ];
 
 export function Layout() {
@@ -68,13 +69,16 @@ export function Layout() {
             <span title={formatAbsolute(meta.generated_at)}>{formatRelative(meta.generated_at)}</span>
             <span>·</span>
             <span>{formatCount(meta.post_count)} posts</span>
-            <a
-              href="#"
-              className="text-primary-600 hover:text-primary-700"
-              title="Source sheet (configure in CI)"
-            >
-              View source sheet ↗
-            </a>
+            {meta.sheet_url && (
+              <a
+                href={meta.sheet_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primary-600 hover:text-primary-700"
+              >
+                View source sheet ↗
+              </a>
+            )}
           </div>
         </header>
         <main className="min-w-0 flex-1 px-6 py-6">
