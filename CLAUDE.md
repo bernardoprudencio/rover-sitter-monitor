@@ -13,20 +13,16 @@ Both surfaces consume `taxonomy.json` (the single source of truth) and render on
 - **Audit accuracy:** **84.4% correct**, 10.4% FP, Wilson 95% CI 79.4–88.4%
 - **Trajectory:** baseline 83.6% → Round 3 57.2% (recall expansion over-corrected) → **Round 4 84.4%** (FP cleanup recovered)
 
-## What to do next: Round 5
+## Tagging method (as of 2026-05-06)
 
-Full plan with concrete keyword recipes lives in [reviews/2026-05-05-tag-review-round4.md](reviews/2026-05-05-tag-review-round4.md), starting at "Round 5 plan" (~line 138). Read that file first.
+The keyword tagger in [rover_sheet_dump.py:48](rover_sheet_dump.py:48) is the **fallback** baseline — used by the daily GitHub Actions cron when ingesting new posts. The **primary** tagger is now a Claude Code subagent, validated to ~92% accuracy vs ~32% for keyword R4 in [scripts/eval_tagger/outputs/phase1/summary.md](scripts/eval_tagger/outputs/phase1/summary.md). To bring the sheet up to subagent quality, run one of these slash commands periodically from a Claude Code session in this repo:
 
-Headline targets: `correct ≥ 88%`, FP rate ≤ 6%.
+- **`/retag-new [reddit|confluence|both] [--since=Nd] [--force]`** — re-tag recent rows (default 7d, both sources). Skips rows already LLM-tagged via the `LLMTaggedAt` column; pass `--force` to re-evaluate them after a taxonomy change. Run weekly-ish to keep the dashboard current.
+- **`/retag-all [reddit|confluence|both] [--limit=N] [--force]`** — resumable historical retag of every row. Progress is tracked durably in the sheet's `LLMTaggedAt` column (col I for Reddit, col M for Confluence) — empty cell = needs LLM tag. Run repeatedly until no rows remain undone. Default 250 rows/session (~8 min).
 
-Priority levers (all FP cleanup, no recall expansion):
+Both commands: read sheet (skipping LLM-tagged rows by default) → spawn subagent(s) in parallel → validate against taxonomy whitelist → batch-update Themes/Problems AND `LLMTaggedAt` columns → refresh dashboard JSON. They do NOT auto-commit dashboard data — review and push manually when satisfied.
 
-1. **`cat` / `cats` cluster** — 7 of 26 FPs (incl. `cat scan` medical). Drop bare `cat`, keep `cats`/`kitten`/`feline`, add specific phrases (`cat sitter`, `cat boarding`, `kitty`, etc).
-2. **`training`** in High quality pet care — 3 FPs. Replace with `sitter training`, `training certification`, `dog trainer` (sitter-as-trainer).
-3. **`breed`** in Breeds — 3 FPs. Replace with `breed restriction`, `dog breed`, `breed concern`, `breed ban`.
-4. **`unavailable`** — 2 FPs. Replace with `mark unavailable`, `set unavailable`, `i'm unavailable`.
-5. **`more clients`, `navigate`, `can't find`** — 2 FPs each. See review for replacements.
-6. **Spot-check Reminders + Trial recall** — Round 4 narrowing produced zero firings in the sample. Sample 50 untagged posts and check whether topic is genuinely rare or whitelist is too strict.
+The Round-5 keyword work is **deprioritized** — Phase 1 evaluation showed only +3/250 net wins over Round 4. Polishing keywords beyond R4 has near-zero ROI now that the subagent path is live.
 
 ## How to run a round
 
