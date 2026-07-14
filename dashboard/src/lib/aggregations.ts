@@ -88,6 +88,7 @@ export interface PostFilters {
   from?: string | null;
   to?: string | null;
   q?: string;
+  tag?: 'all' | 'llm' | 'keyword';
 }
 
 export function filterPosts(posts: Post[], f: PostFilters): Post[] {
@@ -99,6 +100,8 @@ export function filterPosts(posts: Post[], f: PostFilters): Post[] {
   return posts.filter((p) => {
     if (themes && !p.themes.some((t) => themes.has(t))) return false;
     if (problems && !p.problems.some((pr) => problems.has(pr))) return false;
+    if (f.tag === 'llm' && !p.llmTagged) return false;
+    if (f.tag === 'keyword' && p.llmTagged) return false;
     if (from && p.date < from) return false;
     if (to && p.date > to) return false;
     if (q) {

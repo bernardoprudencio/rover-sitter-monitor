@@ -4,6 +4,7 @@ import clsx from 'clsx';
 import { useData } from '../context/DataContext';
 import { useResearch } from '../hooks/useResearch';
 import { ResearchList } from '../components/ResearchList';
+import { TagSourceToggle } from '../components/TagSourceToggle';
 import { Skeleton } from '../components/Skeleton';
 import { researchParsers } from '../lib/filters';
 import { formatCount } from '../lib/format';
@@ -25,6 +26,8 @@ export default function Research() {
       if (state.themes.length && !d.themes.some((t) => state.themes.includes(t))) return false;
       if (state.problems.length && !d.problems.some((p) => state.problems.includes(p))) return false;
       if (state.spaces.length && !state.spaces.includes(d.space)) return false;
+      if (state.tag === 'llm' && !d.llmTagged) return false;
+      if (state.tag === 'keyword' && d.llmTagged) return false;
       if (q) {
         const hay = `${d.title} ${d.excerpt}`.toLowerCase();
         if (!hay.includes(q)) return false;
@@ -43,7 +46,7 @@ export default function Research() {
   };
 
   const reset = () =>
-    setState({ themes: [], problems: [], spaces: [], q: '' });
+    setState({ themes: [], problems: [], spaces: [], q: '', tag: 'all' });
 
   return (
     <div className="space-y-6">
@@ -62,7 +65,7 @@ export default function Research() {
           <section className="rounded-xl bg-white p-4 shadow-card">
             <div className="flex items-center justify-between">
               <h2 className="text-h3 text-neutral-900">Search</h2>
-              {state.q || state.themes.length || state.problems.length || state.spaces.length ? (
+              {state.q || state.themes.length || state.problems.length || state.spaces.length || state.tag !== 'all' ? (
                 <button
                   type="button"
                   onClick={reset}
@@ -123,6 +126,17 @@ export default function Research() {
                   {t}
                 </button>
               ))}
+            </div>
+          </section>
+
+          <section className="rounded-xl bg-white p-4 shadow-card">
+            <h2 className="text-h3 text-neutral-900">Tag source</h2>
+            <div className="mt-2">
+              <TagSourceToggle
+                value={state.tag}
+                onChange={(t) => setState({ tag: t })}
+                showLabel={false}
+              />
             </div>
           </section>
         </aside>
