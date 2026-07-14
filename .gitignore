@@ -6,6 +6,7 @@ credentials.json
 !taxonomy.json
 !tsconfig.json
 !tsconfig.node.json
+!.claude/launch.json
 !dashboard/public/data/.gitkeep
 !reviews/*tag-review*.json
 !reviews/*confluence-discovery*.json
