@@ -193,34 +193,37 @@ def write_tags(source: str, tags_by_url: dict[str, dict]) -> int:
 
     url_i = _col_idx(schema["url_col"])
 
-    # Build URL -> row_num map
-    url_to_row: dict[str, int] = {}
+    # Build URL -> all matching row_nums (a URL can appear in duplicate rows)
+    url_to_rows: dict[str, list[int]] = {}
     for i, row in enumerate(all_rows[1:], start=2):
         u = row[url_i] if len(row) > url_i else ""
         if u:
-            url_to_row[u] = i
+            url_to_rows.setdefault(u, []).append(i)
 
     now_iso = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     updates = []
     skipped_urls = []
+    rows_updated = 0
     for url, tags in tags_by_url.items():
-        row_num = url_to_row.get(url)
-        if row_num is None:
+        row_nums = url_to_rows.get(url)
+        if not row_nums:
             skipped_urls.append(url)
             continue
         themes_str = ", ".join(tags.get("themes", []) or ["Untagged"])
         problems_str = ", ".join(tags.get("problems", []) or ["Untagged"])
-        # Two batch entries per row: themes+problems together, then the LLMTaggedAt
-        # cell separately. Confluence has Eligible/FilterReason between Problems (I)
-        # and LLMTaggedAt (M); writing as one range would clobber them.
-        updates.append({
-            "range": f"{schema['themes_col']}{row_num}:{schema['problems_col']}{row_num}",
-            "values": [[themes_str, problems_str]],
-        })
-        updates.append({
-            "range": f"{schema['llm_tagged_col']}{row_num}",
-            "values": [[now_iso]],
-        })
+        for row_num in row_nums:
+            # Two batch entries per row: themes+problems together, then the LLMTaggedAt
+            # cell separately. Confluence has Eligible/FilterReason between Problems (I)
+            # and LLMTaggedAt (M); writing as one range would clobber them.
+            updates.append({
+                "range": f"{schema['themes_col']}{row_num}:{schema['problems_col']}{row_num}",
+                "values": [[themes_str, problems_str]],
+            })
+            updates.append({
+                "range": f"{schema['llm_tagged_col']}{row_num}",
+                "values": [[now_iso]],
+            })
+            rows_updated += 1
 
     if skipped_urls:
         print(f"WARNING: {len(skipped_urls)} URLs not found in sheet — skipped (first 3: {skipped_urls[:3]})")
@@ -228,7 +231,7 @@ def write_tags(source: str, tags_by_url: dict[str, dict]) -> int:
     if not updates:
         return 0
     ws.batch_update(updates, value_input_option="RAW")
-    return len(updates) // 2
+    return rows_updated
 
 
 # ──────────────── CLI ────────────────
