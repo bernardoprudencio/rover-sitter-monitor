@@ -30,6 +30,7 @@ import { StatTile } from '../components/StatTile';
 import { FilterBar, presetToRange } from '../components/FilterBar';
 import { PostList } from '../components/PostList';
 import { ResearchList } from '../components/ResearchList';
+import { TagSourceToggle } from '../components/TagSourceToggle';
 import { ExportButton } from '../components/ExportButton';
 import { Skeleton } from '../components/Skeleton';
 
@@ -94,6 +95,7 @@ export default function ThemeDetail() {
       from: filters.from ?? undefined,
       to: filters.to ?? undefined,
       q: filters.q,
+      tag: filters.tag,
     }).sort((a, b) => b.date.localeCompare(a.date));
   }, [posts, theme, filters, loading]);
 
@@ -102,9 +104,11 @@ export default function ThemeDetail() {
     return research.filter((d) => {
       if (!d.themes.includes(theme)) return false;
       if (filters.problems.length && !d.problems.some((p) => filters.problems.includes(p))) return false;
+      if (filters.tag === 'llm' && !d.llmTagged) return false;
+      if (filters.tag === 'keyword' && d.llmTagged) return false;
       return true;
     });
-  }, [research, theme, filters.problems, researchLoading]);
+  }, [research, theme, filters.problems, filters.tag, researchLoading]);
 
   const color = themeColor(theme);
 
@@ -263,9 +267,15 @@ export default function ThemeDetail() {
           setFilters({ from: r.from, to: r.to });
         }}
         rightSlot={
-          <span className="text-caption text-neutral-500">
-            {formatCount(filtered.length)} posts
-          </span>
+          <div className="flex items-center gap-4">
+            <TagSourceToggle
+              value={filters.tag}
+              onChange={(t) => setFilters({ tag: t })}
+            />
+            <span className="text-caption text-neutral-500">
+              {formatCount(filtered.length)} posts
+            </span>
+          </div>
         }
       />
 
@@ -316,7 +326,7 @@ export default function ThemeDetail() {
             }
           }}
           onReset={() =>
-            setFilters({ problems: [], from: null, to: null, q: '' })
+            setFilters({ problems: [], from: null, to: null, q: '', tag: 'all' })
           }
         />
       )}

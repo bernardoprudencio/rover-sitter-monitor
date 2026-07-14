@@ -6,6 +6,7 @@ export const themeDetailParsers = {
   to: parseAsString,
   q: parseAsString.withDefault(''),
   granularity: parseAsStringEnum(['daily', 'weekly'] as const).withDefault('weekly'),
+  tag: parseAsStringEnum(['all', 'llm', 'keyword'] as const).withDefault('all'),
 };
 
 export const triageParsers = {
@@ -28,4 +29,5 @@ export const researchParsers = {
   problems: parseAsArrayOf(parseAsString).withDefault([]),
   spaces: parseAsArrayOf(parseAsString).withDefault([]),
   q: parseAsString.withDefault(''),
+  tag: parseAsStringEnum(['all', 'llm', 'keyword'] as const).withDefault('all'),
 };
