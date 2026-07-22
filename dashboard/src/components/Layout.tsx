@@ -7,6 +7,7 @@ const NAV_ITEMS = [
   { to: '/', label: 'Overview', icon: '◧' },
   { to: '/trends', label: 'Trends', icon: '↗' },
   { to: '/research', label: 'Research', icon: '✎' },
+  { to: '/star-sitter', label: 'Star Sitter', icon: '★' },
   { to: '/untagged', label: 'Untagged', icon: '?' },
   { to: '/how-it-works', label: 'How it works', icon: '✦' },
 ];

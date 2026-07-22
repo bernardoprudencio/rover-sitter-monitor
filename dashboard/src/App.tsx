@@ -10,6 +10,7 @@ const ThemeDetail = lazy(() => import('./routes/ThemeDetail'));
 const Trends = lazy(() => import('./routes/Trends'));
 const Untagged = lazy(() => import('./routes/Untagged'));
 const Research = lazy(() => import('./routes/Research'));
+const StarSitter = lazy(() => import('./routes/StarSitter'));
 const HowItWorks = lazy(() => import('./routes/HowItWorks'));
 
 export default function App() {
@@ -25,6 +26,7 @@ export default function App() {
                 <Route path="trends" element={<Trends />} />
                 <Route path="untagged" element={<Untagged />} />
                 <Route path="research" element={<Research />} />
+                <Route path="star-sitter" element={<StarSitter />} />
                 <Route path="how-it-works" element={<HowItWorks />} />
                 <Route
                   path="*"
