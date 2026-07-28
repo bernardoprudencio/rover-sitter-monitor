@@ -165,3 +165,8 @@ export interface StarSitterReport {
   /** ISO date the report content was last synthesized. */
   generatedAt: string;
 }
+
+// A VoC report is structurally identical across features (Star Sitter, Locked
+// Rates, …). `VocReport` is the feature-neutral alias; `relevanceToTiers` is
+// read generically as "relevance to the decision" per report. No shape change.
+export type VocReport = StarSitterReport;
