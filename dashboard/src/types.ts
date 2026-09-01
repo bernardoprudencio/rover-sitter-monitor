@@ -151,6 +151,16 @@ export interface StarSitterReport {
   corpusNote: string;
   /** The dashboard problem name whose aggregates drive the charts. */
   chartProblem: string;
+  /**
+   * Optional: chart a whole taxonomy THEME instead of a single problem. When
+   * set, the route reads aggregates.themesByDay / themeCounts under this key
+   * and `chartProblem` becomes the fallback. Needed for reports whose subject
+   * has no single problem name — Inbox & Chat spans the seven-problem
+   * `Communication` theme, and its largest single problem (Media uploads, 94
+   * posts across 77 days) draws as a near-empty chart. Omitted by
+   * starSitter.ts / lockedRates.ts, which chart one problem each.
+   */
+  chartTheme?: string;
   headlineStats: HeadlineStat[];
   /** Overall sentiment mix across the core corpus, for the donut. */
   overallSentiment: SentimentBreakdown;
