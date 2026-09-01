@@ -1,5 +1,4 @@
 import clsx from 'clsx';
-import { format, subDays } from 'date-fns';
 
 interface PresetOption {
   label: string;
@@ -107,13 +106,4 @@ export function FilterBar({
       </div>
     </div>
   );
-}
-
-export function presetToRange(days: number | 'all'): { from: string | null; to: string | null } {
-  if (days === 'all') return { from: null, to: null };
-  const today = new Date();
-  return {
-    from: format(subDays(today, days), 'yyyy-MM-dd'),
-    to: format(today, 'yyyy-MM-dd'),
-  };
 }

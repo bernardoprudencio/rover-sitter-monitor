@@ -25,9 +25,10 @@ import {
   weeklyBuckets,
 } from '../lib/aggregations';
 import { formatCount, formatDate, formatPct } from '../lib/format';
-import { themeColor } from '../components/ThemeCard';
+import { presetToRange } from '../lib/filters';
+import { themeColor } from '../lib/themeColors';
 import { StatTile } from '../components/StatTile';
-import { FilterBar, presetToRange } from '../components/FilterBar';
+import { FilterBar } from '../components/FilterBar';
 import { PostList } from '../components/PostList';
 import { ResearchList } from '../components/ResearchList';
 import { TagSourceToggle } from '../components/TagSourceToggle';
@@ -43,6 +44,47 @@ export default function ThemeDetail() {
 
   const slugToTheme = useMemo(() => buildSlugToTheme(taxonomy), [taxonomy]);
   const theme = slug ? slugToTheme[slug] : undefined;
+
+  // Every hook has to run on the "theme not found" path too — the route element
+  // stays mounted when the slug changes, so bailing out before these would
+  // change the hook count between renders.
+  const seriesDaily = useMemo(
+    () => (theme ? lastNDays(aggregates.themesByDay, theme, 90) : []),
+    [aggregates, theme],
+  );
+  const seriesWeekly = useMemo(
+    () =>
+      theme
+        ? weeklyBuckets(aggregates.themesByDay, theme, 13).map((b) => ({
+            date: b.weekStart,
+            count: b.count,
+          }))
+        : [],
+    [aggregates, theme],
+  );
+
+  const filtered = useMemo(() => {
+    if (!theme || loading) return [];
+    return filterPosts(posts, {
+      themes: [theme],
+      problems: filters.problems.length ? filters.problems : undefined,
+      from: filters.from ?? undefined,
+      to: filters.to ?? undefined,
+      q: filters.q,
+      tag: filters.tag,
+    }).sort((a, b) => b.date.localeCompare(a.date));
+  }, [posts, theme, filters, loading]);
+
+  const filteredResearch = useMemo(() => {
+    if (!theme || researchLoading) return [];
+    return research.filter((d) => {
+      if (!d.themes.includes(theme)) return false;
+      if (filters.problems.length && !d.problems.some((p) => filters.problems.includes(p))) return false;
+      if (filters.tag === 'llm' && !d.llmTagged) return false;
+      if (filters.tag === 'keyword' && d.llmTagged) return false;
+      return true;
+    });
+  }, [research, theme, filters.problems, filters.tag, researchLoading]);
 
   if (!theme) {
     return (
@@ -73,43 +115,7 @@ export default function ThemeDetail() {
     20,
   );
   const allProblemNames = subProblems.map((p) => p.problem);
-
-  const seriesDaily = useMemo(
-    () => lastNDays(aggregates.themesByDay, theme, 90),
-    [aggregates, theme],
-  );
-  const seriesWeekly = useMemo(
-    () => weeklyBuckets(aggregates.themesByDay, theme, 13).map((b) => ({
-      date: b.weekStart,
-      count: b.count,
-    })),
-    [aggregates, theme],
-  );
   const series = filters.granularity === 'weekly' ? seriesWeekly : seriesDaily;
-
-  const filtered = useMemo(() => {
-    if (loading) return [];
-    return filterPosts(posts, {
-      themes: [theme],
-      problems: filters.problems.length ? filters.problems : undefined,
-      from: filters.from ?? undefined,
-      to: filters.to ?? undefined,
-      q: filters.q,
-      tag: filters.tag,
-    }).sort((a, b) => b.date.localeCompare(a.date));
-  }, [posts, theme, filters, loading]);
-
-  const filteredResearch = useMemo(() => {
-    if (researchLoading) return [];
-    return research.filter((d) => {
-      if (!d.themes.includes(theme)) return false;
-      if (filters.problems.length && !d.problems.some((p) => filters.problems.includes(p))) return false;
-      if (filters.tag === 'llm' && !d.llmTagged) return false;
-      if (filters.tag === 'keyword' && d.llmTagged) return false;
-      return true;
-    });
-  }, [research, theme, filters.problems, filters.tag, researchLoading]);
-
   const color = themeColor(theme);
 
   return (

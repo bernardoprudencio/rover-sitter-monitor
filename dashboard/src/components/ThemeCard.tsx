@@ -3,27 +3,7 @@ import clsx from 'clsx';
 import { Sparkline } from './Sparkline';
 import { formatCount, formatPct } from '../lib/format';
 import type { WoWDelta } from '../lib/aggregations';
-
-export const THEME_COLORS: Record<string, string> = {
-  Availability: '#ff6b00',
-  Business: '#2563eb',
-  Clients: '#7c3aed',
-  Communication: '#0891b2',
-  Diversion: '#ca8a04',
-  Experience: '#059669',
-  Payments: '#db2777',
-  'Preferences and rates': '#9333ea',
-  'Recurring billings': '#0d9488',
-  Requests: '#4f46e5',
-  'Rover Cards': '#ea580c',
-  'Rover fees': '#65a30d',
-  Taxes: '#0369a1',
-  Untagged: '#94a3b8',
-};
-
-export function themeColor(theme: string): string {
-  return THEME_COLORS[theme] ?? '#64748b';
-}
+import { themeColor } from '../lib/themeColors';
 
 export function ThemeCard({
   theme,

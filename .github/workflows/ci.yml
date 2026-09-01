@@ -1,0 +1,76 @@
+name: CI
+
+# Fast, secret-free quality gates. Runs on every PR and on pushes to main.
+#
+# These checks deliberately live outside daily_digest.yml: that workflow's
+# build-and-deploy job is gated on `github.ref == 'refs/heads/main'` and on
+# ingest jobs that need Google/Confluence secrets, so it never runs on a PR
+# and can't gate one. It also deploys on the daily cron to refresh dashboard
+# data — blocking that on a lint regression would stop data updates, so lint
+# gates merges here rather than blocking the deploy there.
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  dashboard:
+    name: Dashboard (lint, typecheck, build)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: dashboard/package-lock.json
+
+      - name: Install npm dependencies
+        run: npm ci
+        working-directory: dashboard
+
+      # The lint script carries --max-warnings 0, so warnings fail here too.
+      - name: Lint
+        run: npm run lint
+        working-directory: dashboard
+
+      # Separate from the build so a type error is attributed to its own step.
+      - name: Typecheck
+        run: npx tsc -b
+        working-directory: dashboard
+
+      - name: Build
+        run: npm run build
+        working-directory: dashboard
+
+  python:
+    name: Python tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      # Mirrors the dependency set used by the deploy job's test step.
+      - name: Install dependencies
+        run: pip install gspread google-auth pytest
+
+      - name: Run taxonomy + Confluence filter tests
+        run: python3 -m pytest tests/ -q

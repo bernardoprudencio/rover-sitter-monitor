@@ -42,7 +42,9 @@ export default function Research() {
   const toggle = (key: 'themes' | 'problems' | 'spaces', value: string) => {
     const current = state[key];
     const has = current.includes(value);
-    setState({ [key]: has ? current.filter((x) => x !== value) : [...current, value] } as any);
+    const next = has ? current.filter((x) => x !== value) : [...current, value];
+    const patch: Partial<Record<'themes' | 'problems' | 'spaces', string[]>> = { [key]: next };
+    setState(patch);
   };
 
   const reset = () =>
