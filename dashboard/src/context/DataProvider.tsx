@@ -1,5 +1,4 @@
-import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
-import type { Aggregates, Meta, ResearchAggregates, Taxonomy } from '../types';
+import { useEffect, useState, type ReactNode } from 'react';
 import {
   fetchAggregates,
   fetchMeta,
@@ -7,15 +6,7 @@ import {
   fetchTaxonomy,
 } from '../lib/data';
 import { Skeleton } from '../components/Skeleton';
-
-interface DataContextValue {
-  meta: Meta;
-  taxonomy: Taxonomy;
-  aggregates: Aggregates;
-  researchAggregates: ResearchAggregates | null;
-}
-
-const DataContext = createContext<DataContextValue | null>(null);
+import { DataContext, type DataContextValue } from './DataContext';
 
 export function DataProvider({ children }: { children: ReactNode }) {
   const [value, setValue] = useState<DataContextValue | null>(null);
@@ -62,10 +53,4 @@ export function DataProvider({ children }: { children: ReactNode }) {
   if (!value) return <Skeleton fullPage />;
 
   return <DataContext.Provider value={value}>{children}</DataContext.Provider>;
-}
-
-export function useData(): DataContextValue {
-  const v = useContext(DataContext);
-  if (!v) throw new Error('useData must be used within DataProvider');
-  return v;
 }

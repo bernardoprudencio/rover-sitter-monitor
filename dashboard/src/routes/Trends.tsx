@@ -13,7 +13,7 @@ import {
 import { useQueryStates } from 'nuqs';
 import { useData } from '../context/DataContext';
 import { Sparkline } from '../components/Sparkline';
-import { themeColor } from '../components/ThemeCard';
+import { themeColor } from '../lib/themeColors';
 import { trendsParsers } from '../lib/filters';
 import { findLatestDate, weeklyBuckets } from '../lib/aggregations';
 import { formatCount, formatDate, formatPct } from '../lib/format';

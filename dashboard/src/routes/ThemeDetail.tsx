@@ -25,9 +25,10 @@ import {
   weeklyBuckets,
 } from '../lib/aggregations';
 import { formatCount, formatDate, formatPct } from '../lib/format';
-import { themeColor } from '../components/ThemeCard';
+import { presetToRange } from '../lib/filters';
+import { themeColor } from '../lib/themeColors';
 import { StatTile } from '../components/StatTile';
-import { FilterBar, presetToRange } from '../components/FilterBar';
+import { FilterBar } from '../components/FilterBar';
 import { PostList } from '../components/PostList';
 import { ResearchList } from '../components/ResearchList';
 import { TagSourceToggle } from '../components/TagSourceToggle';

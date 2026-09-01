@@ -1,7 +1,7 @@
 import { lazy, Suspense } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { NuqsAdapter } from 'nuqs/adapters/react-router/v6';
-import { DataProvider } from './context/DataContext';
+import { DataProvider } from './context/DataProvider';
 import { Layout } from './components/Layout';
 import { Skeleton } from './components/Skeleton';
 

@@ -41,8 +41,7 @@ jobs:
         run: npm ci
         working-directory: dashboard
 
-      # Warnings do not fail the build (4 react-refresh warnings are known and
-      # accepted). Add --max-warnings 0 once those are cleared.
+      # The lint script carries --max-warnings 0, so warnings fail here too.
       - name: Lint
         run: npm run lint
         working-directory: dashboard
