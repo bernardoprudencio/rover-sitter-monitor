@@ -9,6 +9,7 @@ const NAV_ITEMS = [
   { to: '/research', label: 'Research', icon: '✎' },
   { to: '/star-sitter', label: 'Star Sitter', icon: '★' },
   { to: '/locked-rates', label: 'Locked Rates', icon: '🔒' },
+  { to: '/inbox-chat', label: 'Inbox & Chat', icon: '✉' },
   { to: '/untagged', label: 'Untagged', icon: '?' },
   { to: '/how-it-works', label: 'How it works', icon: '✦' },
 ];

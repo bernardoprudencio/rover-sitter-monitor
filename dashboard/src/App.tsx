@@ -12,6 +12,7 @@ const Untagged = lazy(() => import('./routes/Untagged'));
 const Research = lazy(() => import('./routes/Research'));
 const StarSitter = lazy(() => import('./routes/StarSitter'));
 const LockedRates = lazy(() => import('./routes/LockedRates'));
+const InboxChat = lazy(() => import('./routes/InboxChat'));
 const HowItWorks = lazy(() => import('./routes/HowItWorks'));
 
 export default function App() {
@@ -29,6 +30,7 @@ export default function App() {
                 <Route path="research" element={<Research />} />
                 <Route path="star-sitter" element={<StarSitter />} />
                 <Route path="locked-rates" element={<LockedRates />} />
+                <Route path="inbox-chat" element={<InboxChat />} />
                 <Route path="how-it-works" element={<HowItWorks />} />
                 <Route
                   path="*"

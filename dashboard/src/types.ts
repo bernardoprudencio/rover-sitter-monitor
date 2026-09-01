@@ -139,6 +139,61 @@ export interface HeadlineStat {
   hint?: string;
 }
 
+// ---------------------------------------------------------------------------
+// Plan cross-check. A VoC report is most useful when it is pointed at a
+// specific proposal, so a report may optionally carry a verdict table checking
+// an external product plan item-by-item against its own evidence. Kept
+// optional: starSitter.ts / lockedRates.ts have no plan to check.
+// ---------------------------------------------------------------------------
+
+/**
+ * How the corpus bears on one thing a plan proposes, prioritizes, or rejects.
+ * `silent` is a first-class answer — the absence of evidence is reported, not
+ * upgraded into a contradiction.
+ */
+export type CrossCheckVerdict = 'supported' | 'contradicted' | 'mixed' | 'silent';
+
+export interface CrossCheckItem {
+  id: string;
+  /** The plan's item, in its own words where possible. */
+  claim: string;
+  /** Where it sits in the plan — "P0", "Cut line · No", "Motivation", … */
+  planPosition: string;
+  verdict: CrossCheckVerdict;
+  /** One line naming the verdict, for scanning. */
+  headline: string;
+  /** The evidence and its counts, including what could not be checked. */
+  evidence: string;
+  quotes?: VoCQuote[];
+}
+
+/** A corpus cluster the plan does not mention at all. */
+export interface CrossCheckBlindSpot {
+  label: string;
+  /** On-topic posts in this cluster. */
+  count: number;
+  note: string;
+}
+
+export interface PlanCrossCheck {
+  title: string;
+  /** The plan being checked. */
+  source: {
+    title: string;
+    url: string;
+    space: string;
+    author: string;
+    date: string;
+    /** Evidence tier of the plan itself — it is not research. */
+    docType: string;
+  };
+  /** Other pages found in the same space that the report's corpus missed. */
+  alsoFound?: Array<{ title: string; url: string; note: string }>;
+  framing: string[];
+  items: CrossCheckItem[];
+  blindSpots?: CrossCheckBlindSpot[];
+}
+
 export interface StarSitterReport {
   /** Report title + framing shown in the hero. */
   title: string;
@@ -151,12 +206,24 @@ export interface StarSitterReport {
   corpusNote: string;
   /** The dashboard problem name whose aggregates drive the charts. */
   chartProblem: string;
+  /**
+   * Optional: chart a whole taxonomy THEME instead of a single problem. When
+   * set, the route reads aggregates.themesByDay / themeCounts under this key
+   * and `chartProblem` becomes the fallback. Needed for reports whose subject
+   * has no single problem name — Inbox & Chat spans the seven-problem
+   * `Communication` theme, and its largest single problem (Media uploads, 94
+   * posts across 77 days) draws as a near-empty chart. Omitted by
+   * starSitter.ts / lockedRates.ts, which chart one problem each.
+   */
+  chartTheme?: string;
   headlineStats: HeadlineStat[];
   /** Overall sentiment mix across the core corpus, for the donut. */
   overallSentiment: SentimentBreakdown;
   vocThemes: VoCTheme[];
   research: ResearchSummary[];
   images: ReportImage[];
+  /** Optional item-by-item verdict on an external product plan. */
+  crossCheck?: PlanCrossCheck;
   implications: {
     supports: string[];
     cautions: string[];
