@@ -16,7 +16,13 @@ import { lastNDays, weeklyBuckets } from '../lib/aggregations';
 import { formatCount, formatDate } from '../lib/format';
 import { StatTile } from '../components/StatTile';
 import { inboxChatReport } from '../content/inboxChat';
-import type { ResearchSummary, SentimentBreakdown, VoCTheme } from '../types';
+import type {
+  CrossCheckItem,
+  CrossCheckVerdict,
+  ResearchSummary,
+  SentimentBreakdown,
+  VoCTheme,
+} from '../types';
 
 const SENTIMENT_META: Array<{
   key: keyof SentimentBreakdown;
@@ -82,6 +88,70 @@ function QuoteCard({
     >
       {body}
     </a>
+  );
+}
+
+// A cross-check verdict is the point of the section, so it gets a colored
+// chip rather than prose. `silent` is deliberately neutral-grey and not a
+// failing grade — "the corpus says nothing" is a real answer.
+const VERDICT_META: Record<
+  CrossCheckVerdict,
+  { label: string; chip: string; mark: string }
+> = {
+  supported: {
+    label: 'Corpus supports',
+    chip: 'bg-success-600/10 text-success-700 ring-1 ring-inset ring-success-600/30',
+    mark: '✓',
+  },
+  contradicted: {
+    label: 'Corpus contradicts',
+    chip: 'bg-danger-600/10 text-danger-700 ring-1 ring-inset ring-danger-600/30',
+    mark: '✕',
+  },
+  mixed: {
+    label: 'Both, genuinely',
+    chip: 'bg-warning-600/10 text-warning-600 ring-1 ring-inset ring-warning-600/30',
+    mark: '≠',
+  },
+  silent: {
+    label: 'No evidence either way',
+    chip: 'bg-neutral-100 text-neutral-600 ring-1 ring-inset ring-neutral-300',
+    mark: '–',
+  },
+};
+
+function CrossCheckCard({ item }: { item: CrossCheckItem }) {
+  const meta = VERDICT_META[item.verdict];
+  return (
+    <section className="rounded-xl bg-white p-5 shadow-card">
+      <div className="flex flex-wrap items-center gap-2">
+        <span className={`rounded-full px-2 py-0.5 text-caption font-semibold ${meta.chip}`}>
+          {meta.mark} {meta.label}
+        </span>
+        <span className="rounded-full bg-neutral-100 px-2 py-0.5 text-caption font-mono text-neutral-500">
+          {item.planPosition}
+        </span>
+      </div>
+      <h3 className="mt-3 text-h3 text-neutral-900">{item.headline}</h3>
+      <p className="mt-2 border-l-2 border-neutral-200 pl-3 text-body italic text-neutral-500">
+        Plan: {item.claim}
+      </p>
+      <p className="mt-3 text-body text-neutral-600">{item.evidence}</p>
+      {item.quotes && item.quotes.length > 0 && (
+        <div className="mt-4 space-y-2">
+          {item.quotes.map((q, i) => (
+            <QuoteCard
+              key={i}
+              text={q.text}
+              url={q.url}
+              meta={[q.author ? `u/${q.author}` : null, q.date ? formatDate(q.date, 'MMM d, yyyy') : null]
+                .filter(Boolean)
+                .join(' · ')}
+            />
+          ))}
+        </div>
+      )}
+    </section>
   );
 }
 
@@ -405,6 +475,82 @@ export default function InboxChat() {
               <ResearchSection key={s.id} study={s} />
             ))}
           </div>
+        </section>
+      )}
+
+      {/* Cross-check against an external product plan */}
+      {report.crossCheck && (
+        <section className="space-y-4">
+          <div>
+            <h2 className="text-h1 text-neutral-900">{report.crossCheck.title}</h2>
+            <p className="text-body text-neutral-500">
+              Checking{' '}
+              <a
+                href={report.crossCheck.source.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primary-700 underline"
+              >
+                {report.crossCheck.source.title}
+              </a>{' '}
+              ({report.crossCheck.source.space} · {report.crossCheck.source.author} ·{' '}
+              {report.crossCheck.source.date}) item by item against this corpus.{' '}
+              {report.crossCheck.source.docType}
+            </p>
+          </div>
+          {report.crossCheck.framing.map((p, i) => (
+            <p key={i} className="text-body text-neutral-600">
+              {p}
+            </p>
+          ))}
+          {report.crossCheck.alsoFound && report.crossCheck.alsoFound.length > 0 && (
+            <div className="rounded-xl border border-neutral-200 bg-neutral-50 p-4">
+              <h3 className="text-h3 text-neutral-800">
+                Also in this space, and missing from the research set above
+              </h3>
+              <ul className="mt-2 space-y-2">
+                {report.crossCheck.alsoFound.map((d, i) => (
+                  <li key={i} className="text-body text-neutral-600">
+                    <a
+                      href={d.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="font-semibold text-primary-700 underline"
+                    >
+                      {d.title}
+                    </a>{' '}
+                    — {d.note}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+          <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+            {report.crossCheck.items.map((it) => (
+              <CrossCheckCard key={it.id} item={it} />
+            ))}
+          </div>
+          {report.crossCheck.blindSpots && report.crossCheck.blindSpots.length > 0 && (
+            <div className="rounded-xl bg-white p-5 shadow-card">
+              <h3 className="text-h2 text-neutral-900">What the plan does not mention</h3>
+              <p className="mt-1 text-body text-neutral-500">
+                Corpus clusters with no counterpart anywhere in the plan — including its cut line.
+                Counts are on-topic posts (high or medium relevance).
+              </p>
+              <ul className="mt-3 divide-y divide-neutral-100">
+                {report.crossCheck.blindSpots.map((b, i) => (
+                  <li key={i} className="flex gap-4 py-3">
+                    <span className="w-12 shrink-0 text-right font-mono text-h3 text-primary-700">
+                      {formatCount(b.count)}
+                    </span>
+                    <span className="text-body text-neutral-600">
+                      <span className="font-semibold text-neutral-800">{b.label}</span> — {b.note}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </section>
       )}
 

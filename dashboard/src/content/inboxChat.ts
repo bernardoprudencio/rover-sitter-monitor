@@ -23,6 +23,16 @@ import type { VocReport } from '../types';
 //     ~1,554 rows and filters out most of this topic's studies. Only 5 of the
 //     11 are validated findings; each entry states its document type.
 //
+// Cross-check added 2026-09-01: the report is checked item-by-item against the
+// BKS plan "Improve the Rover Messaging Experience" (6284542665). BKS is
+// outside the DSN + PSD ingest scope, so that plan and the two other BKS pages
+// surfaced alongside it (6142593222, 6005620935) are not in `research` above —
+// they are product plans and a spec, not research, and are labelled as such.
+// Feature-presence claims in that section were tested against the full 26,597
+// post dashboard export rather than the 964-post corpus, because several terms
+// (notably "reply to") were dropped during collection as false friends and an
+// absence in the corpus alone would not have been conclusive.
+//
 // Theme counts and the sentiment donut use the 506 rows scored high or medium
 // relevance, not all 932 — the low-relevance tail is keyword-sweep noise and is
 // disclosed in corpusNote rather than quietly included.
@@ -725,8 +735,177 @@ export const inboxChatReport: VocReport = {
       }
     ],
     "images": [],
+    "crossCheck": {
+      "title": "Cross-check: the BKS plan to improve Rover messaging",
+      "source": {
+        "title": "Improve the Rover Messaging Experience",
+        "url": "https://roverdotcom.atlassian.net/wiki/spaces/BKS/pages/6284542665/Improve+the+Rover+Messaging+Experience",
+        "space": "BKS · Booking Product Group",
+        "author": "Aaron Mitchell",
+        "date": "Aug 2026",
+        "docType": "Evidence tier: this is a product plan, not research — its benchmark table is a competitive scan of iOS Messages, WhatsApp, Airbnb, Reddit, Slack and Instagram, and it states no study behind any prioritization."
+      },
+      "framing": [
+        "BKS sits outside the DSN + PSD scope this dashboard ingests, so this plan was not in the evidence base above, and the plan in turn does not cite this corpus. Read together they agree on the diagnosis — messaging is heavily used and heavily complained about — and disagree almost completely on the remedy. The plan is feature-parity work: emoji reactions, reply-to-message and send animations are its three P0s. The corpus’s loudest clusters are reliability defects and marketplace incentive mechanics, and none of the three P0s appears in it at all.",
+        "The sharpest challenge to the plan is not this corpus, though — it is another BKS page. “Rover Messaging: The Case for Investment” (Josh Harris and Guillem Pons, Jun 2026) argues the problem is that the product “fails at the basics”: in-app calling broken for over two years, every message firing three simultaneous notifications, video uploads too slow to be practical, no group chat, and every booking starting a new thread. That page and this corpus agree closely. The Aug 2026 plan shares almost none of its content, and its cut line rejects items on polish grounds without engaging the reliability argument. Two BKS documents two months apart propose different products; the VoC backs the earlier one.",
+        "Even-handedly: several of the plan’s rejections are exactly right, its emoji copy spec is well-specified, and its read-receipts rationale correctly anticipates this corpus’s single largest cluster. Where the plan is under-evidenced, that is often because Reddit does not complain about missing conveniences — an absence here is weak evidence of absence, and Jakob’s-Law parity does not need VoC support to be a reasonable argument. Each verdict below says which kind of gap it is."
+      ],
+      "alsoFound": [
+        {
+          "title": "Rover Messaging: The Case for Investment",
+          "url": "https://roverdotcom.atlassian.net/wiki/spaces/BKS/pages/6142593222/Rover+Messaging+The+Case+for+Investment",
+          "note": "Josh Harris and Guillem Pons, Jun 2026. A joint Owner/Provider proposal whose problem statement — broken in-app calling, triple notifications, slow video upload, no group chat, thread-per-booking, no relationship history — matches this corpus more closely than any of the eleven DSN/PSD studies above. Also a proposal rather than research, and candid that “you can’t build a clean feature-level ROI model for messaging infrastructure.”"
+        },
+        {
+          "title": "🚧 Spec: UK Provider U2U SMS Sunset",
+          "url": "https://roverdotcom.atlassian.net/wiki/spaces/BKS/pages/6005620935/Spec+UK+Provider+U2U+SMS+Sunset",
+          "note": "Emma Sahn, Jul 2026. A live 50:50 A/B suppressing user-to-user SMS for UK providers against ~£280K a year, with response rate within one hour as the primary metric. This is the SMS cost thesis already under test, and it is the instrument that would settle the survey question below — the messaging plan cites the savings without citing the experiment."
+        }
+      ],
+      "items": [
+        {
+          "id": "read-receipts",
+          "claim": "“Add Read receipts — No - This puts pressure on the sitter to respond and may increase owner anxiety.” Also cut: “Add ‘typing’, ‘sent’, ‘seen’ to inbox preview — No - Not worth building inbox preview if we are not going to build read receipts.”",
+          "planPosition": "Cut line · No",
+          "verdict": "mixed",
+          "headline": "The rejection is well-reasoned and the corpus backs its stated reason — but users are already reverse-engineering an indicator Rover ships today",
+          "evidence": "The plan’s reason is this report’s largest cluster, so it deserves the credit: 134 on-topic posts describe reply speed as a monitored performance metric, 101 of them negative. Adding a read state to that would land on people who already believe standing depends on answering within minutes. The demand side is real too, and much smaller: “read receipt” appears in zero of the 26,597 posts in the export, but four rows across three distinct complaints try to work out what the green check mark already means — and two of the three are asking about delivery, not reading. That is the gap the plan strands. Its send-animation milestone proposes to “Define ‘optimistic’ message status … and ‘delivered’ message status”, then defers that to “the read receipts project” it has just rejected. Delivery confirmation is not a read receipt, carries none of the response pressure, and matters more here than in a normal chat app because 50 posts describe messages that genuinely never arrived. Disambiguating the existing check mark is the version of this the evidence asks for.",
+          "quotes": [
+            {
+              "text": "When you're messaging your sitter does the green check mean they read it?",
+              "url": R + "/1rwnbjg/when_youre_messaging_your_sitter_does_the_green/",
+              "author": "Popular-Pirate610",
+              "date": "2026-03-17"
+            },
+            {
+              "text": "I noticed the message sent without a green check on the bottom right, did she receive my message",
+              "url": R + "/1uetcwi/message_delivery/",
+              "author": "Due-Team-6129",
+              "date": "2026-06-24"
+            },
+            {
+              "text": "she never responded and the green check isn’t there",
+              "url": R + "/1tssz29/client_not_responding/",
+              "author": "Negative-Pie5361",
+              "date": "2026-05-31"
+            }
+          ]
+        },
+        {
+          "id": "unsend-edit-delete",
+          "claim": "“Edit message (temporary window)” and “Delete or Unsend Message (temporary window)” — “Decision to make - Do we want to allow users to edit or delete messages after sending.”",
+          "planPosition": "Cut line · Decision to make",
+          "verdict": "silent",
+          "headline": "Almost no demand as a message feature — but the retraction problem that is documented sits on a surface the plan never touches",
+          "evidence": "Exactly one post in the 26,597-post export asks to remove a sent message, and it is a bare question with no body. As a message-level feature this is unevidenced in either direction, and the decision can be made on product grounds. The retraction need that this corpus does document is a different thing on a different surface: 34 posts describe Rover Cards and conversation photos blurring together, including several independent reports of images sent privately in a thread — a chewed couch, litter-box shots, a photo of a hidden key — auto-publishing to the pet’s public profile with no way to take them back. A temporary edit window on messages would not reach any of that. If the plan wants to solve retraction, the photo-publishing default is where the harm actually is, and it is the highest-severity item in this report relative to its volume.",
+          "quotes": [
+            {
+              "text": "Can I delete a message from a convo",
+              "url": R + "/1m3ghp1/can_i_delete_a_message_from_a_convo/",
+              "author": "Actual-Station7300",
+              "date": "2025-07-18"
+            }
+          ]
+        },
+        {
+          "id": "emoji-reactions",
+          "claim": "Emoji reactions, “Feature Parity - Baseline”, P0 — giving “users a way to respond to messages without needing to write a new mwessage, which is a persistent complaint today.” Notification copy is specified as “❤️ to \"{message}\"” or “❤️ to photo”.",
+          "planPosition": "P0 · Milestone",
+          "verdict": "silent",
+          "headline": "No corpus evidence for or against, and the specific defect this cross-check went looking for is not there — but the copy spec already forecloses it",
+          "evidence": "This report went looking for a reported defect in which a reaction notification never says which photo was reacted to. It is not in the data: zero posts across the full export match any phrasing of liking, hearting or reacting to a photo or message, and the only adjacent post is a sitter describing an owner who sent no thumbs up or reaction of any kind — a complaint about owner silence, not about the feature. So the hypothesis is not corroborated and should not be repeated. Separately, the plan’s own requirement — “❤️ to \"{message}\"” or “❤️ to photo” — already names the referent, so the ambiguity would not arise as specified. The “persistent complaint today” claim is worth attributing correctly: the plan makes it about having to write a new message to respond, and this corpus contains no instance of that complaint. That is a Reddit-shaped absence rather than a refutation — people rarely post to say a convenience is missing — but the plan should not present it as an established complaint without a source.",
+          "quotes": []
+        },
+        {
+          "id": "reply-to-message",
+          "claim": "Reply to messages, “Feature Parity - Baseline”, P0 — so users “can clearly communicate what they are referring to when responding to the other party.”",
+          "planPosition": "P0 · Milestone",
+          "verdict": "silent",
+          "headline": "Zero posts, and the collection-artifact explanation was tested and ruled out",
+          "evidence": "Nobody in this evidence base asks for threaded replies. Because the term “reply to” had been dropped from the corpus term list early on as a false friend — it matched “reply to a review” — the absence was re-tested against the full 26,597-post export rather than the 964-post corpus, using phrasings that survive that removal: replying to a specific or individual message, quoting a message, threaded replies, and confusion about which message someone is answering. All return zero. The absence is real, not a collection artifact. It is still weak evidence: a subreddit is a complaint channel, and missing conveniences generate far fewer posts than broken features do, so this does not argue against building it. It does argue that “P0” cannot be justified by customer voice, and that the plan’s honest ground here is the parity argument it already makes.",
+          "quotes": []
+        },
+        {
+          "id": "audio-messages",
+          "claim": "Audio messages — “This feels like it adds a lot of value - but we should be mindful of diversion, so we’d need to speech to text to analyze pipeline.”",
+          "planPosition": "Benchmark · above the cut line",
+          "verdict": "contradicted",
+          "headline": "Rover’s own survey measured this and found the opposite everywhere except Spain",
+          "evidence": "The Q1 2025 messaging survey asked sitters in five countries directly. Rated useful (4 or 5 of 5): US 23%, CA 24%, UK 25%, FR 39%, ES 63%. Would use them regularly in daily conversations: US 15%, UK 15%, CA 20%, FR 29%, ES 56%. Combining both, the share that finds audio useful and expects daily use is US 13%, UK 14%, CA 17%, FR 27% — and ES 50%. Among high-volume and consistent sitters it drops further, to 19% useful and 14% daily in the US. The survey’s own first-page insight is that audio messages “are appealing for daily use for about half of ES sitters, but are not as desired in other countries.” The corpus adds one post, a title-only question about whether voice notes would beat typing visit updates — curiosity, not demand. Caveat on tier: the survey is an analysis page and reports percentages with no base sizes anywhere, so treat the magnitudes as directional. Directionally it is unambiguous, it is Rover’s own, and it is aimed squarely at this question. Video calling scores no better: 16–24% on the same combined measure in every country. If audio is built, the survey points at ES and at a WhatsApp-shaped need there, not at a general rollout.",
+          "quotes": [
+            {
+              "text": "Pet sitters — would voice notes be easier than writing visit updates?",
+              "url": R + "/1srtxnn/pet_sitters_would_voice_notes_be_easier_than/",
+              "author": "VisibleAd7084",
+              "date": "2026-04-21"
+            }
+          ]
+        },
+        {
+          "id": "sms-savings",
+          "claim": "“Significant SMS costs savings if we can make it good enough” — listed as a motivation for the investment.",
+          "planPosition": "Problem · motivation",
+          "verdict": "mixed",
+          "headline": "The saving is real and already under test, but the plan states it as settled while the experiment that would justify it has not read out",
+          "evidence": "SMS is not a fallback for US sitters, it is the primary channel: Rover’s Q1 2025 survey has 77% calling SMS essential (80% among high-volume and consistent sitters), 66% naming SMS their preferred way to receive updates, and 56% preferring SMS over the app for talking to clients at all. So “make the app good enough and the SMS spend goes away” is a bigger behavioural change than the phrasing implies. On why traffic sits there, this corpus cannot cleanly separate failure from preference and should not pretend to: 74 on-topic posts mention SMS or texting, and 31 of those sit in a delivery-failure theme — photos that only send over text, requests announced by SMS and absent from the app, messages surfacing days late. Failure is clearly part of it. The sharpest wrinkle is that the SMS relay is itself unreliable: one sitter reports roughly half her SMS replies and photos never reaching the Rover thread, so cost is being spent on a channel that is also dropping messages. Credit where due — BKS is already running the right instrument. The UK Provider U2U SMS Sunset spec is a live 50:50 A/B against ~£280K a year, and an experiment is exactly how you resolve stated preference against revealed behaviour. Two cautions on reading it: the survey puts the UK at the low end of SMS attachment (60% essential, versus 77% in the US), so a UK win is the weakest possible read-across to the US; and its primary metric, response rate within one hour, is measured on a population that already experiences the reply clock as punishing. “Response rate held” and “sitters are fine” are not the same finding.",
+          "quotes": []
+        },
+        {
+          "id": "star-pin-save",
+          "claim": "“Star / Pin / Save Message — This is helpful for things like care instructions, saved items would appear in relationship view.” Listed above the cut line with no priority assigned.",
+          "planPosition": "Benchmark · unprioritized",
+          "verdict": "supported",
+          "headline": "The best-evidenced item on the plan’s list, and it is the one left without a priority",
+          "evidence": "Rover’s Feb 2025 inbox filter usability testing — a validated findings page, one of only five in this report’s research set — records that sitters cannot retrieve information buried in past threads, naming door codes and revised care instructions specifically. Three of the studies above converge on the same need. The plan identifies exactly this use case, unprompted, and pairs it with the relationship view, which is the structural fix the Case for Investment argues for. Reddit is nearly silent: only four posts in the whole export use retrieval-from-thread phrasing, consistent with this report’s existing finding that sitters describe the inbox as slow and wrongly stated rather than unsearchable. So the support is research-side, not VoC-side. That is still a stronger evidentiary base than either P0 has, and it is worth noting that the funded search MVP indexes conversation names rather than message content, so pinning may close this need where search will not.",
+          "quotes": []
+        },
+        {
+          "id": "plan-evidence-claims",
+          "claim": "“It’s the most used part of the app (40% page views) and one of the most complained about”; “Direct evidence it drives diversion on rebooking reach-outs (110k unbooked conversations in 2025)”.",
+          "planPosition": "Problem · evidence",
+          "verdict": "mixed",
+          "headline": "The complaint claim is corroborated in kind; the two analytics figures are outside what this evidence base can check",
+          "evidence": "On complaint volume the plan is right, and independently so: 506 on-topic posts across Jan 2025 – Sep 2026, 64% negative against 2% positive, sustained across the whole window rather than spiking around a release. One qualification matters in both directions. This report had to build a bespoke corpus because the dashboard’s taxonomy has no keyword for message, inbox, chat, notification or photo — 249 of the 610 core posts were reachable only by free-text sweep. That means messaging complaints are badly under-counted by Rover’s standing tagger, which strengthens the plan’s claim; it also means this corpus cannot rank messaging against other Rover topics, so “one of the most complained about” is corroborated as large and sustained volume, not as a rank. The 40% page-views and 110k-unbooked-conversations figures are product analytics. Nothing in this evidence base can confirm or refute them, and this report does not attempt to — they should carry a link to the query that produced them so a reader can check them the way the Reddit counts here can be checked.",
+          "quotes": []
+        }
+      ],
+      "blindSpots": [
+        {
+          "label": "The archive mechanic",
+          "count": 125,
+          "note": "the second-largest cluster in the report and absent from the plan entirely. Sitters archive constantly because an unbooked conversation left past roughly 72 hours is believed to suppress search visibility, while fearing the archive is itself recorded as a decline. Fairly: this is a search-ranking and marketplace decision, not a messaging one — but it is the inbox action sitters take most, and the plan’s cut line rejects “Mark unread” as “unnecessary” without noticing the adjacent state mechanic people are genuinely confused by."
+        },
+        {
+          "label": "Notification delivery and routing",
+          "count": 82,
+          "note": "the plan has an “Improved in-app notifications” milestone, but it is scoped to appearance — “It should look better / follow kibble”. The corpus problem is not appearance. The same sitter is chased about an unanswered 2am inquiry and gets no alert when a recurring client adds a date; misses cluster on booking changes. Routing by event type is untouched, and the Case for Investment’s triple-notification complaint appears nowhere in this plan."
+        },
+        {
+          "label": "Photo and video upload reliability",
+          "count": 53,
+          "note": "the most concrete reproducible failure in the report — a 17-second video taking over five minutes with the app held in the foreground, uploads that block every text queued behind them — and the plan’s media content is stickers, custom emoji and branded wallpaper. The Case for Investment names slow video upload explicitly; this plan does not. Rover’s 2024 media survey charter admitted it could not measure the failure rate at all, and that is still true."
+        },
+        {
+          "label": "Messages and threads that never arrive",
+          "count": 50,
+          "note": "the most uniformly negative theme in the report, 46 of 50 rows negative: requests announced by SMS and missing from the app, clients receiving neither messages nor Cards, one thread showing different photos to each side. This is the mechanism behind the SMS dependence the plan wants to cost-reduce, and no item on the plan — above or below the cut line — addresses delivery."
+        },
+        {
+          "label": "The contact-info filter’s false positives",
+          "count": 43,
+          "note": "booking date ranges read as phone numbers, clients blocked from sending their own address before a home visit, warnings issued while sitters are actively refusing off-app requests. Partly a Trust and Safety surface rather than a messaging one, but it fires inside the message composer the plan is redesigning, and the plan’s “Report Message” entry point is the only enforcement-adjacent item it carries."
+        },
+        {
+          "label": "Conversation photos publishing publicly",
+          "count": 34,
+          "note": "a sharing default that publishes what the sender believed was private, with no way to retract it. Directly adjacent to the plan’s open “Decision to make” on unsend, and higher severity than anything above its cut line."
+        }
+      ]
+    },
     "implications": {
       "supports": [
+        "Ship delivery confirmation, not read receipts. The BKS plan rejects read receipts for a reason this corpus backs — 134 posts describe reply speed as a monitored metric — but it then defers “define ‘optimistic’ and ‘delivered’ message status” into that rejected project. Owners and sitters are already reverse-engineering the green check mark, two of the three cases are asking about delivery rather than reading, and 50 posts describe messages that never arrived. Delivery state carries none of the response pressure and answers the question people are actually asking.",
+        "Give Star / Pin / Save a priority. It is the best-evidenced item on the BKS plan and the only one of its well-aimed items left unprioritized: a validated Rover usability finding names retrieval of door codes and revised care instructions from old threads as an unmet need, and the funded search MVP indexes conversation names rather than message content, so pinning closes a gap search will not.",
         "Fix upload reliability on the conversation page before adding any new media capability. It is the most concrete, most reproducible failure in the corpus, Rover already identified it in 2024, and Cards testing proves the flow is fine — so this is an engineering reliability problem with a known owner.",
         "Instrument media upload success, failure reason and duration. Rover’s own survey charter said the logging gaps made it impossible to get a pulse on failure rates; that is still the blocking constraint on prioritizing this work honestly.",
         "Explain the archive mechanic in-product. 125 rows argue about what archiving does to standing, and a large neutral share is sitters asking each other rather than complaining — a comprehension gap that documentation and one honest in-flow explanation could close cheaply.",
@@ -736,7 +915,9 @@ export const inboxChatReport: VocReport = {
       "cautions": [
         "Do not read this as a mandate to redesign the inbox. Rover’s filter and layout studies tested well, the redesign’s unread tabs drew the corpus’s clearest praise, and the volume here points at mechanics and reliability instead.",
         "Search as currently scoped will not land as a win. Three studies name retrieval of door codes and care instructions from old threads, but the MVP indexes conversation names, not message content — and Reddit barely articulates search at all, so expect little credit and an unmet need.",
-        "Resist new modalities. Audio messages and video calling drew little appetite in Rover’s Q1 2025 survey, and only one post in this corpus celebrates video chat. Reliability of what exists is the higher-return investment.",
+        "Resist new modalities, and audio specifically. Rover’s own Q1 2025 survey put the share of sitters who find audio useful and expect daily use at 13% in the US, 14% in the UK and 17% in Canada — against 50% in Spain. Video calling scores 16–24% everywhere. The BKS plan’s read that audio “feels like it adds a lot of value” is contradicted by Rover’s own measurement in every market except ES, where the real signal is WhatsApp.",
+        "Do not treat the SMS saving as banked. 77% of US sitters call SMS essential and 56% prefer it over the app for client communication, so this is a behaviour change, not a channel swap — and 31 of the 74 SMS-mentioning posts here sit in a delivery-failure theme, including a sitter reporting roughly half her SMS replies never reach the thread. The UK U2U SMS Sunset A/B is the right instrument and has not read out; its primary metric, response rate within one hour, is also measured on people who already experience that clock as punishing.",
+        "Feature parity is not the corpus’s complaint. All three of the BKS plan’s P0s — emoji reactions, reply-to-message, send animations — return zero posts in a 26,597-post export, tested against phrasings chosen to survive the corpus’s own term-list gaps. That is weak evidence rather than a refutation, because Reddit under-reports missing conveniences. But it means P0 here rests on Jakob’s-Law parity, not on customer voice, and the plan should say so rather than calling it “a persistent complaint today”.",
         "Tightening the contact-info filter would make things worse. Its false positives — booking dates read as phone numbers, clients blocked from sending an address — already cost legitimate conversations, and sitters report warnings and status loss over words a client typed.",
         "Two of the top three themes are not owned by messaging. Reply-speed pressure and the archive rule are search-ranking and marketplace-incentive decisions; a messaging team cannot fix them alone, and framing them as inbox work would stall."
       ],
@@ -745,6 +926,8 @@ export const inboxChatReport: VocReport = {
         "Is the 72-hour archive rule real as sitters describe it, and does archiving in fact affect standing? Support has given contradictory answers, and the VoC is built on sitters’ belief rather than on documented behavior.",
         "How much messaging volume actually leaves for SMS, and how much of that is explained by failure rather than preference? 56% of US sitters say they prefer SMS — preference and breakage are currently indistinguishable in the data.",
         "The taxonomy behind this dashboard has no keyword for message, inbox, chat, notification or photo, so the tagger under-collects this topic badly: 249 of the 610 core posts were found only by free-text sweep. Worth a taxonomy round before the next read.",
+        "Which BKS plan is the company funding? “Rover Messaging: The Case for Investment” (Jun 2026) and “Improve the Rover Messaging Experience” (Aug 2026) describe different products two months apart — the first is reliability and relationship continuity, the second is feature parity — and this corpus backs the first. The two pages do not reference each other.",
+        "What produced the 40% page-views and 110k-unbooked-conversations figures? Both are load-bearing in the BKS plan’s problem statement and neither is checkable from this evidence base; they need a link to the query behind them.",
         "How often does the relay number put a stranger inside a live client conversation? Rover’s 1-pager still lists a spike and a TBD solution, and the severity ceiling is high."
       ]
     },
